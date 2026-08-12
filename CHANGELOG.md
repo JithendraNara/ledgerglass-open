@@ -11,3 +11,4 @@
 - Remove private-deployment merchant/card assumptions from generic categorization rules.
 - Update Cloudflare, MCP, Agents, Wrangler, and test dependencies; resolve the dependency audit findings.
 - Add regression tests, migration replay, public-repository privacy scanning, read-only CI, and Worker dry-run validation.
+- Use current Node 24-based GitHub Actions runners without deprecation warnings.
