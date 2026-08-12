@@ -25,6 +25,8 @@ Use the current Cloudflare Workers Builds contract:
 The repository is connected and the committed `site/wrangler.toml` points the Worker
 at `site/dist`. There are no runtime variables or secrets. Initial publication uses
 the account's `workers.dev` subdomain; a custom domain can be evaluated separately.
+The repository connection and one-repository GitHub authorization were verified on
+2026-08-12; later matching commits are built and deployed by Workers Builds.
 
 Cloudflare documentation checked 2026-08-12:
 
