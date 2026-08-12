@@ -12,7 +12,7 @@ export type SimpleFinMcpServer = {
 export function createServer(config: Config): SimpleFinMcpServer {
   const server = new McpServer(
     {
-      name: "ledgerglass-starter",
+      name: "ledgerglass-open",
       version: "0.1.0"
     },
     {

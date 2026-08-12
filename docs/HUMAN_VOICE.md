@@ -1,13 +1,13 @@
 # Human voice and design gate
 
-The showcase should sound like the person who built it explaining the work aloud.
+The site should sound like the person who built it explaining the work aloud.
 
 ## Copy review
 
 - Use first person for origin, mistakes, decisions, and lessons.
 - Name the concrete problem before the architecture term.
 - Keep a limitation or proof beside every important claim.
-- Label every synthetic household and case as fictional.
+- Label every synthetic household and case as privacy-safe test evidence.
 - Do not invent users, testimonials, savings, adoption, or performance.
 - Describe what a model does; do not use “AI-powered” as a substitute.
 - Read the homepage and changed case studies aloud before publication.

@@ -1,7 +1,7 @@
 {
   "subscriptions": [
     {
-      "merchant_key": "demo streaming",
+      "merchant_key": "sample streaming",
       "merchant": "Demo Streaming",
       "category": "subscriptions",
       "average_amount": 19.99,
@@ -17,7 +17,7 @@
       "ai_subscription_candidate": true
     },
     {
-      "merchant_key": "demo wireless",
+      "merchant_key": "sample wireless",
       "merchant": "Demo Wireless",
       "category": "utilities",
       "average_amount": 58.73,

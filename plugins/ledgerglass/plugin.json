@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "description": "Evidence-backed personal finance workflows for a self-hosted Ledgerglass server.",
   "author": { "name": "Jithendra Nara", "url": "https://github.com/JithendraNara" },
-  "homepage": "https://github.com/JithendraNara/ledgerglass-starter/tree/main/plugins/ledgerglass",
-  "repository": "https://github.com/JithendraNara/ledgerglass-starter",
+  "homepage": "https://github.com/JithendraNara/ledgerglass-open/tree/main/plugins/ledgerglass",
+  "repository": "https://github.com/JithendraNara/ledgerglass-open",
   "license": "MIT",
   "keywords": ["finance", "ledger", "statements", "mcp"]
 }

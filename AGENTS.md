@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Public Ledgerglass showcase and reusable core. The private Ledgerglass repository
+Ledgerglass Open is the public reference implementation and reusable core. The private Ledgerglass repository
 is the production source of truth. SimpleFIN is an upstream connector; Ledgerglass
 is independent and is not an official SimpleFIN product.
 
@@ -16,9 +16,9 @@ Hard boundaries:
   exports, real Cloudflare IDs, private endpoints, account inventories, or
   production evidence.
 - Never copy the private tree and redact afterward. Generated private-to-public
-  material is restricted to the verified files in `showcase/BUNDLE.json`.
-- Every capability claim resolves through `showcase/capabilities.json` to public
-  core, a fictional demo, or an explicit private note.
+  material is restricted to the verified files in `public-bundle/MANIFEST.json`.
+- Every capability claim resolves through `public-bundle/capabilities.json` to public
+  core, a synthetic case study, or an explicit private note.
 - Public examples use `finance.example.com`, zero IDs, synthetic merchants, and
   environment-variable placeholders.
 - Cloudflare MCP Portal provides client OAuth. Do not add custom OAuth/DCR back
@@ -28,7 +28,7 @@ Hard boundaries:
 - Keep Workers Logs disabled by default. Application audit records must exclude
   prompts, arguments, payloads, and credentials.
 - Do not copy learned merchant/card rules or operational exceptions from a
-  private deployment into this generic starter.
+  private deployment into this public reference implementation.
 
 Financial rules:
 

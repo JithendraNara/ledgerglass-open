@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import registry from "../../../showcase/capabilities.json";
-import stories from "../../../showcase/scenarios.json";
+import registry from "../../../public-bundle/capabilities.json";
+import stories from "../../../public-bundle/case-studies.json";
 const core = registry.capabilities.filter((item) => item.delivery === "core").slice(0, 3);
 ---
 <BaseLayout title="Your finances, with evidence" description="A personal finance ledger I built so agents could help with my money without becoming the source of truth.">
@@ -12,8 +12,8 @@ const core = registry.capabilities.filter((item) => item.delivery === "core").sl
       <p class="dek">So I built a ledger that keeps the receipts: what the provider said, what a statement proved, what I corrected, and what a model merely suggested.</p>
       <div class="actions"><a class="button" href="/tour/">See how it works <span aria-hidden="true">→</span></a><a class="button secondary" href="/why/">Read the backstory</a></div>
     </div>
-    <div class="ledger-sheet" aria-label="Fictional evidence example">
-      <div class="sheet-top"><span>ROWAN HOUSEHOLD · FICTIONAL</span><span>CASE 04</span></div>
+    <div class="ledger-sheet" aria-label="Synthetic contract evidence example">
+      <div class="sheet-top"><span>ROWAN HOUSEHOLD · SYNTHETIC</span><span>CASE 04</span></div>
       <p class="scribble">the number is not the answer—<br />the trail behind it is.</p>
       <div class="evidence-row"><span>Provider observation</span><strong>kept unchanged</strong></div>
       <div class="evidence-row"><span>Closed statement</span><strong>cycle proven</strong></div>
@@ -38,18 +38,18 @@ const core = registry.capabilities.filter((item) => item.delivery === "core").sl
   </section>
 
   <section class="section rule case-preview">
-    <div><p class="eyebrow">A fictional case, based on a real class of failure</p><h2>{stories.scenarios[0].title}</h2><p class="dek">{stories.scenarios[0].happened}</p><a class="button secondary" href="/demo/">Walk through all six cases</a></div>
+    <div><p class="eyebrow">A documented failure class, reproduced with synthetic data</p><h2>{stories.case_studies[0].title}</h2><p class="dek">{stories.case_studies[0].happened}</p><a class="button secondary" href="/case-studies/">Inspect all six cases</a></div>
     <ol class="timeline">
-      <li><span>01</span><div><strong>What made it hard</strong><p>{stories.scenarios[0].difficulty}</p></div></li>
-      <li><span>02</span><div><strong>What changed</strong><p>{stories.scenarios[0].action}</p></div></li>
-      <li><span>03</span><div><strong>What stayed uncertain</strong><p>{stories.scenarios[0].uncertainty}</p></div></li>
+      <li><span>01</span><div><strong>What made it hard</strong><p>{stories.case_studies[0].difficulty}</p></div></li>
+      <li><span>02</span><div><strong>What changed</strong><p>{stories.case_studies[0].action}</p></div></li>
+      <li><span>03</span><div><strong>What stayed uncertain</strong><p>{stories.case_studies[0].uncertainty}</p></div></li>
     </ol>
   </section>
 
   <section class="section rule closing">
     <p class="eyebrow">This is not a service pitch</p>
     <h2>It is a public notebook for a system I use myself.</h2>
-    <p class="dek">The private installation holds the real data and operational machinery. This repository holds the reusable core, synthetic demonstrations, design decisions, mistakes, and enough proof for someone else to inspect the ideas.</p>
+    <p class="dek">The private installation holds the real data and operational machinery. This repository holds the reusable core, contract evidence, design decisions, failures, and enough proof for someone else to inspect the implementation.</p>
     <div class="actions"><a class="button" href="/build/">Build your own</a><a class="button secondary" href="/build-log/">Read the mistakes</a></div>
   </section>
 </BaseLayout>

@@ -1,14 +1,14 @@
-# Showcase deployment
+# Site deployment
 
-The showcase is a separate Cloudflare static-assets Worker named
-`ledgerglass-showcase`. It has no Worker script, database, login, cookies, analytics,
+Ledgerglass Open is a separate Cloudflare static-assets Worker named
+`ledgerglass-open`. It has no Worker script, database, login, cookies, analytics,
 private MCP call, or production health widget.
 
-Live site: [ledgerglass-showcase.jnara01.workers.dev](https://ledgerglass-showcase.jnara01.workers.dev/)
+Live site: [ledgerglass-open.jnara01.workers.dev](https://ledgerglass-open.jnara01.workers.dev/)
 
 ## Workers Builds settings
 
-Connect `JithendraNara/ledgerglass-starter` under the Worker's **Settings → Builds**.
+Connect `JithendraNara/ledgerglass-open` under the Worker's **Settings → Builds**.
 Use the current Cloudflare Workers Builds contract:
 
 - Production branch: `main`
@@ -18,7 +18,7 @@ Use the current Cloudflare Workers Builds contract:
 - Non-production builds: enabled for pull-request previews
 - Non-production deploy command: `npx wrangler versions upload --config site/wrangler.toml`
 - Build cache: enabled
-- Include watch paths: `site/**`, `showcase/**`, `src/public-core*`, `plugins/**`,
+- Include watch paths: `site/**`, `public-bundle/**`, `src/public-core*`, `plugins/**`,
   `docs/**`, `README.md`, `package.json`, `package-lock.json`
 - Exclude all other paths
 

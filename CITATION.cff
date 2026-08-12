@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: Nara
     given-names: Jithendra
-repository-code: https://github.com/JithendraNara/ledgerglass-starter
+repository-code: https://github.com/JithendraNara/ledgerglass-open
 license: MIT
 keywords:
   - model-context-protocol

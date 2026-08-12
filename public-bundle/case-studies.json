@@ -1,13 +1,11 @@
 {
-  "fictional": true,
-  "household": "The Rowan household",
-  "scenarios": [
+  "case_studies": [
     {
       "action": "Ledgerglass matched supported rows, added three statement overlays, and left one uncertain provider row out of the effective cycle.",
       "difficulty": "The balance was real, but the transaction feed could not explain it.",
       "evidence": [
         "immutable provider observations",
-        "complete fictional statement",
+        "complete synthetic statement",
         "opening and closing balance arithmetic"
       ],
       "happened": "A connected credit card stopped including several posted purchases near the end of a closed cycle.",
@@ -52,7 +50,7 @@
         "last successful source observation",
         "dated balance snapshots"
       ],
-      "happened": "One fictional institution stopped refreshing while the other connections stayed current.",
+      "happened": "One synthetic institution stopped refreshing while the other connections stayed current.",
       "id": "stale-source",
       "reversal": "The next authenticated observation clears the stale condition without rewriting history.",
       "title": "One connection went stale",
@@ -87,5 +85,7 @@
       "uncertainty": "Narrative confidence never outranks transaction relationships."
     }
   ],
-  "schema_version": 1
+  "household": "The Rowan household",
+  "schema_version": 1,
+  "synthetic": true
 }

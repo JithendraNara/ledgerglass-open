@@ -1,5 +1,5 @@
 {
-  "name": "ledgerglass-starter",
+  "name": "ledgerglass-open",
   "version": "0.1.0",
   "description": "Deploy-your-own evidence-aware personal finance MCP for Cloudflare Workers and SimpleFIN.",
   "type": "module",
@@ -23,13 +23,13 @@
     "worker:migrate:remote": "wrangler d1 migrations apply DB --remote --config worker/wrangler.toml",
     "test": "vitest run",
     "privacy:audit": "node scripts/audit-public-repo.mjs",
-    "showcase:validate": "node scripts/validate-showcase.mjs",
+    "public:validate": "node scripts/validate-public-bundle.mjs",
     "site:dev": "astro dev --root site",
     "site:check": "astro check --root site",
     "site:build": "astro build --root site",
     "site:dry-run": "npm run site:build && wrangler deploy --dry-run --outdir .wrangler/site-dry-run --config site/wrangler.toml",
     "site:deploy": "npm run site:build && wrangler deploy --config site/wrangler.toml",
-    "check": "npm run privacy:audit && npm run showcase:validate && npm run typecheck && npm run worker:typecheck && npm run build && npm test && npm run site:check && npm run site:dry-run && npm audit --audit-level=high && npm run worker:migrate:local && npm run worker:dry-run"
+    "check": "npm run privacy:audit && npm run public:validate && npm run typecheck && npm run worker:typecheck && npm run build && npm test && npm run site:check && npm run site:dry-run && npm audit --audit-level=high && npm run worker:migrate:local && npm run worker:dry-run"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",

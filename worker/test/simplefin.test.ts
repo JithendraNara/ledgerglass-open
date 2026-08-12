@@ -58,8 +58,8 @@ describe("SimpleFIN API boundary", () => {
 
   it("keeps id-less duplicate rows distinct without exposing their text in ids", async () => {
     const row = { amount: "-12.34", posted: 1_786_406_400, description: "Synthetic duplicate" };
-    const first = await stableTransactionId("demo", row, 0);
-    const second = await stableTransactionId("demo", row, 1);
+    const first = await stableTransactionId("synthetic", row, 0);
+    const second = await stableTransactionId("synthetic", row, 1);
     expect(first).not.toBe(second);
     expect(first).not.toContain("Synthetic duplicate");
   });

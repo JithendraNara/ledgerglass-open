@@ -47,14 +47,14 @@ export async function handleOperationalRequest(request: Request, env: Env): Prom
   const url = new URL(request.url);
 
   if (url.pathname === "/health") {
-    return json({ ok: true, service: "ledgerglass-starter" });
+    return json({ ok: true, service: "ledgerglass-open" });
   }
 
   if (url.pathname === "/ready") {
     const operational = await new FinanceRepository(env).operationalStatus();
     const readiness = operational.readiness as { ready?: boolean; degraded?: boolean };
     return json({
-      service: "ledgerglass-starter",
+      service: "ledgerglass-open",
       ready: Boolean(readiness.ready),
       degraded: Boolean(readiness.degraded),
     }, readiness.ready ? 200 : 503);

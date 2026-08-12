@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import research from "../../../showcase/research.json";
+import research from "../../../public-bundle/research.json";
 ---
 <BaseLayout title="Research before architecture" eyebrow="Research journal" description="When a design depends on somebody else’s protocol, platform, or financial semantics, I check the current primary source and date the decision.">
-  <section class="section"><div class="sources">{research.sources.map((source) => <article><div><span class={`tag ${source.kind === "primary" ? "core" : "demo"}`}>{source.kind}</span><time>{source.verified_at}</time></div><h3>{source.title}</h3><a href={source.url}>Read source ↗</a></article>)}</div></section>
+  <section class="section"><div class="sources">{research.sources.map((source) => <article><div><span class={`tag ${source.kind === "primary" ? "core" : "case-study"}`}>{source.kind}</span><time>{source.verified_at}</time></div><h3>{source.title}</h3><a href={source.url}>Read source ↗</a></article>)}</div></section>
   <section class="section rule prose"><h2>What this does not prove</h2><p>A current documentation link does not make the implementation correct. It establishes the contract I meant to build against. Tests, synthetic cases, deployment proofs, and observed failures establish what the code actually did.</p></section>
 </BaseLayout>
 <style>.sources{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}.sources article{background:var(--paper);padding:1.5rem;min-height:180px}.sources article>div{display:flex;justify-content:space-between;gap:1rem}.sources time{font:.65rem var(--mono);color:var(--muted)}.sources a{font-weight:700;font-size:.85rem}@media(max-width:800px){.sources{grid-template-columns:1fr}}</style>

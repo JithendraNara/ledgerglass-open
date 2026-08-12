@@ -136,7 +136,7 @@
       "title": "The same financial habits in every agent"
     },
     {
-      "delivery": "demo",
+      "delivery": "case-study",
       "id": "finance-steward",
       "last_verified": "2026-08-12",
       "maturity": "experimental",
@@ -154,7 +154,7 @@
       "title": "A steward for the boring repair work"
     },
     {
-      "delivery": "demo",
+      "delivery": "case-study",
       "id": "merchant-research",
       "last_verified": "2026-08-12",
       "maturity": "experimental",

@@ -1,0 +1,21 @@
+{
+  "export_digest": "181867cc86d3fdf8e249a6631985865c94705a91ae838e538890e2b51c4308b8",
+  "files": [
+    {
+      "bytes": 7253,
+      "path": "public-bundle/capabilities.json",
+      "sha256": "92c5c8bfeffb259f742fff03db3377d90e238845bb0bb85ffe5e8b7c6b36eb37"
+    },
+    {
+      "bytes": 2573,
+      "path": "public-bundle/research.json",
+      "sha256": "a2daa79f7eea0bc2e4eebd9fd5905c772f9934337924fa41a6a94d972c6c7513"
+    },
+    {
+      "bytes": 4646,
+      "path": "public-bundle/case-studies.json",
+      "sha256": "fad8daaf82a9776db38e29d8e17c75e577775a65c54a7b8038b8348097debf6e"
+    }
+  ],
+  "schema_version": 1
+}

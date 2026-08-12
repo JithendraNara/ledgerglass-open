@@ -12,10 +12,10 @@ import {
   type LedgerRow,
 } from "./public-core.js";
 
-const evidence = [{ source: "provider" as const, observationId: "obs-fictional", observedAt: "2026-08-01T12:00:00Z" }];
+const evidence = [{ source: "provider" as const, observationId: "obs-synthetic", observedAt: "2026-08-01T12:00:00Z" }];
 const row = (overrides: Partial<LedgerRow> = {}): LedgerRow => ({
-  id: "ledger-fictional-1",
-  accountId: "account-fictional",
+  id: "ledger-synthetic-1",
+  accountId: "account-synthetic",
   date: "2026-07-10",
   amountMinor: -1250,
   currency: "USD",
@@ -44,8 +44,8 @@ describe("public Ledgerglass core", () => {
 
   it("proves statement arithmetic before matching", () => {
     const result = reconcileStatement({
-      statementId: "statement-fictional-invalid",
-      accountId: "account-fictional",
+      statementId: "statement-synthetic-invalid",
+      accountId: "account-synthetic",
       accountPolarity: "liability-positive",
       currency: "USD",
       cycleStart: "2026-07-01",
@@ -61,8 +61,8 @@ describe("public Ledgerglass core", () => {
   it("matches duplicate statement rows independently", () => {
     const ledger = [row({ id: "one" }), row({ id: "two" })];
     const result = reconcileStatement({
-      statementId: "statement-fictional-duplicates",
-      accountId: "account-fictional",
+      statementId: "statement-synthetic-duplicates",
+      accountId: "account-synthetic",
       accountPolarity: "liability-positive",
       currency: "USD",
       cycleStart: "2026-07-01",
@@ -81,8 +81,8 @@ describe("public Ledgerglass core", () => {
 
   it("isolates near-date ambiguity while identifying exact repairs", () => {
     const result = reconcileStatement({
-      statementId: "statement-fictional-repair",
-      accountId: "account-fictional",
+      statementId: "statement-synthetic-repair",
+      accountId: "account-synthetic",
       accountPolarity: "liability-positive",
       currency: "USD",
       cycleStart: "2026-07-01",
@@ -94,7 +94,7 @@ describe("public Ledgerglass core", () => {
         { ordinal: 2, date: "2026-07-11", balanceImpactMinor: 2000, description: "River Books" },
       ],
     }, [row(), row({ id: "nearby", date: "2026-07-13", amountMinor: -2000, description: "Different text" })]);
-    expect(result.matches).toEqual([{ statementOrdinal: 1, ledgerId: "ledger-fictional-1", method: "exact" }]);
+    expect(result.matches).toEqual([{ statementOrdinal: 1, ledgerId: "ledger-synthetic-1", method: "exact" }]);
     expect(result.ambiguities).toEqual([{ statementOrdinal: 2, candidateLedgerIds: ["nearby"], reason: "near-date-amount" }]);
     expect(result.result).toBe("partial");
   });

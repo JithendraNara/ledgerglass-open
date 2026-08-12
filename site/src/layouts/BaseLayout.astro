@@ -9,7 +9,7 @@ const path = Astro.url.pathname;
 const canonicalUrl = new URL(path, Astro.site ?? Astro.url);
 const socialImageUrl = new URL("/social-preview.svg", Astro.site ?? Astro.url);
 const links = [
-  ["/why/", "Why"], ["/tour/", "Tour"], ["/demo/", "Demo"],
+  ["/why/", "Why"], ["/tour/", "Tour"], ["/case-studies/", "Case studies"],
   ["/architecture/", "Architecture"], ["/trust/", "Trust"], ["/build-log/", "Build log"],
 ];
 ---
@@ -39,7 +39,7 @@ const links = [
       <nav aria-label="Main navigation">
         {links.map(([href, label]) => <a class:list={{ active: path.startsWith(href) }} href={href}>{label}</a>)}
       </nav>
-      <a class="source-link" href="https://github.com/JithendraNara/ledgerglass-starter">View source <span aria-hidden="true">↗</span></a>
+      <a class="source-link" href="https://github.com/JithendraNara/ledgerglass-open">View source <span aria-hidden="true">↗</span></a>
     </header>
     <main id="content">
       {eyebrow && <div class="page-intro"><p class="eyebrow">{eyebrow}</p><h1>{title}</h1><p class="dek">{description}</p></div>}
@@ -48,13 +48,13 @@ const links = [
     <footer>
       <div>
         <a class="brand footer-brand" href="/"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Ledgerglass</span></a>
-        <p>A personal experiment in making financial software show its work.</p>
+        <p>An evidence-backed finance system, documented from real engineering work.</p>
       </div>
       <div class="footer-links">
         <a href="/capabilities/">Capabilities</a>
         <a href="/build/">Build your own</a>
         <a href="/research/">Research journal</a>
-        <a href="https://github.com/JithendraNara/ledgerglass-starter/blob/main/LICENSE">MIT license</a>
+        <a href="https://github.com/JithendraNara/ledgerglass-open/blob/main/LICENSE">MIT license</a>
       </div>
       <p class="fine-print">Ledgerglass is an independent project. SimpleFIN is an upstream data connector; this project is not affiliated with or endorsed by SimpleFIN.</p>
     </footer>
@@ -102,7 +102,7 @@ const links = [
   .note-card { padding: clamp(1.4rem, 3vw, 2.4rem); background: var(--paper); min-height: 220px; }
   .note-card p { color: var(--muted); }
   .tag { display: inline-block; border: 1px solid currentColor; border-radius: 99px; padding: .25rem .55rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .07em; font-size: .65rem; }
-  .tag.core { color: var(--rust-dark); } .tag.demo { color: #365a70; } .tag.private-note { color: var(--muted); }
+  .tag.core { color: var(--rust-dark); } .tag.case-study { color: #365a70; } .tag.private-note { color: var(--muted); }
   .button { display: inline-flex; align-items: center; gap: .6rem; background: var(--ink); color: var(--paper); padding: .9rem 1.2rem; text-decoration: none; font-weight: 700; border: 1px solid var(--ink); }
   .button.secondary { background: transparent; color: var(--ink); }
   .button:hover { background: var(--rust-dark); border-color: var(--rust-dark); color: white; }

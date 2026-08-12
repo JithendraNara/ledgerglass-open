@@ -1,16 +1,16 @@
 # Ledgerglass
 
-[![CI](https://github.com/JithendraNara/ledgerglass-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/JithendraNara/ledgerglass-starter/actions/workflows/ci.yml)
+[![CI](https://github.com/JithendraNara/ledgerglass-open/actions/workflows/ci.yml/badge.svg)](https://github.com/JithendraNara/ledgerglass-open/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 I wanted my agents to understand my money without asking me to trust a black
 box. Ledgerglass is the evidence-backed ledger I built for that job.
 
-[Read the public build journal and try the fictional demo.](https://ledgerglass-showcase.jnara01.workers.dev/)
+[Read the engineering journal and inspect the contract evidence.](https://ledgerglass-open.jnara01.workers.dev/)
 
 This public repository is the reusable core and the notebook around my private
-installation. It contains working financial contracts, synthetic demonstrations,
-architecture, a portable Agent Plugin template, and the static showcase site. It is
+installation. It contains working financial contracts, synthetic contract cases,
+architecture, a portable Agent Plugin template, and the Ledgerglass Open site. It is
 not a copy of production and contains no real account data, statement contents,
 credentials, endpoints, resource IDs, or operational history.
 
@@ -42,18 +42,18 @@ around that record; they do not become the record.
 
 - `src/public-core.ts` — integer money, currency separation, date windows,
   statement matching, pending lifecycle, and settled cashflow contracts.
-- `showcase/` — generated capability registry, dated research sources, six explicitly
-  fictional cases, and deterministic bundle hashes.
-- `site/` — the personal builder journal and browser-only fictional demo, built with
+- `public-bundle/` — generated capability registry, dated research sources, six
+  privacy-safe contract cases, and deterministic bundle hashes.
+- `site/` — the engineering journal and interactive case studies, built with
   Astro and deployed as a separate Cloudflare static-assets Worker.
 - `plugins/ledgerglass/` — portable Agent Plugin and skills using a placeholder MCP
   URL and no credentials.
-- `worker/` — a compact deploy-your-own Cloudflare Worker starter with D1, scheduled
+- `worker/` — a compact deploy-your-own Cloudflare Worker reference with D1, scheduled
   SimpleFIN sync, MCP tools, optional derived enrichment, and safe health endpoints.
 - `docs/` — setup, evidence rules, architecture decisions, research, and limitations.
 
-The generated [capability matrix](showcase/capabilities.json) is the durable list of
-what is working public core, what is a synthetic demonstration, and what remains a
+The generated [capability matrix](public-bundle/capabilities.json) is the durable list of
+what is working public core, what is documented through a synthetic case study, and what remains a
 private architecture note. The site consumes the same file; claims are not copied by
 hand across surfaces.
 
@@ -76,7 +76,7 @@ placeholders only.
 ## A public projection, not a mirror
 
 The private repository owns the canonical capability registry. Its exporter starts
-from an explicit allowlist and creates the four files in `showcase/`; it never copies
+from an explicit allowlist and creates the four files in `public-bundle/`; it never copies
 the private tree and attempts redaction afterward.
 
 Publication uses a narrowly installed GitHub App and one continuously updated review
@@ -91,7 +91,7 @@ See [docs/PUBLIC_BUNDLE.md](docs/PUBLIC_BUNDLE.md) for the contract and
 
 - This is personal software, not a financial institution, adviser, or hosted service.
 - Synthetic cases prove contracts; they do not prove every institution behaves alike.
-- The public steward is a deterministic simulator and architecture story. Private
+- The public steward uses a deterministic simulator to expose its operating contract. Private
   prompts, quotas, bindings, and model routes are not published.
 - Models can enrich or explain evidence. They do not guarantee correctness.
 - A complete closed statement may outrank an incomplete feed for that cycle, but only
@@ -105,7 +105,7 @@ See [docs/PUBLIC_BUNDLE.md](docs/PUBLIC_BUNDLE.md) for the contract and
 - [Reusable patterns](docs/PATTERNS.md)
 - [Public bundle contract](docs/PUBLIC_BUNDLE.md)
 - [Human voice and design review](docs/HUMAN_VOICE.md)
-- [Showcase deployment](docs/SITE_DEPLOYMENT.md)
-- [Research record](showcase/research.json)
+- [Site deployment](docs/SITE_DEPLOYMENT.md)
+- [Research record](public-bundle/research.json)
 - [Contributing](CONTRIBUTING.md)
 - [Security](SECURITY.md)

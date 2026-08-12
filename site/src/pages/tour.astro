@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import registry from "../../../showcase/capabilities.json";
+import registry from "../../../public-bundle/capabilities.json";
 const steps = registry.capabilities.filter((item) => item.delivery === "core").slice(0, 6);
 ---
 <BaseLayout title="A tour of the evidence" eyebrow="Product tour" description="The shortest path from a provider response to an answer an agent can defend.">

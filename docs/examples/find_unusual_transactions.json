@@ -1,7 +1,7 @@
 {
   "unusual_transactions": [
     {
-      "transaction_id": "txn_demo_001",
+      "transaction_id": "txn_sample_001",
       "account_name": "Demo Credit Card",
       "merchant": "Demo Electronics",
       "amount": -499,
@@ -20,7 +20,7 @@
     "explanation": "The Demo Electronics purchase is unusual because it is much larger than prior transactions for the same merchant.",
     "transactions": [
       {
-        "transaction_id": "txn_demo_001",
+        "transaction_id": "txn_sample_001",
         "reason": "Above merchant baseline with no recurring pattern."
       }
     ]

@@ -1,6 +1,6 @@
 # Reusable MCP Patterns
 
-This project is a finance MCP starter, but several patterns are reusable for
+This project is a finance MCP reference implementation, and several patterns are reusable for
 other agent-facing MCP servers.
 
 ## Honest AI Health Counters

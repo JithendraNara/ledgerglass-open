@@ -13,7 +13,7 @@ export async function claimSetupToken(setupToken: string, allowedHosts = DEFAULT
     method: "POST",
     headers: {
       "content-length": "0",
-      "user-agent": "ledgerglass-starter/0.1.0"
+      "user-agent": "ledgerglass-open/0.1.0"
     },
     signal: AbortSignal.timeout(SIMPLEFIN_TIMEOUT_MS),
   });
@@ -66,7 +66,7 @@ export async function fetchSimpleFinAccounts(
     headers: {
       accept: "application/json",
       ...(authorization ? { authorization } : {}),
-      "user-agent": "ledgerglass-starter/0.1.0"
+      "user-agent": "ledgerglass-open/0.1.0"
     },
     signal: AbortSignal.timeout(SIMPLEFIN_TIMEOUT_MS),
   });

@@ -5,25 +5,25 @@ import { extname, join } from "node:path";
 const root = new URL("..", import.meta.url).pathname;
 const readJson = async (relative) => JSON.parse(await readFile(join(root, relative), "utf8"));
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
-const bundle = await readJson("showcase/BUNDLE.json");
-const registry = await readJson("showcase/capabilities.json");
-const scenarios = await readJson("showcase/scenarios.json");
-const research = await readJson("showcase/research.json");
+const bundle = await readJson("public-bundle/MANIFEST.json");
+const registry = await readJson("public-bundle/capabilities.json");
+const caseStudies = await readJson("public-bundle/case-studies.json");
+const research = await readJson("public-bundle/research.json");
 
 const failures = [];
 const ids = new Set(registry.capabilities.map((capability) => capability.id));
 const researchIds = new Set(research.sources.map((source) => source.id));
 for (const capability of registry.capabilities) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(capability.id)) failures.push(`invalid capability id: ${capability.id}`);
-  if (!["core", "demo", "private-note"].includes(capability.delivery)) failures.push(`invalid delivery: ${capability.id}`);
+  if (!["core", "case-study", "private-note"].includes(capability.delivery)) failures.push(`invalid delivery: ${capability.id}`);
   if (!capability.public_artifacts?.length) failures.push(`missing public artifacts: ${capability.id}`);
   for (const reference of capability.research_refs ?? []) {
     if (!researchIds.has(reference)) failures.push(`unknown research reference ${reference} for ${capability.id}`);
   }
 }
 if (ids.size !== registry.capabilities.length) failures.push("duplicate capability IDs");
-if (scenarios.fictional !== true || scenarios.scenarios.length < 6) failures.push("fictional scenario set incomplete");
-for (const scenario of scenarios.scenarios) {
+if (caseStudies.synthetic !== true || caseStudies.case_studies.length < 6) failures.push("synthetic case-study set incomplete");
+for (const scenario of caseStudies.case_studies) {
   for (const field of ["happened", "difficulty", "evidence", "action", "uncertainty", "reversal"]) {
     if (!scenario[field] || (Array.isArray(scenario[field]) && scenario[field].length === 0)) failures.push(`${scenario.id}: missing ${field}`);
   }
@@ -54,6 +54,9 @@ const bannedVoice = [
   /seamlessly powered by ai/iu,
   /intelligent financial transformation/iu,
   /enterprise[- ]grade/iu,
+  /\bshowcase\b/iu,
+  /\bstarter\b/iu,
+  /personal experiment/iu,
 ];
 for (const file of sourceFiles) {
   const text = await readFile(file, "utf8");
@@ -74,8 +77,8 @@ for (const skillName of ["finance-steward", "statement-reconciliation", "ledger-
 }
 
 if (failures.length > 0) {
-  console.error("Showcase validation failed:");
+  console.error("Public bundle validation failed:");
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log(`Showcase validation passed: ${registry.capabilities.length} capabilities, ${scenarios.scenarios.length} fictional scenarios, ${bundle.export_digest}`);
+console.log(`Public bundle validation passed: ${registry.capabilities.length} capabilities, ${caseStudies.case_studies.length} synthetic case studies, ${bundle.export_digest}`);

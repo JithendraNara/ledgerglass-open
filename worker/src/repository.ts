@@ -23,7 +23,7 @@ export class FinanceRepository {
 
     return {
       ok: true,
-      service: "ledgerglass-starter",
+      service: "ledgerglass-open",
       accounts: accounts?.count ?? 0,
       transactions: transactions?.count ?? 0,
       enriched_transactions: enriched?.count ?? 0,
@@ -170,7 +170,7 @@ export class FinanceRepository {
 	    };
 
     return {
-      service: "ledgerglass-starter",
+      service: "ledgerglass-open",
       generated_at: new Date().toISOString(),
 	      readiness,
 	      data_freshness: dataFreshness,

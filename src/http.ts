@@ -28,7 +28,7 @@ export function startHttpServer(config: Config): void {
   app.get("/health", (_req: Request, res: Response) => {
     res.json({
       ok: true,
-      service: "ledgerglass-starter"
+      service: "ledgerglass-open"
     });
   });
 
@@ -75,7 +75,7 @@ export function startHttpServer(config: Config): void {
   });
 
   app.listen(config.port, config.host, () => {
-    console.error(`ledgerglass-starter listening on http://${config.host}:${config.port}/mcp`);
+    console.error(`ledgerglass-open listening on http://${config.host}:${config.port}/mcp`);
   });
 }
 

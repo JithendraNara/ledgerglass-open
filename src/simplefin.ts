@@ -69,7 +69,7 @@ export class SimpleFinClient {
       headers: {
         accept: "application/json",
         ...(authorization ? { authorization } : {}),
-        "user-agent": "ledgerglass-starter/0.1.0"
+        "user-agent": "ledgerglass-open/0.1.0"
       },
       signal: AbortSignal.timeout(20_000)
     });

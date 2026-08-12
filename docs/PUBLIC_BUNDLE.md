@@ -15,8 +15,8 @@ private behavior change
   -> owner merge
 ```
 
-The exporter emits only `showcase/capabilities.json`, `research.json`,
-`scenarios.json`, and `BUNDLE.json`. `BUNDLE.json` records byte counts, SHA-256 file
+The exporter emits only `public-bundle/capabilities.json`, `research.json`,
+`case-studies.json`, and `MANIFEST.json`. `MANIFEST.json` records byte counts, SHA-256 file
 hashes, and an export digest. Identical inputs produce identical output.
 
 It is intentionally impossible for this repository to pull private source in CI.
@@ -27,7 +27,7 @@ It owns one branch and cannot merge its pull request.
 ## Capability delivery
 
 - `core`: working reusable code and synthetic contract proof.
-- `demo`: fictional scenario and architecture, without the private implementation.
+- `case-study`: privacy-safe contract evidence and architecture, without the private implementation.
 - `private-note`: an honest public explanation and limitation.
 
 Material private behavior cannot silently disappear from the registry. An emergency
@@ -39,5 +39,5 @@ the capability is updated.
 The public bundle rejects private hosts, local paths, credentials, financial rows,
 statements, PDFs, databases, account inventories, institution inventories, Cloudflare
 resource identifiers, private prompts, operational telemetry, and private commit IDs.
-Case studies are written from generalized lessons and fictional data, never lightly
+Case studies are written from generalized lessons and purpose-built synthetic data, never lightly
 redacted personal records.
