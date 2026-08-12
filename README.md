@@ -8,7 +8,7 @@ box. Ledgerglass is the evidence-backed ledger I built for that job.
 
 [Read the engineering journal and inspect the contract evidence.](https://ledgerglass-open.jnara01.workers.dev/)
 
-This public repository is the reusable core and the notebook around my private
+This public repository is the reusable core and engineering record around my private
 installation. It contains working financial contracts, synthetic contract cases,
 architecture, a portable Agent Plugin template, and the Ledgerglass Open site. It is
 not a copy of production and contains no real account data, statement contents,
