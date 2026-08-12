@@ -567,7 +567,7 @@ Rules:
 - Every insight must name a specific merchant/account and amount from the data.
 - Prefer trailing_30_days.top_fees, health_issues, unusual one-off purchases, and subscription changes over generic category summaries.
 - Do not choose tiny interest/fee items when a larger avoidable fee or interest item is present in trailing_30_days.top_fees.
-- Mention active data coverage issues, such as Apple Card or SimpleFIN errlist warnings, when health_issues includes them.
+- Mention active data coverage issues from health_issues without guessing about an institution.
 - Do not mention internal tool names or agent instructions in human prose.
 - Describe subscription insights by dollar impact and concrete action, not by active duration.
 - When comparing periods, use comparison_window and name both windows and amounts.
@@ -644,7 +644,7 @@ function buildCategorizationPrompt(transactions: TransactionRow[], correctionExa
 Category guidance:
 - rewards: card rewards, cashback, statement reward credits.
 - dining_offset: restaurant/dining benefit credits that should net against dining.
-- cash_advance: Zolve/cash advance or credit advance transactions; do not call these ordinary transfers.
+- cash_advance: cash advance or credit advance transactions; do not call these ordinary transfers.
 - debt_collection: collection-agency payments such as Sequium Asset Solution.
 - business: cloud/infrastructure/software business spend that is not a consumer subscription.
 - BNPL/installments such as Klarna usually keep the underlying spend category, commonly shopping; recurring-obligation tools track the payment pattern separately.
@@ -774,14 +774,14 @@ function guardedCategory(text: string, payee: string, amount: number): string | 
   if (amount > 0) return null;
   if (/\b(apple online store|apple store)\b/.test(text)) return "shopping";
   if (/\bapple\.com\/bill\b/.test(text)) return "subscriptions";
-  if (/\b(cbankus\.com|continental bank zolve|cash advance)\b/.test(text)) return "cash_advance";
+  if (/\b(cash advance|credit advance)\b/.test(text)) return "cash_advance";
   if (/\b(sequium asset solution|debt collection|collection agency)\b/.test(text)) return "debt_collection";
   if (/\b(google cloud|cloudflare)\b/.test(text)) return "business";
   if (/\bmarathon\b/.test(text)) return "transport";
   if (/\b(uber eats|doordash|grubhub|restaurant|cafe|coffee|starbucks|chipotle|mcdonald|dunkin|taco|pizza)\b/.test(text)) return "dining";
   if (/\b(fee|interest|interest charge|purchase interest|late fee|returned payment|return payment|annual fee|credit protect)\b/.test(text)) return "fees";
   if (/\b(uber one|netflix|spotify|google fi|claude\.ai subscription|openai|perplexity|nous research|subscription|monthly|membership)\b/.test(text)) return "subscriptions";
-  if (/\b(payment|credit card|autopay|ach pmt|e-payment|epayment|applecard gsbank|american express ach|discover e-payment|zolve pmt|adjustment-payments|adjustment payments)\b/.test(text)) return "transfers";
+  if (/\b(payment|credit card|autopay|ach pmt|e-payment|epayment|card payment|adjustment-payments|adjustment payments)\b/.test(text)) return "transfers";
   if (/\b(geico|gas|shell|bp|exxon|parking|transit|uber|lyft)\b/.test(text) && !/\beats\b/.test(payee)) return "transport";
   return null;
 }
@@ -797,7 +797,7 @@ function guardrailReasonFor(text: string, finalCategory: string): string {
   if (finalCategory === "fees") return "fee or interest wording";
   if (finalCategory === "subscriptions") return "known recurring subscription merchant";
   if (finalCategory === "business") return "cloud or infrastructure merchant";
-  if (finalCategory === "cash_advance") return "cash advance or Zolve advance wording";
+  if (finalCategory === "cash_advance") return "cash advance or credit advance wording";
   if (finalCategory === "debt_collection") return "collection agency merchant";
   if (finalCategory === "transfers") return "card payment or transfer wording";
   if (finalCategory === "transport") return "transport, gas, insurance, or rideshare wording";
@@ -817,7 +817,7 @@ function deterministicEnrichment(transaction: TransactionRow, model: string, err
     /\b(internet transfer|account ending in \d+)\b/.test(lower) || /\bach deposit\b.*\btransfer\b/.test(lower) ? "transfers" :
     transaction.amount > 0 ? "income" :
     /\b(payment|transfer|credit card|autopay|zelle|venmo|cash app|ach pmt|e-payment|epayment)\b/.test(lower) ? "transfers" :
-    /\b(cbankus\.com|continental bank zolve|cash advance)\b/.test(lower) ? "cash_advance" :
+    /\b(cash advance|credit advance)\b/.test(lower) ? "cash_advance" :
     /\b(sequium asset solution|debt collection|collection agency)\b/.test(lower) ? "debt_collection" :
     /\b(google cloud|cloudflare)\b/.test(lower) ? "business" :
     /\b(fee|interest|interest charge|purchase interest|late fee|returned payment|return payment)\b/.test(lower) ? "fees" :
@@ -983,9 +983,7 @@ function canonicalMerchant(value: string): string {
   const normalized = normalizeKey(value);
   if (normalized === "interest" || normalized === "interest charge") return "Interest Charge";
   if (normalized.includes("returned payment")) return "Returned Payment Fee";
-  if (normalized.includes("apple credit card")) return "Payment: Apple Card";
-  if (normalized.includes("american express credit card")) return "Payment: American Express";
-  if (normalized.includes("chase credit card")) return "Payment: Chase";
+  if (normalized.includes("credit card payment")) return "Credit Card Payment";
   if (normalized === "doordash") return "DoorDash";
   if (normalized === "openai") return "OpenAI";
   return value;

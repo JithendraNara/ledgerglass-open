@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "simplefin": {
+    "ledgerglass": {
       "type": "streamable-http",
       "url": "https://finance.example.com/mcp",
       "headers": {

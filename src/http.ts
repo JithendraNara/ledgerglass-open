@@ -5,6 +5,9 @@ import { Config } from "./config.js";
 import { createServer } from "./server.js";
 
 export function startHttpServer(config: Config): void {
+  if (!isLoopbackHost(config.host) && !config.bearerToken) {
+    throw new Error("A bearer token is required when binding the local adapter beyond loopback");
+  }
   const app = createMcpExpressApp({ host: config.host });
 
   app.use((req: Request, res: Response, next: NextFunction) => {
@@ -25,8 +28,7 @@ export function startHttpServer(config: Config): void {
   app.get("/health", (_req: Request, res: Response) => {
     res.json({
       ok: true,
-      service: "simplefin-mcp",
-      simplefin_configured: Boolean(config.accessUrl)
+      service: "ledgerglass-starter"
     });
   });
 
@@ -45,8 +47,8 @@ export function startHttpServer(config: Config): void {
         transport.close();
         mcp.close();
       });
-    } catch (error) {
-      console.error("Error handling MCP request", error);
+    } catch {
+      console.error("MCP request failed");
 
       if (!res.headersSent) {
         res.status(500).json({
@@ -73,6 +75,10 @@ export function startHttpServer(config: Config): void {
   });
 
   app.listen(config.port, config.host, () => {
-    console.error(`simplefin-mcp listening on http://${config.host}:${config.port}/mcp`);
+    console.error(`ledgerglass-starter listening on http://${config.host}:${config.port}/mcp`);
   });
+}
+
+function isLoopbackHost(host: string): boolean {
+  return host === "127.0.0.1" || host === "localhost" || host === "::1";
 }

@@ -1,13 +1,14 @@
 import type { Env, SyncOptions } from "./types.js";
-import { fetchSimpleFinAccounts } from "./simplefin.js";
+import { fetchSimpleFinAccounts, resolveAccessUrl } from "./simplefin.js";
 import { FinanceRepository } from "./repository.js";
 import { categorizeTransactions, generateBriefing } from "./ai.js";
 import { indexTransactions } from "./vectorize.js";
 import { daysAfter, daysBefore, maxDate, today } from "./http.js";
 
 const MAX_SIMPLEFIN_WINDOW_DAYS = 90;
-const DEFAULT_INCREMENTAL_OVERLAP_DAYS = 3;
+const DEFAULT_INCREMENTAL_OVERLAP_DAYS = 5;
 const MAX_AUTO_BACKFILL_ACCOUNTS_PER_SYNC = 5;
+const SIMPLEFIN_RECOMMENDED_WINDOW_DAYS = 45;
 
 export class ManualSyncRateLimitError extends Error {
   constructor() {
@@ -31,12 +32,12 @@ export async function syncSimpleFin(env: Env, options: SyncOptions): Promise<Rec
 
   try {
     const knownAccountIds = new Set(await repo.accountIds());
-    const payload = await fetchSimpleFinAccounts(env.SIMPLEFIN_ACCESS_URL, {
+    const { payload, sync, transactionCount } = await fetchAndStoreRange(env, repo, {
       startDate,
       endDate,
-      pending: options.pending ?? true
+      pending: options.pending ?? true,
+      trigger: options.trigger,
     });
-    const sync = await repo.saveSyncPayload(payload, normalized);
     const syncedAccountIds = (payload.accounts ?? []).map((account) => account.id);
     const newAccountIds = syncedAccountIds.filter((accountId) => !knownAccountIds.has(accountId));
     const coverage = await repo.refreshAccountCoverage({
@@ -59,6 +60,7 @@ export async function syncSimpleFin(env: Env, options: SyncOptions): Promise<Rec
 
     return {
       ...sync,
+      transaction_count: transactionCount,
       sync_mode: mode,
       overlap_days: overlapDays,
       account_coverage: coverage.summary,
@@ -122,6 +124,46 @@ function clampWindow(startDate: string, endDate: string): string {
   return maxDate(startDate, daysBefore(endDate, MAX_SIMPLEFIN_WINDOW_DAYS));
 }
 
+export function splitDateWindows(startDate: string, endDate: string, maxDays: number): Array<{ start: string; end: string }> {
+  if (startDate >= endDate) return [{ start: startDate, end: endDate }];
+  const windows: Array<{ start: string; end: string }> = [];
+  let cursor = startDate;
+  while (cursor < endDate) {
+    const candidateEnd = daysAfter(cursor, maxDays);
+    const windowEnd = candidateEnd < endDate ? candidateEnd : endDate;
+    windows.push({ start: cursor, end: windowEnd });
+    cursor = daysAfter(windowEnd, 1);
+  }
+  return windows;
+}
+
+async function fetchAndStoreRange(
+  env: Env,
+  repo: FinanceRepository,
+  options: { startDate: string; endDate: string; pending: boolean; accountIds?: string[]; trigger: SyncOptions["trigger"] },
+): Promise<{ payload: Awaited<ReturnType<typeof fetchSimpleFinAccounts>>; sync: Record<string, unknown>; transactionCount: number }> {
+  const accessUrl = await resolveAccessUrl(env);
+  const windows = splitDateWindows(options.startDate, options.endDate, SIMPLEFIN_RECOMMENDED_WINDOW_DAYS);
+  let payload: Awaited<ReturnType<typeof fetchSimpleFinAccounts>> = {};
+  let sync: Record<string, unknown> = {};
+  let transactionCount = 0;
+  for (const window of windows) {
+    payload = await fetchSimpleFinAccounts(accessUrl, {
+      startDate: window.start,
+      endDate: window.end,
+      pending: options.pending,
+      accountIds: options.accountIds,
+    });
+    sync = await repo.saveSyncPayload(payload, {
+      startDate: window.start,
+      endDate: window.end,
+      trigger: options.trigger,
+    });
+    transactionCount += Number(sync.transaction_count ?? 0);
+  }
+  return { payload, sync, transactionCount };
+}
+
 async function backfillAccounts(
   env: Env,
   repo: FinanceRepository,
@@ -135,16 +177,12 @@ async function backfillAccounts(
   const results: Record<string, unknown>[] = [];
   for (const accountId of accountIds) {
     try {
-      const payload = await fetchSimpleFinAccounts(env.SIMPLEFIN_ACCESS_URL, {
+      const { sync, transactionCount } = await fetchAndStoreRange(env, repo, {
         startDate,
         endDate: options.endDate,
         pending: options.pending,
-        accountIds: [accountId]
-      });
-      const sync = await repo.saveSyncPayload(payload, {
-        startDate,
-        endDate: options.endDate,
-        trigger: "auto_backfill"
+        accountIds: [accountId],
+        trigger: "auto_backfill",
       });
       const accountCoverage = await repo.refreshAccountCoverage({
         accountIds: [accountId],
@@ -160,7 +198,7 @@ async function backfillAccounts(
         account_id: accountId,
         status: "ok",
         sync_run_id: sync.sync_run_id,
-        transaction_count_returned: sync.transaction_count,
+        transaction_count_returned: transactionCount,
         coverage: accountCoverage.summary
       });
     } catch (error) {

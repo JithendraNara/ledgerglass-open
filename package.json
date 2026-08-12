@@ -1,12 +1,12 @@
 {
-  "name": "simplefin-mcp",
+  "name": "ledgerglass-starter",
   "version": "0.1.0",
-  "description": "Cloudflare Worker remote MCP server for SimpleFIN finance data.",
+  "description": "Deploy-your-own evidence-aware personal finance MCP for Cloudflare Workers and SimpleFIN.",
   "type": "module",
-  "private": false,
+  "private": true,
   "license": "MIT",
   "bin": {
-    "simplefin-mcp": "dist/index.js"
+    "ledgerglass-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -18,24 +18,36 @@
     "worker:typecheck": "tsc -p worker/tsconfig.json",
     "worker:dev": "wrangler dev --config worker/wrangler.toml --test-scheduled",
     "worker:deploy": "wrangler deploy --config worker/wrangler.toml",
-    "worker:migrate:remote": "wrangler d1 migrations apply DB --remote --config worker/wrangler.toml"
+    "worker:dry-run": "wrangler deploy --dry-run --outdir .wrangler/dry-run --config worker/wrangler.toml",
+    "worker:migrate:local": "wrangler d1 migrations apply DB --local --config worker/wrangler.toml",
+    "worker:migrate:remote": "wrangler d1 migrations apply DB --remote --config worker/wrangler.toml",
+    "test": "vitest run",
+    "privacy:audit": "node scripts/audit-public-repo.mjs",
+    "check": "npm run privacy:audit && npm run typecheck && npm run worker:typecheck && npm run build && npm test && npm audit --audit-level=high && npm run worker:migrate:local && npm run worker:dry-run"
   },
   "dependencies": {
-    "@cloudflare/workers-oauth-provider": "^0.7.0",
-    "@modelcontextprotocol/sdk": "^1.29.0",
-    "agents": "^0.13.2",
-    "dotenv": "^16.4.7",
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@modelcontextprotocol/server": "2.0.0",
+    "agents": "0.20.1",
+    "dotenv": "^17.4.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260522.1",
+    "@cloudflare/workers-types": "5.20260812.1",
     "@types/express": "^5.0.6",
     "@types/node": "^22.10.5",
-    "tsx": "^4.19.2",
+    "tsx": "^4.23.12",
     "typescript": "^5.7.2",
-    "wrangler": "^4.94.0"
+    "vitest": "4.1.10",
+    "wrangler": "4.121.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.18.0"
+  },
+  "overrides": {
+    "@hono/node-server": "^2.0.12",
+    "body-parser": "^2.3.0",
+    "fast-uri": "^3.1.4",
+    "hono": "^4.12.30"
   }
 }

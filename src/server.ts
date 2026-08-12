@@ -12,7 +12,7 @@ export type SimpleFinMcpServer = {
 export function createServer(config: Config): SimpleFinMcpServer {
   const server = new McpServer(
     {
-      name: "simplefin-mcp",
+      name: "ledgerglass-starter",
       version: "0.1.0"
     },
     {
@@ -23,7 +23,7 @@ export function createServer(config: Config): SimpleFinMcpServer {
   );
 
   const store = new FinanceStore(config.dbPath);
-  registerTools(server, new SimpleFinClient(config.accessUrl), store);
+  registerTools(server, new SimpleFinClient(config.accessUrl, config.allowedSimpleFinHosts), store);
   return {
     server,
     close: () => {

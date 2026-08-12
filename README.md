@@ -1,254 +1,135 @@
-# SimpleFIN Cloudflare Finance MCP
+# Ledgerglass Starter
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-99%25-blue)](https://www.typescriptlang.org/)
+[![CI](https://github.com/JithendraNara/ledgerglass-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/JithendraNara/ledgerglass-starter/actions/workflows/ci.yml)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-orange)](https://developers.cloudflare.com/workers/)
-[![MCP](https://img.shields.io/badge/MCP-remote%20server-2f6feb)](https://modelcontextprotocol.io/)
+[![MCP](https://img.shields.io/badge/MCP-2026--07--28-2f6feb)](https://modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A deploy-your-own remote MCP server for SimpleFIN finance data.
+An independent, deploy-your-own personal-finance MCP starter built on
+[SimpleFIN Bridge](https://beta-bridge.simplefin.org/). It is not an official
+SimpleFIN product and does not use SimpleFIN branding.
 
-Most personal finance MCPs either depend on Plaid-style paid aggregation or wrap
-heavier budgeting stacks such as Firefly III or Actual Budget. This starter is
-SimpleFIN-first: direct bank sync through SimpleFIN Bridge, Cloudflare-native
-storage and scheduling, agent-first response shapes, hybrid AI routing, and
-honest AI health counters so callers know when categorization came from a model
-versus a deterministic fallback.
+The public repository contains source code and synthetic examples only: no
+credentials, account inventory, financial rows, Cloudflare resource IDs,
+private endpoints, statement files, or production history.
 
-This repository is a public starter. It contains no tokens, no financial data,
-no Cloudflare resource IDs, and no personal deployment history.
+## Capabilities
 
-## What You Get
+- Stateless Streamable HTTP MCP endpoint at `/mcp`
+- Cloudflare MCP Portal for client OAuth, tool policy, and centralized discovery
+- Separate read and owner bearer credentials at the private Worker origin
+- Daily SimpleFIN synchronization with five-day overlap and bounded request windows
+- D1 account, transaction, coverage, correction, evaluation, and audit records
+- Currency-separated balance and cashflow summaries
+- Workers AI categorization with deterministic guardrails and explicit fallback telemetry
+- Vectorize semantic search with SQL correctness filters
+- MCP prompts for a finance checkup and transaction investigation
+- Safe `/health` and `/ready` endpoints without financial details
 
-- Remote MCP endpoint at `/mcp`
-- OAuth for Claude, ChatGPT, Cursor, and other OAuth-native MCP clients
-- Bearer tokens for clients that support custom headers
-- Scheduled SimpleFIN sync with a 3-day incremental overlap
-- Automatic account-specific 90-day backfill for new/problem accounts
-- D1 cache with normalized accounts, transactions, sync runs, coverage, and audit events
-- Workers AI transaction categorization with optional Cloudflare AI Gateway reasoning routes
-  through Cloudflare AI Gateway
-- Honest AI health counters: real AI enrichments, deterministic fallbacks, parse failures, quota fallbacks, and low-confidence rows
-- Deterministic category guardrails for obvious payments, fees, subscriptions, dining, and one-off purchases
-- Canonical merchant keys for grouping/search, with processor-code cleanup and common synonym mapping
-- Merchant-level summaries and recurring obligation detection beyond basic subscriptions
-- Vectorize semantic transaction search using `@cf/baai/bge-m3` embeddings and a 1024-dimensional cosine index
-- Raw SimpleFIN diagnostics scoped to one account at a time
-- Sanitized D1 audit timing for MCP/HTTP operations without storing prompts, tool args, finance payloads, or tokens
-
-## Sample Output
-
-The main dashboard tool is designed to be safe for first-call agent context:
-
-```json
-{
-  "accounts": {
-    "count": 3,
-    "total_balance": 4380.42
-  },
-  "cashflow": {
-    "period_days": 30,
-    "income": 3200,
-    "spending": 1842.67,
-    "net": 1357.33
-  },
-  "top_merchants": [
-    { "merchant": "Demo Grocery", "amount": 245.18, "category": "groceries" },
-    { "merchant": "Demo Visa Payment", "amount": 220, "category": "transfers" }
-  ],
-  "ai_enrichment": {
-    "transactions": 128,
-    "ai_enriched": 126,
-    "fallback_enriched": 2,
-    "parse_fallback": 0,
-    "quota_fallback": 0,
-    "low_confidence_enriched": 9,
-    "low_confidence_threshold": 0.75,
-    "confidence_distribution": {
-      "0.0-0.5": 0,
-      "0.5-0.7": 2,
-      "0.7-0.9": 117,
-      "0.9-1.0": 9
-    },
-    "healthy": true
-  },
-  "data_quality": {
-    "fresh": true,
-    "health_issues": []
-  }
-}
-```
-
-More sanitized examples live in [docs/examples](docs/examples):
-
-- [finance_overview.json](docs/examples/finance_overview.json)
-- [worker_operational_status.json](docs/examples/worker_operational_status.json)
-- [detect_subscriptions.json](docs/examples/detect_subscriptions.json)
-- [detect_recurring_obligations.json](docs/examples/detect_recurring_obligations.json)
-- [merchant_summary.json](docs/examples/merchant_summary.json)
-- [find_unusual_transactions.json](docs/examples/find_unusual_transactions.json)
-- [generate_weekly_money_briefing.json](docs/examples/generate_weekly_money_briefing.json)
-
-## Why This Shape
-
-| Alternative | Cost | Setup | Data ownership | Where they win |
-|---|---:|---|---|---|
-| Plaid-based MCPs | Often paid at multi-account volume | Plaid Link frontend required | Third-party aggregator | Categorization quality, institution coverage |
-| Firefly III MCPs | Free software, self-hosting cost | Run Firefly III plus a database stack | Self-hosted | Budget envelopes, rules engine |
-| Actual Budget MCPs | Free software, self-hosting cost | Local files or self-hosted app | Self-hosted | Envelope budgeting workflow |
-| SimpleFIN-to-X bridges | Free software, self-hosting cost | Cron daemon plus downstream tool | Self-hosted | Great sync pipelines, but not MCP-native |
-
-This project optimizes for a small but useful niche: low-cost, owner-controlled,
-SimpleFIN-backed finance data exposed through a remote MCP interface built for
-agents to inspect before they trust.
+This is a compact starter, not a public mirror of any private deployment. It
+does not claim statement reconciliation, immutable ledger-v2 provenance,
+pending-transaction lifecycle automation, or an autonomous finance steward.
+Those features need their own migrations, tests, and privacy review before they
+belong in a reusable template.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  claude["Claude / ChatGPT / Cursor<br/>OAuth MCP clients"]
-  bearer["Codex / OpenClaw / Hermes<br/>Bearer-header MCP clients"]
-  worker["Cloudflare Worker<br/>/mcp remote MCP server"]
-  oauth["GitHub OAuth<br/>allowed login"]
-  d1["D1<br/>finance cache + audit"]
-  ai["Workers AI<br/>hot-path categorization + embeddings"]
-  gateway["Cloudflare AI Gateway<br/>optional BYOK reasoning model"]
-  vector["Vectorize<br/>semantic transaction search"]
-  simplefin["SimpleFIN Bridge<br/>/accounts?version=2"]
-  cron["Cloudflare Cron<br/>daily incremental sync"]
-
-  claude --> worker
-  bearer --> worker
-  oauth --> worker
-  cron --> worker
-  worker --> simplefin
-  worker --> d1
-  worker --> ai
-  worker --> gateway
-  worker --> vector
+  client["MCP clients"] --> portal["Cloudflare MCP Portal\nOAuth + tool policy"]
+  direct["Private direct client"] --> origin["Ledgerglass Worker\nBearer protected"]
+  portal --> origin
+  cron["Cloudflare Cron"] --> origin
+  origin --> bridge["SimpleFIN Bridge"]
+  origin --> d1["D1"]
+  origin --> ai["Workers AI"]
+  origin --> vector["Vectorize"]
+  origin -. optional .-> gateway["AI Gateway"]
 ```
 
-## Agent Guidance Pattern
+The Worker intentionally does not implement its own OAuth server or dynamic
+client registration. Cloudflare MCP Portal is the public client boundary. The
+origin accepts bearer credentials and should be known only to the portal and
+explicitly configured private clients.
 
-The `agent_guidance` tool is intentionally the first call. It tells an agent how
-to use the MCP without loading raw transaction history:
+## Financial Semantics
 
-```json
-{
-  "recommended_first_calls": [
-    "auth_context",
-    "worker_operational_status",
-    "simplefin_data_coverage",
-    "finance_overview"
-  ],
-  "trust_gates": [
-    "Do not answer financial questions when /ready is unhealthy.",
-    "Check account coverage before per-account conclusions.",
-    "Check ai_enrichment before trusting AI-derived categories or briefings."
-  ],
-  "context_budgeting": [
-    "Start with finance_overview.",
-    "Use search_transactions or semantic_transaction_search for narrow questions.",
-    "Use simplefin_raw_account only with one accountId and a narrow limit."
-  ]
-}
-```
+- Human `endDate` values are inclusive; the SimpleFIN API receives the next
+  midnight as its exclusive bound.
+- Syncs use five days of overlap and split longer reads into bounded windows.
+- SimpleFIN responses and error text are size-bounded and sanitized.
+- Multi-currency values are returned under `by_currency`; unlike currencies
+  are never added into one total.
+- AI output never becomes trustworthy merely because a model answered. Tools
+  expose model, fallback, parse, confidence, coverage, and freshness evidence.
+- Workers Logs remain disabled by default. The application stores bounded
+  operational metadata without prompts, arguments, financial payloads, or
+  authorization values.
 
-The reusable design ideas behind this are described in
-[docs/PATTERNS.md](docs/PATTERNS.md).
+## MCP Surface
 
-## MCP Tools
+Start with `agent_guidance`, `worker_operational_status`,
+`simplefin_data_coverage`, and `finance_overview`.
 
-Read tools:
+Read tools cover accounts, transactions, cashflow, merchants, recurring
+obligations, semantic search, anomaly evidence, briefings, corrections, and
+evaluation history. Owner tools cover sync, setup-token claiming,
+categorization, corrections, eval labels/runs, sanitized audit events, and
+insight refresh. The live server inventory is authoritative.
 
-- `agent_guidance`
-- `auth_context`
-- `connection_status`
-- `worker_operational_status`
-- `list_accounts`
-- `finance_overview`
-- `simplefin_data_coverage`
-- `simplefin_account_gaps`
-- `simplefin_raw_account`
-- `simplefin_sync_history`
-- `get_transactions`
-- `search_transactions`
-- `semantic_transaction_search`
-- `summarize_cashflow`
-- `detect_subscriptions`
-- `detect_recurring_obligations`
-- `merchant_summary`
-- `query_finance`
-- `list_corrections`
-- `get_eval_history`
-- `find_unusual_transactions`
-- `generate_weekly_money_briefing`
+Prompts:
 
-Admin tools:
-
-- `sync_simplefin`
-- `claim_setup_token`
-- `categorize_uncategorized_transactions`
-- `correct_transaction`
-- `recategorize_low_confidence`
-- `undo_correction`
-- `label_eval_transaction`
-- `run_eval`
-- `refresh_insights`
-
-Use `ADMIN_TOKEN` or the configured OAuth admin identity only for setup, sync,
-refresh, correction, and eval operations.
+- `finance_checkup`
+- `investigate_transaction`
 
 ## Quick Start
 
 ```bash
-npm install
-npm run worker:typecheck
-npm run build
+npm ci
+npm run check
 ```
 
-Then follow [docs/SETUP.md](docs/SETUP.md) to create Cloudflare resources, set
-secrets, configure OAuth, apply migrations, and deploy.
+Then follow [docs/SETUP.md](docs/SETUP.md). It covers D1, KV, Vectorize,
+secrets, deployment, and Cloudflare MCP Portal registration.
 
-Useful client examples:
+Useful files:
 
-- [configs/remote-mcp.example.json](configs/remote-mcp.example.json)
-- [configs/cloudflare-worker-mcp.example.json](configs/cloudflare-worker-mcp.example.json)
-- [examples/claude-desktop-config.example.json](examples/claude-desktop-config.example.json)
-- [examples/cursor-mcp.example.json](examples/cursor-mcp.example.json)
-- [examples/oauth-custom-connector.example.md](examples/oauth-custom-connector.example.md)
+- [Cloudflare MCP Portal example](examples/cloudflare-mcp-portal.example.md)
+- [direct bearer client](configs/cloudflare-worker-mcp.example.json)
+- [finance-agent workflow](docs/FINANCE_AGENT_WORKFLOW.md)
+- [reusable design patterns](docs/PATTERNS.md)
+- [security policy](SECURITY.md)
 
-## Public Repo Safety
+## SimpleFIN Operating Limits
 
-This repo is intentionally generic:
+The current SimpleFIN developer guide allows at most 24 requests per day and a
+maximum 90-day request range. The default cron makes ordinary refreshes once a
+day, adds a five-day overlap for late settlement, and uses shorter request
+windows for backfills. Check the upstream guide before changing sync behavior.
 
-- placeholder Cloudflare IDs
-- placeholder domain
-- placeholder GitHub login
-- no D1 export
-- no `.env`
-- no local bearer config
-- no deployment-specific history
+## Public-Repository Boundary
 
-Before publishing your own fork, run:
+`npm run privacy:audit` fails on tracked statement files, databases, private
+workspace paths, the known private production hostname, and common embedded
+credential forms. CI also runs dependency audit, both TypeScript builds, tests,
+and a Wrangler dry-run. CI never deploys this template and holds no Cloudflare
+or SimpleFIN secret.
+
+Before publishing a fork:
 
 ```bash
-rg -n "SIMPLEFIN_ACCESS_URL|ADMIN_TOKEN|MCP_BEARER_TOKEN|client_secret|finance\\.example\\.com|your-github-login"
+npm run privacy:audit
 git status --short
 ```
 
-Seeing placeholder names in docs/config is fine. Seeing real token values is not.
+Keep real configuration and operational evidence in a private deployment
+repository or Cloudflare itself.
 
-If you keep a private fork for your own deployment, put real domains, Cloudflare
-resource IDs, operational history, and agent handoff details there. Keep this
-public starter free of personal endpoint names, real account IDs, D1 exports,
-sync outputs, bearer tokens, OAuth secrets, or financial examples from a live
-account.
-
-## Project Docs
+## Documentation
 
 - [Setup](docs/SETUP.md)
 - [Finance Agent Workflow](docs/FINANCE_AGENT_WORKFLOW.md)
 - [Reusable MCP Patterns](docs/PATTERNS.md)
+- [2026 public starter audit](docs/AUDIT-2026-08-12.md)
 - [Contributing](CONTRIBUTING.md)
 - [Security](SECURITY.md)
-- [License](LICENSE)

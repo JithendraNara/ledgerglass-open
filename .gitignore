@@ -5,3 +5,10 @@ data/
 .DS_Store
 *.log
 configs/*.local.json
+.wrangler/
+*.sqlite*
+*.db
+*.pdf
+*.pem
+*.key
+*.p12

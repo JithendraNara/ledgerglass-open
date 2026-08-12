@@ -35,6 +35,6 @@
         }
       ]
     },
-    "model": "@cf/meta/llama-3.1-8b-instruct"
+    "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
   }
 }

@@ -95,3 +95,25 @@ first-call tool that returns:
 - warnings about raw data tools
 
 That makes the MCP self-documenting at runtime.
+
+## Portal At The OAuth Boundary
+
+Keep the finance origin small: validate a private bearer credential and let an
+MCP gateway handle client OAuth, identity policy, and exposed-tool selection.
+This avoids embedding a second authorization server and client-registration
+database inside the financial Worker. Origin authentication still applies;
+gateway identity is not a reason to expose an unauthenticated backend.
+
+## Stateless Core And Cache Hints
+
+The 2026 MCP architecture makes stateless request handling the portable core.
+Use header-based routing at gateways, cache discovery/list operations briefly,
+and keep financial call results private and uncached. Tool inventory can change
+after deploy, so clients and portals need explicit capability resync.
+
+## Multi-Currency Envelopes
+
+Never make a single number from unlike currencies. Return a compact single-
+currency shape when only one currency exists, but always include `by_currency`
+and switch to `currency_mode: multiple` when necessary. Conversion belongs in
+a separate, dated FX layer with explicit provenance.

@@ -1,4 +1,5 @@
 import { mkdirSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, resolve } from "node:path";
 import { DatabaseSync, type SQLInputValue } from "node:sqlite";
 import type { SimpleFinAccount, SimpleFinAccountsResponse, SimpleFinTransaction } from "./simplefin.js";
@@ -21,6 +22,7 @@ export type CachedTransaction = {
   account_id: string;
   account_name: string | null;
   org_name: string | null;
+  currency: string | null;
   amount: number;
   description: string | null;
   payee: string | null;
@@ -75,6 +77,16 @@ export class FinanceStore {
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
+    const deleteLegacyFallback = this.db.prepare(`
+      DELETE FROM transactions
+      WHERE account_id = ?
+        AND id NOT LIKE ?
+        AND COALESCE(posted_at, transacted_at, -1) = ?
+        AND amount = ?
+        AND COALESCE(description, '') = ?
+        AND COALESCE(payee, '') = ?
+        AND COALESCE(memo, '') = ?
+    `);
     const saveRun = this.db.prepare(`
       INSERT INTO sync_runs (synced_at, account_count, transaction_count, errlist_json)
       VALUES (?, ?, ?, ?)
@@ -95,8 +107,23 @@ export class FinanceStore {
           syncedAt
         );
 
+        const fallbackOrdinals = new Map<string, number>();
         for (const transaction of account.transactions ?? []) {
-          const id = stableTransactionId(account.id, transaction);
+          const fingerprint = fallbackTransactionFingerprint(account.id, transaction);
+          const ordinal = fallbackOrdinals.get(fingerprint) ?? 0;
+          fallbackOrdinals.set(fingerprint, ordinal + 1);
+          const id = stableTransactionId(account.id, transaction, ordinal);
+          if (!transaction.id) {
+            deleteLegacyFallback.run(
+              account.id,
+              `${account.id}:fallback:%`,
+              transaction.posted_at ?? transaction.posted ?? transaction.transacted_at ?? transaction.transacted ?? -1,
+              toNumber(transaction.amount),
+              transaction.description ?? "",
+              transaction.payee ?? "",
+              transaction.memo ?? "",
+            );
+          }
           saveTransaction.run(
             id,
             account.id,
@@ -184,7 +211,7 @@ export class FinanceStore {
 
     return this.db
       .prepare(
-        `SELECT t.*, a.name AS account_name, a.org_name
+        `SELECT t.*, a.name AS account_name, a.org_name, a.currency
          FROM transactions t
          LEFT JOIN accounts a ON a.id = t.account_id
          ${where}
@@ -224,7 +251,7 @@ export class FinanceStore {
 
     return this.db
       .prepare(
-        `SELECT t.*, a.name AS account_name, a.org_name
+        `SELECT t.*, a.name AS account_name, a.org_name, a.currency
          FROM transactions t
          LEFT JOIN accounts a ON a.id = t.account_id
          WHERE ${clauses.join(" AND ")}
@@ -236,33 +263,38 @@ export class FinanceStore {
 
   summarizeCashflow(options: { accountId?: string; startDate?: string; endDate?: string }): Record<string, unknown> {
     const transactions = this.getTransactions({ ...options, limit: 10000 });
-    const byCategory = new Map<string, { income: number; spending: number; net: number; count: number }>();
-    let income = 0;
-    let spending = 0;
-    let net = 0;
+    const byCurrency = new Map<string, { currency: string; income: number; spending: number; net: number; transaction_count: number; categories: Map<string, { income: number; spending: number; net: number; count: number }> }>();
 
     for (const transaction of transactions) {
-      net += transaction.amount;
-      if (transaction.amount >= 0) income += transaction.amount;
-      else spending += Math.abs(transaction.amount);
+      const currency = transaction.currency ?? "UNKNOWN";
+      const totals = byCurrency.get(currency) ?? { currency, income: 0, spending: 0, net: 0, transaction_count: 0, categories: new Map() };
+      totals.net += transaction.amount;
+      totals.transaction_count += 1;
+      if (transaction.amount >= 0) totals.income += transaction.amount;
+      else totals.spending += Math.abs(transaction.amount);
 
-      const bucket = byCategory.get(transaction.category) ?? { income: 0, spending: 0, net: 0, count: 0 };
+      const bucket = totals.categories.get(transaction.category) ?? { income: 0, spending: 0, net: 0, count: 0 };
       bucket.net += transaction.amount;
       bucket.count += 1;
       if (transaction.amount >= 0) bucket.income += transaction.amount;
       else bucket.spending += Math.abs(transaction.amount);
-      byCategory.set(transaction.category, bucket);
+      totals.categories.set(transaction.category, bucket);
+      byCurrency.set(currency, totals);
     }
 
-    return {
-      income,
-      spending,
-      net,
-      transaction_count: transactions.length,
-      categories: Array.from(byCategory.entries())
+    const rows = [...byCurrency.values()].map((totals) => ({
+      currency: totals.currency,
+      income: totals.income,
+      spending: totals.spending,
+      net: totals.net,
+      transaction_count: totals.transaction_count,
+      categories: Array.from(totals.categories.entries())
         .map(([category, totals]) => ({ category, ...totals }))
-        .sort((a, b) => b.spending - a.spending)
-    };
+      .sort((a, b) => b.spending - a.spending)
+    }));
+    return rows.length === 1
+      ? { currency_mode: "single", ...rows[0], by_currency: rows }
+      : { currency_mode: rows.length === 0 ? "empty" : "multiple", by_currency: rows };
   }
 
   detectSubscriptions(options: { minOccurrences?: number; limit?: number }): Record<string, unknown> {
@@ -270,15 +302,17 @@ export class FinanceStore {
     const rows = this.db
       .prepare(
         `SELECT
-          LOWER(TRIM(COALESCE(payee, description, memo, 'unknown'))) AS merchant_key,
-          COALESCE(payee, description, memo, 'unknown') AS merchant,
-          ROUND(AVG(ABS(amount)), 2) AS average_amount,
+          COALESCE(a.currency, 'UNKNOWN') AS currency,
+          LOWER(TRIM(COALESCE(t.payee, t.description, t.memo, 'unknown'))) AS merchant_key,
+          COALESCE(t.payee, t.description, t.memo, 'unknown') AS merchant,
+          ROUND(AVG(ABS(t.amount)), 2) AS average_amount,
           COUNT(*) AS occurrences,
           MIN(COALESCE(posted_at, transacted_at)) AS first_seen,
           MAX(COALESCE(posted_at, transacted_at)) AS last_seen
-         FROM transactions
-         WHERE amount < 0
-         GROUP BY merchant_key
+         FROM transactions t
+         LEFT JOIN accounts a ON a.id = t.account_id
+         WHERE t.amount < 0
+         GROUP BY COALESCE(a.currency, 'UNKNOWN'), merchant_key
          HAVING COUNT(*) >= ?
          ORDER BY occurrences DESC, average_amount DESC
          LIMIT ?`
@@ -340,9 +374,21 @@ function nullableNumber(value: string | undefined): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-function stableTransactionId(accountId: string, transaction: SimpleFinTransaction): string {
+function stableTransactionId(accountId: string, transaction: SimpleFinTransaction, duplicateOrdinal = 0): string {
   if (transaction.id) return `${accountId}:${transaction.id}`;
-  return `${accountId}:${transaction.posted_at ?? transaction.posted ?? transaction.transacted_at ?? transaction.transacted ?? "unknown"}:${transaction.amount}:${transaction.description ?? transaction.payee ?? transaction.memo ?? ""}`;
+  const digest = createHash("sha256").update(fallbackTransactionFingerprint(accountId, transaction)).digest("hex");
+  return `${accountId}:fallback:${digest}:${duplicateOrdinal}`;
+}
+
+function fallbackTransactionFingerprint(accountId: string, transaction: SimpleFinTransaction): string {
+  return JSON.stringify([
+    accountId,
+    transaction.posted_at ?? transaction.posted ?? transaction.transacted_at ?? transaction.transacted ?? null,
+    transaction.amount,
+    transaction.description ?? null,
+    transaction.payee ?? null,
+    transaction.memo ?? null,
+  ]);
 }
 
 function categorize(transaction: SimpleFinTransaction): string {

@@ -1,6 +1,6 @@
-name = "simplefin-finance-mcp"
+name = "ledgerglass-starter"
 main = "src/index.ts"
-compatibility_date = "2026-05-22"
+compatibility_date = "2026-08-12"
 compatibility_flags = ["nodejs_compat"]
 
 # Optional custom domain after deploy:
@@ -13,19 +13,25 @@ compatibility_flags = ["nodejs_compat"]
 crons = ["15 12 * * *"]
 
 [vars]
-SYNC_DAYS = "90"
-INCREMENTAL_OVERLAP_DAYS = "3"
+MCP_HOSTNAME = "finance.example.com"
+# Set only when a browser-based MCP client sends an Origin header.
+# MCP_ALLOWED_ORIGIN = "https://client.example.com"
+SYNC_DAYS = "45"
+INCREMENTAL_OVERLAP_DAYS = "5"
 DATA_MAX_STALENESS_HOURS = "36"
-AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+# Comma-separated exact hostnames. Keep the official default unless using a
+# reviewed SimpleFIN-compatible server.
+SIMPLEFIN_ALLOWED_HOSTS = "bridge.simplefin.org,beta-bridge.simplefin.org"
+AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8"
 EMBEDDING_MODEL = "@cf/baai/bge-m3"
 AI_TEXT_PROVIDER = "workers_ai"
 AI_ROUTE_CATEGORIZE_TRANSACTIONS = "workers_ai"
-AI_ROUTE_FIND_UNUSUAL_TRANSACTIONS = "gateway"
-AI_ROUTE_GENERATE_WEEKLY_MONEY_BRIEFING = "gateway"
-AI_ROUTE_QUERY_FINANCE = "gateway"
-AI_ROUTE_REVIEW_UNCATEGORIZED_SUGGESTIONS = "gateway"
-AI_ROUTE_RECATEGORIZE_LOW_CONFIDENCE = "gateway"
-AI_ROUTE_GENERATE_CORRECTION_RULE_TEXT = "gateway"
+AI_ROUTE_FIND_UNUSUAL_TRANSACTIONS = "workers_ai"
+AI_ROUTE_GENERATE_WEEKLY_MONEY_BRIEFING = "workers_ai"
+AI_ROUTE_QUERY_FINANCE = "workers_ai"
+AI_ROUTE_REVIEW_UNCATEGORIZED_SUGGESTIONS = "workers_ai"
+AI_ROUTE_RECATEGORIZE_LOW_CONFIDENCE = "workers_ai"
+AI_ROUTE_GENERATE_CORRECTION_RULE_TEXT = "workers_ai"
 AI_GATEWAY_ACCOUNT_ID = "00000000000000000000000000000000"
 AI_GATEWAY_ID = "default"
 AI_GATEWAY_PROVIDER = "custom-provider"
@@ -38,9 +44,6 @@ GATEWAY_LIMIT_RECATEGORIZE_LOW_CONFIDENCE = "50"
 GATEWAY_LIMIT_GENERATE_CORRECTION_RULE_TEXT = "100"
 GATEWAY_LIMIT_REVIEW_UNCATEGORIZED_SUGGESTIONS = "100"
 ENABLE_GATEWAY_CATEGORIZER_FALLBACK = "false"
-GITHUB_ALLOWED_LOGIN = "your-github-login"
-PUBLIC_ORIGIN = "https://finance.example.com"
-PUBLIC_MCP_URL = "https://finance.example.com/mcp"
 
 # Create the database with:
 #   npx wrangler d1 create simplefin-finance
@@ -51,9 +54,10 @@ database_name = "simplefin-finance"
 database_id = "00000000-0000-0000-0000-000000000000"
 migrations_dir = "migrations"
 
-# Stores OAuth dynamic clients, grants, access tokens, and short-lived GitHub callback state.
+# Stores a claimed SimpleFIN Access URL when setup is completed through the
+# owner-only MCP tool. A Worker secret with the same value takes precedence.
 [[kv_namespaces]]
-binding = "OAUTH_KV"
+binding = "CONFIG_KV"
 id = "00000000000000000000000000000000"
 
 [ai]
@@ -70,7 +74,4 @@ enabled = false
 #   npx wrangler secret put SIMPLEFIN_ACCESS_URL --config worker/wrangler.toml
 #   npx wrangler secret put MCP_BEARER_TOKEN --config worker/wrangler.toml
 #   npx wrangler secret put ADMIN_TOKEN --config worker/wrangler.toml
-#   npx wrangler secret put GITHUB_CLIENT_ID --config worker/wrangler.toml
-#   npx wrangler secret put GITHUB_CLIENT_SECRET --config worker/wrangler.toml
-#   npx wrangler secret put COOKIE_ENCRYPTION_KEY --config worker/wrangler.toml
 #   npx wrangler secret put AI_GATEWAY_TOKEN --config worker/wrangler.toml

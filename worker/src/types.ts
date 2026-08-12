@@ -1,17 +1,14 @@
 export interface Env {
   DB: D1Database;
-  OAUTH_KV: KVNamespace;
+  CONFIG_KV: KVNamespace;
   AI: Ai;
   VECTOR_INDEX: VectorizeIndex;
   SIMPLEFIN_ACCESS_URL: string;
   MCP_BEARER_TOKEN: string;
   ADMIN_TOKEN: string;
-  GITHUB_CLIENT_ID?: string;
-  GITHUB_CLIENT_SECRET?: string;
-  COOKIE_ENCRYPTION_KEY?: string;
-  GITHUB_ALLOWED_LOGIN?: string;
-  PUBLIC_ORIGIN?: string;
-  PUBLIC_MCP_URL?: string;
+  MCP_HOSTNAME?: string;
+  MCP_ALLOWED_ORIGIN?: string;
+  SIMPLEFIN_ALLOWED_HOSTS?: string;
   SYNC_DAYS?: string;
   INCREMENTAL_OVERLAP_DAYS?: string;
   DATA_MAX_STALENESS_HOURS?: string;
@@ -52,7 +49,7 @@ export interface Env {
 export type ToolAuth = {
   isAdmin: boolean;
   login?: string;
-  authType?: "bearer-admin" | "bearer-readonly" | "github-oauth";
+  authType?: "bearer-admin" | "bearer-readonly";
 };
 
 export type SimpleFinTransaction = {

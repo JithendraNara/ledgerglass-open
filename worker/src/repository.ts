@@ -1,5 +1,6 @@
 import type { Enrichment, Env, SimpleFinConnection, SimpleFinPayload, SyncOptions, TransactionRow } from "./types.js";
 import {
+  fallbackTransactionFingerprint,
   nullableNumber,
   stableTransactionId,
   transactionAmount,
@@ -22,7 +23,7 @@ export class FinanceRepository {
 
     return {
       ok: true,
-      service: "simplefin-finance-mcp",
+      service: "ledgerglass-starter",
       accounts: accounts?.count ?? 0,
       transactions: transactions?.count ?? 0,
       enriched_transactions: enriched?.count ?? 0,
@@ -169,7 +170,7 @@ export class FinanceRepository {
 	    };
 
     return {
-      service: "simplefin-finance-mcp",
+      service: "ledgerglass-starter",
       generated_at: new Date().toISOString(),
 	      readiness,
 	      data_freshness: dataFreshness,
@@ -189,7 +190,7 @@ export class FinanceRepository {
         simplefin_sync_window_days_max: 90,
         manual_syncs_per_hour_without_force: 3,
         daily_ai_item_limit: 500,
-        default_incremental_overlap_days: 3
+        default_incremental_overlap_days: 5
       }
     };
   }
@@ -266,7 +267,31 @@ export class FinanceRepository {
         )
         .run();
 
+      const fallbackOrdinals = new Map<string, number>();
       for (const transaction of account.transactions ?? []) {
+        const fingerprint = fallbackTransactionFingerprint(account.id, transaction);
+        const ordinal = fallbackOrdinals.get(fingerprint) ?? 0;
+        fallbackOrdinals.set(fingerprint, ordinal + 1);
+        if (!transaction.id) {
+          await this.env.DB.prepare(
+            `DELETE FROM transactions
+             WHERE account_id = ?
+               AND id NOT LIKE ?
+               AND COALESCE(posted_at, transacted_at, -1) = ?
+               AND amount = ?
+               AND COALESCE(description, '') = ?
+               AND COALESCE(payee, '') = ?
+               AND COALESCE(memo, '') = ?`
+          ).bind(
+            account.id,
+            `${account.id}:fallback:%`,
+            transactionPostedAt(transaction) ?? transactionTransactedAt(transaction) ?? -1,
+            transactionAmount(transaction),
+            transaction.description ?? "",
+            transaction.payee ?? "",
+            transaction.memo ?? "",
+          ).run();
+        }
         await this.env.DB.prepare(
           `INSERT INTO transactions
            (id, account_id, amount, description, payee, memo, posted_at, transacted_at, pending, raw_json, updated_at)
@@ -284,7 +309,7 @@ export class FinanceRepository {
              updated_at = excluded.updated_at`
         )
           .bind(
-            stableTransactionId(account.id, transaction),
+            await stableTransactionId(account.id, transaction, ordinal),
             account.id,
             transactionAmount(transaction),
             transaction.description ?? null,
@@ -397,17 +422,21 @@ export class FinanceRepository {
     const startDate = start.toISOString().slice(0, 10);
     const startEpoch = dateToEpochNumber(startDate);
 
-    const balances = await this.env.DB.prepare(
+    const { results: balanceRows } = await this.env.DB.prepare(
       `SELECT
+        COALESCE(currency, 'UNKNOWN') AS currency,
         ROUND(COALESCE(SUM(CASE WHEN balance > 0 THEN balance ELSE 0 END), 0), 2) AS positive_cash,
         ROUND(COALESCE(SUM(CASE WHEN balance < 0 THEN -balance ELSE 0 END), 0), 2) AS debt_like_balances,
         ROUND(COALESCE(SUM(balance), 0), 2) AS net_balance,
         COUNT(*) AS account_count
-       FROM accounts`
-    ).first();
+       FROM accounts
+       GROUP BY COALESCE(currency, 'UNKNOWN')
+       ORDER BY currency`
+    ).all<Record<string, unknown>>();
 
-    const cashflow = await this.env.DB.prepare(
+    const { results: cashflowRows } = await this.env.DB.prepare(
       `SELECT
+        COALESCE(a.currency, 'UNKNOWN') AS currency,
         ROUND(COALESCE(SUM(CASE WHEN t.amount > 0 THEN t.amount ELSE 0 END), 0), 2) AS income,
         ROUND(COALESCE(SUM(CASE WHEN t.amount < 0 THEN -t.amount ELSE 0 END), 0), 2) AS total_outflow,
         ROUND(COALESCE(SUM(CASE WHEN t.amount < 0 AND COALESCE(e.category, '') <> 'transfers' THEN -t.amount ELSE 0 END), 0), 2) AS operating_spend,
@@ -416,38 +445,45 @@ export class FinanceRepository {
         ROUND(COALESCE(SUM(CASE WHEN COALESCE(e.category, '') <> 'transfers' THEN t.amount ELSE 0 END), 0), 2) AS operating_net,
         COUNT(*) AS transaction_count
        FROM transactions t
+       LEFT JOIN accounts a ON a.id = t.account_id
        LEFT JOIN transaction_enrichment e ON e.transaction_id = t.id
-       WHERE COALESCE(t.posted_at, t.transacted_at, 0) >= ?`
+       WHERE COALESCE(t.posted_at, t.transacted_at, 0) >= ?
+       GROUP BY COALESCE(a.currency, 'UNKNOWN')
+       ORDER BY currency`
     )
       .bind(startEpoch)
-      .first();
+      .all<Record<string, unknown>>();
 
     const { results: categories } = await this.env.DB.prepare(
       `SELECT
+        COALESCE(a.currency, 'UNKNOWN') AS currency,
         COALESCE(e.category, 'uncategorized') AS category,
         COUNT(*) AS transaction_count,
         ROUND(COALESCE(SUM(CASE WHEN t.amount > 0 THEN t.amount ELSE 0 END), 0), 2) AS income,
         ROUND(COALESCE(SUM(CASE WHEN t.amount < 0 THEN -t.amount ELSE 0 END), 0), 2) AS spending,
         ROUND(COALESCE(SUM(t.amount), 0), 2) AS net
        FROM transactions t
+       LEFT JOIN accounts a ON a.id = t.account_id
        LEFT JOIN transaction_enrichment e ON e.transaction_id = t.id
        WHERE COALESCE(t.posted_at, t.transacted_at, 0) >= ?
-       GROUP BY category
-       ORDER BY spending DESC`
+       GROUP BY COALESCE(a.currency, 'UNKNOWN'), category
+       ORDER BY currency, spending DESC`
     )
       .bind(startEpoch)
       .all();
 
     const { results: topMerchants } = await this.env.DB.prepare(
       `SELECT
+        COALESCE(a.currency, 'UNKNOWN') AS currency,
         ${merchantDisplaySql()} AS merchant,
         COALESCE(e.category, 'uncategorized') AS category,
         COUNT(*) AS transaction_count,
         ROUND(COALESCE(SUM(CASE WHEN t.amount < 0 THEN -t.amount ELSE 0 END), 0), 2) AS spending
        FROM transactions t
+       LEFT JOIN accounts a ON a.id = t.account_id
        LEFT JOIN transaction_enrichment e ON e.transaction_id = t.id
        WHERE t.amount < 0 AND COALESCE(t.posted_at, t.transacted_at, 0) >= ?
-       GROUP BY LOWER(merchant), category
+       GROUP BY COALESCE(a.currency, 'UNKNOWN'), LOWER(merchant), category
        HAVING spending > 0
        ORDER BY spending DESC
        LIMIT 100`
@@ -457,10 +493,12 @@ export class FinanceRepository {
 
     const { results: feeSignals } = await this.env.DB.prepare(
       `SELECT
+        COALESCE(a.currency, 'UNKNOWN') AS currency,
         ${merchantDisplaySql()} AS fee,
         COUNT(*) AS count,
         ROUND(COALESCE(SUM(-t.amount), 0), 2) AS total
        FROM transactions t
+       LEFT JOIN accounts a ON a.id = t.account_id
        LEFT JOIN transaction_enrichment e ON e.transaction_id = t.id
        WHERE t.amount < 0
          AND COALESCE(t.posted_at, t.transacted_at, 0) >= ?
@@ -475,7 +513,7 @@ export class FinanceRepository {
            OR LOWER(COALESCE(t.description, '') || ' ' || COALESCE(t.payee, '') || ' ' || COALESCE(t.memo, '') || ' ' || COALESCE(e.merchant_normalized, '')) LIKE '%foreign transaction%'
            OR LOWER(COALESCE(t.description, '') || ' ' || COALESCE(t.payee, '') || ' ' || COALESCE(t.memo, '') || ' ' || COALESCE(e.merchant_normalized, '')) LIKE '%overdraft%'
          )
-       GROUP BY fee
+       GROUP BY COALESCE(a.currency, 'UNKNOWN'), fee
        ORDER BY total DESC
        LIMIT 100`
     )
@@ -497,11 +535,11 @@ export class FinanceRepository {
 
 	    return {
 	      period: { days, start_date: startDate, end_date: endDate },
-	      balances,
-	      cashflow,
-	      categories,
-	      top_merchants: mergeMerchantRows(topMerchants, "merchant", "spending").slice(0, 10),
-	      fee_signals: mergeMerchantRows(feeSignals, "fee", "total").slice(0, 10),
+	      balances: currencyEnvelope(balanceRows),
+	      cashflow: currencyEnvelope(cashflowRows),
+	      categories: currencyListEnvelope(categories),
+	      top_merchants: currencyListEnvelope(mergeMerchantRows(topMerchants, "merchant", "spending"), 10),
+	      fee_signals: currencyListEnvelope(mergeMerchantRows(feeSignals, "fee", "total"), 10),
 	      data_quality: {
 	        ...integrity,
 	        ai_enrichment: await this.aiEnrichmentHealth(),
@@ -975,43 +1013,44 @@ export class FinanceRepository {
 
     const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
     const { results } = await this.env.DB.prepare(
-      `SELECT COALESCE(e.category, 'uncategorized') AS category,
+      `SELECT COALESCE(a.currency, 'UNKNOWN') AS currency,
+        COALESCE(e.category, 'uncategorized') AS category,
         COUNT(*) AS count,
         SUM(CASE WHEN t.amount >= 0 THEN t.amount ELSE 0 END) AS income,
         SUM(CASE WHEN t.amount < 0 THEN ABS(t.amount) ELSE 0 END) AS spending,
         SUM(t.amount) AS net
        FROM transactions t
+       LEFT JOIN accounts a ON a.id = t.account_id
        LEFT JOIN transaction_enrichment e ON e.transaction_id = t.id
        ${where}
-       GROUP BY COALESCE(e.category, 'uncategorized')
-       ORDER BY spending DESC`
+       GROUP BY COALESCE(a.currency, 'UNKNOWN'), COALESCE(e.category, 'uncategorized')
+       ORDER BY currency, spending DESC`
     )
       .bind(...values)
       .all();
 
-    const totals = results.reduce<{ income: number; spending: number; net: number; transaction_count: number }>(
-      (memo, row) => {
-        memo.income += Number(row.income ?? 0);
-        memo.spending += Number(row.spending ?? 0);
-        memo.net += Number(row.net ?? 0);
-        memo.transaction_count += Number(row.count ?? 0);
-        return memo;
-      },
-      { income: 0, spending: 0, net: 0, transaction_count: 0 }
-    );
-
-    return {
-      income: roundMoney(totals.income),
-      spending: roundMoney(totals.spending),
-      net: roundMoney(totals.net),
-      transaction_count: totals.transaction_count,
-      categories: results.map((row) => ({
+    const byCurrency = new Map<string, { currency: string; income: number; spending: number; net: number; transaction_count: number; categories: Record<string, unknown>[] }>();
+    for (const row of results) {
+      const currency = String(row.currency ?? "UNKNOWN");
+      const current = byCurrency.get(currency) ?? { currency, income: 0, spending: 0, net: 0, transaction_count: 0, categories: [] };
+      current.income += Number(row.income ?? 0);
+      current.spending += Number(row.spending ?? 0);
+      current.net += Number(row.net ?? 0);
+      current.transaction_count += Number(row.count ?? 0);
+      current.categories.push({
         ...row,
         income: roundMoney(Number(row.income ?? 0)),
         spending: roundMoney(Number(row.spending ?? 0)),
         net: roundMoney(Number(row.net ?? 0))
-      }))
-    };
+      });
+      byCurrency.set(currency, current);
+    }
+    return currencyEnvelope([...byCurrency.values()].map((row) => ({
+      ...row,
+      income: roundMoney(row.income),
+      spending: roundMoney(row.spending),
+      net: roundMoney(row.net),
+    })));
   }
 
   async detectSubscriptions(): Promise<Record<string, unknown>> {
@@ -2177,7 +2216,7 @@ function mergeMerchantRows(rows: Record<string, unknown>[], nameField: "merchant
   const groups = new Map<string, Record<string, unknown>>();
   for (const row of rows) {
     const display = canonicalMerchantDisplay(String(row[nameField] ?? "unknown"));
-    const key = normalizeMerchantKey(display);
+    const key = `${String(row.currency ?? "UNKNOWN")}:${normalizeMerchantKey(display)}`;
     const existing = groups.get(key);
     if (!existing) {
       groups.set(key, {
@@ -2202,13 +2241,32 @@ function mergeMerchantRows(rows: Record<string, unknown>[], nameField: "merchant
     .sort((left, right) => Number(right[amountField] ?? 0) - Number(left[amountField] ?? 0));
 }
 
+function currencyEnvelope(rows: Record<string, unknown>[]): Record<string, unknown> {
+  const normalized = rows.map((row) => ({ ...row, currency: String(row.currency ?? "UNKNOWN") }));
+  return normalized.length === 1
+    ? { currency_mode: "single", ...normalized[0], by_currency: normalized }
+    : { currency_mode: normalized.length === 0 ? "empty" : "multiple", by_currency: normalized };
+}
+
+function currencyListEnvelope(rows: Record<string, unknown>[], limit?: number): Record<string, unknown> {
+  const groups = new Map<string, Record<string, unknown>[]>();
+  for (const row of rows) {
+    const currency = String(row.currency ?? "UNKNOWN");
+    const items = groups.get(currency) ?? [];
+    if (limit === undefined || items.length < limit) items.push(row);
+    groups.set(currency, items);
+  }
+  const byCurrency = [...groups.entries()].map(([currency, items]) => ({ currency, items }));
+  return byCurrency.length === 1
+    ? { currency_mode: "single", currency: byCurrency[0].currency, items: byCurrency[0].items, by_currency: byCurrency }
+    : { currency_mode: byCurrency.length === 0 ? "empty" : "multiple", by_currency: byCurrency };
+}
+
 function canonicalMerchantDisplay(value: string): string {
   const normalized = normalizeMerchantKey(value);
   if (normalized === "interest" || normalized === "interest charge") return "Interest Charge";
   if (normalized.includes("returned payment")) return "Returned Payment Fee";
-  if (normalized.includes("apple credit card")) return "Payment: Apple Card";
-  if (normalized.includes("american express credit card")) return "Payment: American Express";
-  if (normalized.includes("chase credit card")) return "Payment: Chase";
+  if (normalized.includes("credit card payment")) return "Credit Card Payment";
   if (normalized === "doordash") return "DoorDash";
   if (normalized === "openai") return "OpenAI";
   if (normalized === "google fi wireless") return "Google Fi Wireless";

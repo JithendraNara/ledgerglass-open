@@ -6,6 +6,7 @@ export type Config = {
   port: number;
   dbPath: string;
   bearerToken?: string;
+  allowedSimpleFinHosts: string[];
 };
 
 export function loadConfig(): Config {
@@ -20,7 +21,9 @@ export function loadConfig(): Config {
     host: process.env.SIMPLEFIN_MCP_HOST ?? "127.0.0.1",
     port,
     dbPath: process.env.SIMPLEFIN_DB_PATH ?? "data/simplefin.sqlite",
-    bearerToken: clean(process.env.SIMPLEFIN_MCP_BEARER_TOKEN)
+    bearerToken: clean(process.env.SIMPLEFIN_MCP_BEARER_TOKEN),
+    allowedSimpleFinHosts: (process.env.SIMPLEFIN_ALLOWED_HOSTS ?? "bridge.simplefin.org,beta-bridge.simplefin.org")
+      .split(",").map((host) => host.trim().toLowerCase()).filter(Boolean)
   };
 }
 

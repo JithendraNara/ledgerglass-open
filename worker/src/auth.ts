@@ -5,11 +5,11 @@ export async function authorizeMcp(request: Request, env: Env): Promise<ToolAuth
   const header = request.headers.get("authorization") ?? "";
 
   if (await timingSafeBearerEquals(header, env.ADMIN_TOKEN)) {
-    return { isAdmin: true };
+    return { isAdmin: true, login: "origin-admin", authType: "bearer-admin" };
   }
 
   if (await timingSafeBearerEquals(header, env.MCP_BEARER_TOKEN)) {
-    return { isAdmin: false };
+    return { isAdmin: false, login: "origin-reader", authType: "bearer-readonly" };
   }
 
   return errorJson("unauthorized", 401);
@@ -23,11 +23,11 @@ export async function authorizeAdmin(request: Request, env: Env): Promise<Respon
 
 export async function authForStaticBearerToken(token: string, env: Env): Promise<ToolAuth | undefined> {
   if (await timingSafeEquals(token, env.ADMIN_TOKEN)) {
-    return { isAdmin: true, login: "legacy-admin", authType: "bearer-admin" };
+    return { isAdmin: true, login: "origin-admin", authType: "bearer-admin" };
   }
 
   if (await timingSafeEquals(token, env.MCP_BEARER_TOKEN)) {
-    return { isAdmin: false, login: "legacy-reader", authType: "bearer-readonly" };
+    return { isAdmin: false, login: "origin-reader", authType: "bearer-readonly" };
   }
 
   return undefined;

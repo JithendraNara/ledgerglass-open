@@ -134,7 +134,7 @@ export function registerTools(server: McpServer, client: SimpleFinClient, store:
     async ({ accountId, startDate, endDate }) => {
       return result({
         ...store.summarizeCashflow({ accountId, startDate, endDate }),
-        currency_note: "SimpleFIN reports currency per account; mixed-currency totals are not converted."
+        currency_note: "Unlike currencies are returned separately and are not converted."
       });
     }
   );

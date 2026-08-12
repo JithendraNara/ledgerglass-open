@@ -1,38 +1,68 @@
 # Setup
 
-This guide configures a deploy-your-own SimpleFIN Finance MCP Worker. Keep real
-domains, Cloudflare IDs, OAuth secrets, bearer tokens, and finance data out of
-public forks.
+Deploy Ledgerglass Starter into your own Cloudflare account. Never commit the
+values produced by these steps.
 
-## Install
-
-```bash
-npm install
-```
-
-## Create Cloudflare Resources
+## 1. Install and validate
 
 ```bash
-npx wrangler d1 create simplefin-finance --config worker/wrangler.toml
-npx wrangler kv namespace create OAUTH_KV --config worker/wrangler.toml
-npx wrangler vectorize create simplefin-transactions --dimensions=1024 --metric=cosine
+npm ci
+npm run check
 ```
 
-Copy the returned D1 database ID and KV namespace ID into
-[worker/wrangler.toml](../worker/wrangler.toml).
+Node 22.18 or later is required.
 
-The default embedding model is `@cf/baai/bge-m3`, configured in
-`EMBEDDING_MODEL`. If you choose a different model, create the Vectorize index
-with that model's actual output dimensions.
+## 2. Create storage
 
-## Configure Public Vars
+```bash
+npx wrangler d1 create ledgerglass --config worker/wrangler.toml
+npx wrangler kv namespace create CONFIG_KV --config worker/wrangler.toml
+npx wrangler vectorize create ledgerglass-transactions --dimensions=1024 --metric=cosine
+```
 
-Edit [worker/wrangler.toml](../worker/wrangler.toml):
+Copy the returned IDs into `worker/wrangler.toml` in your private checkout.
+Keep placeholder IDs in any public fork. If you change `EMBEDDING_MODEL`, use
+the model's actual output dimension when creating Vectorize.
 
-```toml
-GITHUB_ALLOWED_LOGIN = "your-github-login"
-PUBLIC_ORIGIN = "https://finance.example.com"
-PUBLIC_MCP_URL = "https://finance.example.com/mcp"
+Set `MCP_HOSTNAME` to the exact hostname serving the Worker. The MCP transport
+rejects other hostnames. Set `MCP_ALLOWED_ORIGIN` only for a browser client that
+actually sends an `Origin` header; server-to-server Portal traffic does not
+need a wildcard.
+
+`SIMPLEFIN_ALLOWED_HOSTS` defaults to the official Bridge hostnames. If you use
+a compatible self-hosted server, replace it with reviewed exact hostnames; do
+not use a wildcard.
+
+## 3. Apply migrations
+
+```bash
+npx wrangler d1 migrations apply DB --remote --config worker/wrangler.toml
+```
+
+## 4. Store origin credentials
+
+```bash
+npx wrangler secret put MCP_BEARER_TOKEN --config worker/wrangler.toml
+npx wrangler secret put ADMIN_TOKEN --config worker/wrangler.toml
+npx wrangler secret put SIMPLEFIN_ACCESS_URL --config worker/wrangler.toml
+```
+
+- `MCP_BEARER_TOKEN`: read tools only.
+- `ADMIN_TOKEN`: owner tools and operational routes.
+- `SIMPLEFIN_ACCESS_URL`: credential obtained by claiming a one-time SimpleFIN
+  setup token. The owner-only `claim_setup_token` tool can claim and persist it
+  in `CONFIG_KV`; call that tool only through a direct owner connection, not a
+  Portal or third-party agent. A Worker secret takes precedence.
+
+Do not store a one-time setup token after it has been claimed. Never paste any
+of these values into an issue, chat transcript, screenshot, committed config,
+or Worker log.
+
+## 5. Deploy the private origin
+
+```bash
+npm run check
+npx wrangler deploy --config worker/wrangler.toml
 ```
 
 Optional custom domain:
@@ -43,143 +73,64 @@ pattern = "finance.example.com"
 custom_domain = true
 ```
 
-## Apply Migrations
-
-```bash
-npx wrangler d1 migrations apply simplefin-finance --remote --config worker/wrangler.toml
-```
-
-## SimpleFIN Setup
-
-SimpleFIN Bridge auth is not OAuth. It uses a one-time setup token that is
-claimed into an Access URL. Store only the resulting Access URL as a Worker
-secret:
-
-```bash
-npx wrangler secret put SIMPLEFIN_ACCESS_URL --config worker/wrangler.toml
-```
-
-Never commit or paste:
-
-- `SIMPLEFIN_ACCESS_URL`
-- `MCP_BEARER_TOKEN`
-- `ADMIN_TOKEN`
-- GitHub OAuth client secret
-- D1 exports or raw financial records
-
-Once `SIMPLEFIN_ACCESS_URL` is configured, normal agents connect to your Worker.
-They do not need SimpleFIN setup tokens.
-
-## Worker Auth Secrets
-
-```bash
-npx wrangler secret put MCP_BEARER_TOKEN --config worker/wrangler.toml
-npx wrangler secret put ADMIN_TOKEN --config worker/wrangler.toml
-npx wrangler secret put GITHUB_CLIENT_ID --config worker/wrangler.toml
-npx wrangler secret put GITHUB_CLIENT_SECRET --config worker/wrangler.toml
-openssl rand -base64 32 | npx wrangler secret put COOKIE_ENCRYPTION_KEY --config worker/wrangler.toml
-```
-
-Cloudflare Worker secrets are write-only in normal operation. Wrangler can set
-or rotate `MCP_BEARER_TOKEN`, but it cannot reveal the existing plaintext token
-later.
-
-## GitHub OAuth App
-
-Create a GitHub OAuth app:
-
-```text
-Homepage URL: https://finance.example.com
-Authorization callback URL: https://finance.example.com/callback
-```
-
-Set `GITHUB_ALLOWED_LOGIN` to the one GitHub login allowed to administer the MCP
-server.
-
-Claude, ChatGPT, Cursor, and other OAuth-capable remote MCP clients can use:
-
-```text
-Remote MCP server URL: https://finance.example.com/mcp
-OAuth Client ID: leave blank unless the client requires a static client
-OAuth Client Secret: leave blank unless the client requires a static client
-```
-
-## Bearer Client Config
-
-Use this for clients that support Streamable HTTP plus headers:
-
-```json
-{
-  "mcpServers": {
-    "simplefin": {
-      "type": "streamable-http",
-      "url": "https://finance.example.com/mcp",
-      "headers": {
-        "Authorization": "Bearer <MCP_BEARER_TOKEN>"
-      }
-    }
-  }
-}
-```
-
-Use `MCP_BEARER_TOKEN` for read-only tools. Use `ADMIN_TOKEN` only for setup,
-sync, and refresh operations.
-
-For remote agents on other machines:
-
-- Use MCP OAuth if the client supports it.
-- Otherwise transfer the read-only bearer token out-of-band through a password
-  manager, SSH, or another private channel.
-- Do not paste tokens into public chats, issues, logs, or committed config
-  files.
-- If the token is lost or exposed, rotate it with:
-
-```bash
-npx wrangler secret put MCP_BEARER_TOKEN --config worker/wrangler.toml
-```
-
-Then update every bearer-token client. OAuth clients do not need the bearer
-token.
-
-## Deploy
-
-```bash
-npm run worker:typecheck
-npm run build
-npx wrangler deploy --config worker/wrangler.toml
-```
-
-## Smoke Tests
+Smoke tests disclose only liveness/readiness:
 
 ```bash
 curl https://finance.example.com/health
 curl https://finance.example.com/ready
 ```
 
-MCP read call:
+## 6. Put Cloudflare MCP Portal in front
 
-```bash
-curl -sS https://finance.example.com/mcp \
-  -H "Authorization: Bearer $MCP_BEARER_TOKEN" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  --data '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"simplefin_data_coverage","arguments":{}}}'
+In Cloudflare Zero Trust, open **AI controls → MCP servers** and add the origin
+URL `https://finance.example.com/mcp`. Configure the upstream authorization
+header with the owner or read bearer token in Cloudflare; do not put it in this
+repository. Create an MCP Portal, add the server, select the tools you want
+clients to see, and authorize only your identity.
+
+Connect ChatGPT, Claude, Codex, or another OAuth-capable client to the Portal's
+generated MCP URL. The client authenticates to Cloudflare; Cloudflare supplies
+the origin bearer credential upstream. Re-sync Portal capabilities after the
+Worker adds or removes tools or prompts.
+
+See [the Portal example](../examples/cloudflare-mcp-portal.example.md).
+
+## 7. Direct private clients (optional)
+
+Clients that can inject a private header may call the Worker directly:
+
+```json
+{
+  "mcpServers": {
+    "ledgerglass": {
+      "type": "streamable-http",
+      "url": "https://finance.example.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${MCP_BEARER_TOKEN}"
+      }
+    }
+  }
+}
 ```
 
-Admin sync:
+Prefer the read credential. Use the owner credential only in an owner-controlled
+agent that genuinely needs writes.
 
-```bash
-curl -sS https://finance.example.com/admin/sync \
-  -H "Authorization: Bearer $ADMIN_TOKEN" \
-  -H "Content-Type: application/json" \
-  --data '{"pending":true,"force":true}'
-```
+## 8. Verify
 
-## Safety Check Before Publishing
+After deployment:
 
-```bash
-rg -n "SIMPLEFIN_ACCESS_URL|ADMIN_TOKEN|MCP_BEARER_TOKEN|client_secret|finance\\.example\\.com|your-github-login"
-git status --short
-```
+1. Confirm `/ready` is ready.
+2. Initialize MCP and inspect `tools/list` plus `prompts/list`.
+3. Call `agent_guidance` and `simplefin_data_coverage`.
+4. Run one owner sync, then repeat it to check idempotency.
+5. Confirm currency-separated finance output and bounded operational events.
+6. Verify Workers Logs remain disabled unless you have independently accepted
+   their data-retention boundary.
 
-Placeholder names in docs and config are expected. Real values are not.
+## Rotation and removal
+
+Rotate an origin token with `wrangler secret put`, update the Portal upstream
+credential, then revoke the old value. A Portal OAuth grant and an origin bearer
+credential are separate. Remove Portal client grants in Cloudflare; rotate the
+origin credential if it may have escaped Cloudflare.

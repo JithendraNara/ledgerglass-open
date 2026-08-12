@@ -1,46 +1,75 @@
 {
-  "accounts": {
-    "count": 3,
-    "total_balance": 4380.42,
-    "currency": "USD"
+  "period": {
+    "days": 30,
+    "start_date": "2026-07-14",
+    "end_date": "2026-08-12"
+  },
+  "balances": {
+    "currency_mode": "single",
+    "currency": "USD",
+    "positive_cash": 5200.42,
+    "debt_like_balances": 820,
+    "net_balance": 4380.42,
+    "account_count": 3,
+    "by_currency": [
+      {
+        "currency": "USD",
+        "positive_cash": 5200.42,
+        "debt_like_balances": 820,
+        "net_balance": 4380.42,
+        "account_count": 3
+      }
+    ]
   },
   "cashflow": {
-    "period_days": 30,
+    "currency_mode": "single",
+    "currency": "USD",
     "income": 3200,
-    "spending": 1842.67,
-    "net": 1357.33
+    "total_outflow": 2062.67,
+    "operating_spend": 1842.67,
+    "operating_net": 1357.33,
+    "transaction_count": 128,
+    "by_currency": [
+      {
+        "currency": "USD",
+        "income": 3200,
+        "total_outflow": 2062.67,
+        "operating_spend": 1842.67,
+        "operating_net": 1357.33,
+        "transaction_count": 128
+      }
+    ]
   },
-  "categories": [
-    { "category": "groceries", "spending": 420.18 },
-    { "category": "dining", "spending": 186.24 },
-    { "category": "subscriptions", "spending": 59.98 },
-    { "category": "fees", "spending": 12 }
-  ],
-  "top_merchants": [
-    { "merchant": "Demo Grocery", "amount": 245.18, "category": "groceries" },
-    { "merchant": "Demo Visa Payment", "amount": 220, "category": "transfers" },
-    { "merchant": "Demo Streaming", "amount": 19.99, "category": "subscriptions" }
-  ],
-  "ai_enrichment": {
-    "transactions": 128,
-    "enriched_transactions": 128,
-    "ai_enriched": 126,
-    "fallback_enriched": 2,
-    "fallback_ratio": 0.016,
-    "quota_fallback": 0,
-    "parse_fallback": 0,
-    "low_confidence_enriched": 9,
-    "low_confidence_threshold": 0.75,
-    "confidence_distribution": {
-      "0.0-0.5": 0,
-      "0.5-0.7": 2,
-      "0.7-0.9": 117,
-      "0.9-1.0": 9
-    },
-    "healthy": true
+  "categories": {
+    "currency_mode": "single",
+    "currency": "USD",
+    "items": [
+      { "currency": "USD", "category": "groceries", "spending": 420.18 },
+      { "currency": "USD", "category": "dining", "spending": 186.24 }
+    ],
+    "by_currency": [
+      {
+        "currency": "USD",
+        "items": [
+          { "currency": "USD", "category": "groceries", "spending": 420.18 },
+          { "currency": "USD", "category": "dining", "spending": 186.24 }
+        ]
+      }
+    ]
   },
-  "data_quality": {
-    "fresh": true,
-    "health_issues": []
+  "top_merchants": {
+    "currency_mode": "single",
+    "currency": "USD",
+    "items": [
+      { "currency": "USD", "merchant": "Demo Grocery", "spending": 245.18, "category": "groceries" }
+    ],
+    "by_currency": [
+      {
+        "currency": "USD",
+        "items": [
+          { "currency": "USD", "merchant": "Demo Grocery", "spending": 245.18, "category": "groceries" }
+        ]
+      }
+    ]
   }
 }
