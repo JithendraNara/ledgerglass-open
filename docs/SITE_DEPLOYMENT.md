@@ -27,6 +27,8 @@ at `site/dist`. There are no runtime variables or secrets. Initial publication u
 the account's `workers.dev` subdomain; a custom domain can be evaluated separately.
 The repository connection and one-repository GitHub authorization were verified on
 2026-08-12; later matching commits are built and deployed by Workers Builds.
+The Cloudflare Workers and Pages GitHub App is explicitly authorized for this public
+repository; private Ledgerglass remains outside that installation.
 
 Cloudflare documentation checked 2026-08-12:
 
