@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Ledgerglass</title>
+  <desc id="description">Your finances, with evidence</desc>
+  <rect width="1200" height="630" fill="#f3eadc"/>
+  <g stroke="#cbbda9" stroke-width="1" opacity=".45">
+    <path d="M0 72h1200M0 144h1200M0 216h1200M0 288h1200M0 360h1200M0 432h1200M0 504h1200M0 576h1200"/>
+  </g>
+  <g transform="translate(74 68)">
+    <circle cx="24" cy="24" r="22" fill="none" stroke="#282724" stroke-width="3"/>
+    <path d="M12 17h24M12 24h24M12 31h16" stroke="#a64f38" stroke-width="3" stroke-linecap="round"/>
+    <text x="62" y="34" fill="#282724" font-family="Georgia,serif" font-size="34" font-weight="700">Ledgerglass</text>
+  </g>
+  <text x="74" y="250" fill="#282724" font-family="Georgia,serif" font-size="82" font-weight="700">Your finances,</text>
+  <text x="74" y="342" fill="#282724" font-family="Georgia,serif" font-size="82" font-weight="700">with evidence.</text>
+  <text x="78" y="410" fill="#68645d" font-family="Arial,sans-serif" font-size="25">A personal ledger built to show its work.</text>
+  <g transform="translate(850 170) rotate(3)">
+    <rect width="260" height="310" fill="#a64f38" transform="translate(12 14)"/>
+    <rect width="260" height="310" fill="#faf4ea" stroke="#282724" stroke-width="2"/>
+    <text x="20" y="35" fill="#282724" font-family="monospace" font-size="11">FICTIONAL EVIDENCE</text>
+    <path d="M20 60h220M20 200h220M20 235h220" stroke="#cbbda9"/>
+    <text x="24" y="108" fill="#55748a" font-family="Georgia,serif" font-style="italic" font-size="23">the trail behind</text>
+    <text x="24" y="140" fill="#55748a" font-family="Georgia,serif" font-style="italic" font-size="23">the number.</text>
+    <circle cx="205" cy="255" r="40" fill="none" stroke="#a64f38" stroke-width="3"/>
+    <text x="205" y="251" text-anchor="middle" fill="#a64f38" font-family="monospace" font-size="10" font-weight="700">EVIDENCE</text>
+    <text x="205" y="266" text-anchor="middle" fill="#a64f38" font-family="monospace" font-size="10" font-weight="700">ATTACHED</text>
+  </g>
+</svg>

@@ -1,0 +1,21 @@
+{
+  "export_digest": "96e0522b4250ad10a357cf1981fea23962815b6aba16adb3e50cdbe2df803b37",
+  "files": [
+    {
+      "bytes": 7241,
+      "path": "showcase/capabilities.json",
+      "sha256": "f3be02d6d5d5f2caba91c75fcc8e53cb80c8f6f5cf12ad7b224fd7763901afd9"
+    },
+    {
+      "bytes": 2573,
+      "path": "showcase/research.json",
+      "sha256": "a2daa79f7eea0bc2e4eebd9fd5905c772f9934337924fa41a6a94d972c6c7513"
+    },
+    {
+      "bytes": 4643,
+      "path": "showcase/scenarios.json",
+      "sha256": "b4bd6b07cbf18f40656e15068c071da5e4d46cbb68810d6fc4da308b302ad233"
+    }
+  ],
+  "schema_version": 1
+}

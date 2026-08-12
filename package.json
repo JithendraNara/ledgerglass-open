@@ -23,7 +23,13 @@
     "worker:migrate:remote": "wrangler d1 migrations apply DB --remote --config worker/wrangler.toml",
     "test": "vitest run",
     "privacy:audit": "node scripts/audit-public-repo.mjs",
-    "check": "npm run privacy:audit && npm run typecheck && npm run worker:typecheck && npm run build && npm test && npm audit --audit-level=high && npm run worker:migrate:local && npm run worker:dry-run"
+    "showcase:validate": "node scripts/validate-showcase.mjs",
+    "site:dev": "astro dev --root site",
+    "site:check": "astro check --root site",
+    "site:build": "astro build --root site",
+    "site:dry-run": "npm run site:build && wrangler deploy --dry-run --outdir .wrangler/site-dry-run --config site/wrangler.toml",
+    "site:deploy": "npm run site:build && wrangler deploy --config site/wrangler.toml",
+    "check": "npm run privacy:audit && npm run showcase:validate && npm run typecheck && npm run worker:typecheck && npm run build && npm test && npm run site:check && npm run site:dry-run && npm audit --audit-level=high && npm run worker:migrate:local && npm run worker:dry-run"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
@@ -33,13 +39,16 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "5.20260812.1",
     "@types/express": "^5.0.6",
     "@types/node": "^22.10.5",
+    "astro": "^7.2.1",
+    "cookie": "^2.0.1",
     "tsx": "^4.23.12",
     "typescript": "^5.7.2",
     "vitest": "4.1.10",
-    "wrangler": "4.121.0"
+    "wrangler": "^4.122.0"
   },
   "engines": {
     "node": ">=22.18.0"

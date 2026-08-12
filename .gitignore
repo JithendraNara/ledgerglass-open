@@ -6,6 +6,8 @@ data/
 *.log
 configs/*.local.json
 .wrangler/
+.astro/
+site/site/
 *.sqlite*
 *.db
 *.pdf

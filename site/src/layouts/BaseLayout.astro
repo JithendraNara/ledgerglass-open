@@ -1,0 +1,122 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  eyebrow?: string;
+}
+const { title, description, eyebrow } = Astro.props;
+const path = Astro.url.pathname;
+const links = [
+  ["/why/", "Why"], ["/tour/", "Tour"], ["/demo/", "Demo"],
+  ["/architecture/", "Architecture"], ["/trust/", "Trust"], ["/build-log/", "Build log"],
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f3eadc" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} · Ledgerglass`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/social-preview.svg" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title} · Ledgerglass</title>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Ledgerglass home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Ledgerglass</span>
+      </a>
+      <nav aria-label="Main navigation">
+        {links.map(([href, label]) => <a class:list={{ active: path.startsWith(href) }} href={href}>{label}</a>)}
+      </nav>
+      <a class="source-link" href="https://github.com/JithendraNara/ledgerglass-starter">View source <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="content">
+      {eyebrow && <div class="page-intro"><p class="eyebrow">{eyebrow}</p><h1>{title}</h1><p class="dek">{description}</p></div>}
+      <slot />
+    </main>
+    <footer>
+      <div>
+        <a class="brand footer-brand" href="/"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Ledgerglass</span></a>
+        <p>A personal experiment in making financial software show its work.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/capabilities/">Capabilities</a>
+        <a href="/build/">Build your own</a>
+        <a href="/research/">Research journal</a>
+        <a href="https://github.com/JithendraNara/ledgerglass-starter/blob/main/LICENSE">MIT license</a>
+      </div>
+      <p class="fine-print">Ledgerglass is an independent project. SimpleFIN is an upstream data connector; this project is not affiliated with or endorsed by SimpleFIN.</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --paper: #f3eadc; --paper-deep: #e7dac7; --ink: #282724; --muted: #68645d;
+    --rust: #a64f38; --rust-dark: #743527; --blue: #55748a; --line: #cbbda9;
+    --serif: "Iowan Old Style", Baskerville, "Times New Roman", serif;
+    --sans: "Avenir Next", Avenir, "Gill Sans", system-ui, sans-serif;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); color: var(--ink); font-family: var(--sans); scroll-behavior: smooth; }
+  body { margin: 0; min-width: 320px; background-image: linear-gradient(rgba(40,39,36,.035) 1px, transparent 1px); background-size: 100% 36px; }
+  a { color: inherit; text-underline-offset: .2em; }
+  .skip { position: fixed; left: 1rem; top: -5rem; z-index: 20; background: var(--ink); color: var(--paper); padding: .75rem 1rem; }
+  .skip:focus { top: 1rem; }
+  .site-header { min-height: 82px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 2rem; padding: 0 clamp(1rem, 4vw, 4.5rem); background: rgba(243,234,220,.94); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); }
+  .brand { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--serif); font-weight: 700; font-size: 1.15rem; text-decoration: none; width: max-content; }
+  .brand-mark { width: 31px; height: 31px; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-content: center; gap: 3px; transform: rotate(-4deg); background: var(--paper); }
+  .brand-mark i { width: 15px; height: 1.5px; display: block; background: var(--rust); }
+  nav { display: flex; gap: clamp(.75rem, 2vw, 1.8rem); align-items: center; }
+  nav a, .source-link { font-size: .78rem; font-weight: 650; text-transform: uppercase; letter-spacing: .08em; text-decoration: none; }
+  nav a { padding: 1rem 0 .35rem; border-bottom: 2px solid transparent; }
+  nav a:hover, nav a.active { border-color: var(--rust); }
+  .source-link { justify-self: end; }
+  main { min-height: 70vh; }
+  .page-intro { width: min(1040px, calc(100% - 2rem)); margin: 0 auto; padding: clamp(5rem, 10vw, 9rem) 0 clamp(3rem, 7vw, 6rem); border-bottom: 1px solid var(--line); }
+  .eyebrow, .evidence-label { font-family: var(--mono); color: var(--rust-dark); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; font-weight: 700; }
+  h1, h2, h3 { font-family: var(--serif); line-height: .98; letter-spacing: -.025em; text-wrap: balance; }
+  h1 { font-size: clamp(3rem, 8vw, 7rem); max-width: 13ch; margin: 1rem 0; }
+  h2 { font-size: clamp(2.2rem, 5vw, 4.6rem); margin: 0 0 1.5rem; }
+  h3 { font-size: clamp(1.35rem, 2vw, 1.8rem); line-height: 1.1; margin: .4rem 0 .8rem; }
+  p { line-height: 1.65; }
+  .dek { font-family: var(--serif); font-size: clamp(1.25rem, 2.3vw, 1.8rem); line-height: 1.42; max-width: 35em; color: #4b4843; }
+  .section { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; padding: clamp(4rem, 9vw, 8rem) 0; }
+  .rule { border-top: 1px solid var(--line); }
+  .prose { max-width: 720px; }
+  .prose p { font-family: var(--serif); font-size: 1.2rem; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 4rem); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .note-card { padding: clamp(1.4rem, 3vw, 2.4rem); background: var(--paper); min-height: 220px; }
+  .note-card p { color: var(--muted); }
+  .tag { display: inline-block; border: 1px solid currentColor; border-radius: 99px; padding: .25rem .55rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .07em; font-size: .65rem; }
+  .tag.core { color: var(--rust-dark); } .tag.demo { color: #365a70; } .tag.private-note { color: var(--muted); }
+  .button { display: inline-flex; align-items: center; gap: .6rem; background: var(--ink); color: var(--paper); padding: .9rem 1.2rem; text-decoration: none; font-weight: 700; border: 1px solid var(--ink); }
+  .button.secondary { background: transparent; color: var(--ink); }
+  .button:hover { background: var(--rust-dark); border-color: var(--rust-dark); color: white; }
+  footer { border-top: 1px solid var(--line); padding: 3.5rem clamp(1rem, 4vw, 4.5rem); display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem; background: var(--paper-deep); }
+  footer p { max-width: 38em; color: var(--muted); }
+  .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem 2rem; align-content: start; font-weight: 650; }
+  .fine-print { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 1.2rem; font-size: .8rem; max-width: none; }
+  :focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+  @media (max-width: 900px) {
+    .site-header { grid-template-columns: 1fr auto; min-height: 70px; }
+    nav { display: none; }
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 650px) {
+    .source-link { font-size: .68rem; }
+    .grid-2, footer { grid-template-columns: 1fr; }
+    .footer-links { grid-template-columns: 1fr; }
+    h1 { font-size: clamp(2.8rem, 16vw, 4.8rem); }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation-duration: .001ms !important; } }
+</style>

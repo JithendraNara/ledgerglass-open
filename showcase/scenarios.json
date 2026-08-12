@@ -1,0 +1,91 @@
+{
+  "fictional": true,
+  "household": "The Rowan household",
+  "scenarios": [
+    {
+      "action": "Ledgerglass matched supported rows, added three statement overlays, and left one uncertain provider row out of the effective cycle.",
+      "difficulty": "The balance was real, but the transaction feed could not explain it.",
+      "evidence": [
+        "immutable provider observations",
+        "complete fictional statement",
+        "opening and closing balance arithmetic"
+      ],
+      "happened": "A connected credit card stopped including several posted purchases near the end of a closed cycle.",
+      "id": "statement-gap",
+      "reversal": "A later exact provider transaction replaces its overlay without deleting the statement observation.",
+      "title": "The feed missed three purchases",
+      "uncertainty": "The uncertain row remains visible for later provider or owner evidence."
+    },
+    {
+      "action": "After the policy window, Ledgerglass marked it expired-assumed and removed it from operational totals.",
+      "difficulty": "Absence does not prove cancellation, and counting it forever overstates spending.",
+      "evidence": [
+        "first and last observation times",
+        "pending age",
+        "later posted candidates"
+      ],
+      "happened": "A pending grocery authorization disappeared from later provider responses.",
+      "id": "pending-settlement",
+      "reversal": "A fresh observation reactivates it; a unique posted match settles it.",
+      "title": "A pending purchase vanished",
+      "uncertainty": "Expired-assumed is reversible bookkeeping, not a cancellation claim."
+    },
+    {
+      "action": "Ledgerglass promoted an account-scoped exact rule after checking affected rows.",
+      "difficulty": "A broad text rule would also change unrelated merchants and contaminate evaluation rows.",
+      "evidence": [
+        "owner correction",
+        "statement-printed merchant",
+        "impact preview"
+      ],
+      "happened": "A noisy merchant string was repeatedly categorized as shopping instead of a subscription.",
+      "id": "learned-rule",
+      "reversal": "A later authoritative contradiction suspends the rule and restores field provenance.",
+      "title": "A correction became a narrow rule",
+      "uncertainty": "The rule applies only to its proven scope."
+    },
+    {
+      "action": "Ledgerglass kept current evidence usable and attached precise coverage warnings to affected answers.",
+      "difficulty": "A single stale source should not turn known balances into invented totals or make every tool unusable.",
+      "evidence": [
+        "per-account refresh cadence",
+        "last successful source observation",
+        "dated balance snapshots"
+      ],
+      "happened": "One fictional institution stopped refreshing while the other connections stayed current.",
+      "id": "stale-source",
+      "reversal": "The next authenticated observation clears the stale condition without rewriting history.",
+      "title": "One connection went stale",
+      "uncertainty": "Any total containing the stale account is explicitly partial."
+    },
+    {
+      "action": "The steward queued only the missing derived work and retried it independently.",
+      "difficulty": "Retrying the whole sync could duplicate work while leaving the actual failed stage unclear.",
+      "evidence": [
+        "successful ingestion batch",
+        "missing index job",
+        "stage-specific failure receipt"
+      ],
+      "happened": "A vector-index write timed out after a successful transaction sync.",
+      "id": "derived-recovery",
+      "reversal": "Derived artifacts can be rebuilt from the canonical ledger.",
+      "title": "The ledger was right but search was behind",
+      "uncertainty": "Semantic search stays marked incomplete until the retry succeeds."
+    },
+    {
+      "action": "Ledgerglass kept the transfer classification and exposed the model output only as rejected derived evidence.",
+      "difficulty": "The prose was plausible, but it conflicted with a confirmed transfer relationship.",
+      "evidence": [
+        "linked account movement",
+        "matching amount and dates",
+        "deterministic flow classification"
+      ],
+      "happened": "A model confidently described a card payment as ordinary spending.",
+      "id": "model-overruled",
+      "reversal": "A confirmed owner correction can replace the relationship through the normal audited path.",
+      "title": "The model sounded sure and was still wrong",
+      "uncertainty": "Narrative confidence never outranks transaction relationships."
+    }
+  ],
+  "schema_version": 1
+}

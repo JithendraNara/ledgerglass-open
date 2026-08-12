@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Recast the repository as the public Ledgerglass showcase and reusable core, with a generated capability registry, dated research record, six explicitly fictional evidence cases, and a human-written builder-journal README.
+- Add reusable integer-money, currency, statement-reconciliation, pending-lifecycle, and cashflow contracts with synthetic regression tests.
+- Add an Astro static showcase with personal build history, evidence tour, fictional browser demo, trust model, capability matrix, research journal, and Cloudflare static-assets configuration.
+- Add a portable placeholder-only Agent Plugin template and independent validation for bundle hashes, privacy boundaries, skill metadata, and generated-marketing language.
+
 - Rename the public product surface to Ledgerglass Starter and clarify its independent relationship to SimpleFIN.
 - Replace the custom GitHub OAuth and dynamic-registration stack with bearer-protected origin access behind Cloudflare MCP Portal.
 - Adopt stateless MCP transport, prompts, discovery cache hints, and strict host/origin allowlists.

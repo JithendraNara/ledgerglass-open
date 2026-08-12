@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import registry from "../../../showcase/capabilities.json";
+import stories from "../../../showcase/scenarios.json";
+const core = registry.capabilities.filter((item) => item.delivery === "core").slice(0, 3);
+---
+<BaseLayout title="Your finances, with evidence" description="A personal finance ledger I built so agents could help with my money without becoming the source of truth.">
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">A personal build, documented in public</p>
+      <h1>I wanted my agents to understand my money without asking me to trust a black box.</h1>
+      <p class="dek">So I built a ledger that keeps the receipts: what the provider said, what a statement proved, what I corrected, and what a model merely suggested.</p>
+      <div class="actions"><a class="button" href="/tour/">See how it works <span aria-hidden="true">→</span></a><a class="button secondary" href="/why/">Read the backstory</a></div>
+    </div>
+    <div class="ledger-sheet" aria-label="Fictional evidence example">
+      <div class="sheet-top"><span>ROWAN HOUSEHOLD · FICTIONAL</span><span>CASE 04</span></div>
+      <p class="scribble">the number is not the answer—<br />the trail behind it is.</p>
+      <div class="evidence-row"><span>Provider observation</span><strong>kept unchanged</strong></div>
+      <div class="evidence-row"><span>Closed statement</span><strong>cycle proven</strong></div>
+      <div class="evidence-row"><span>Agent explanation</span><strong>derived, not truth</strong></div>
+      <div class="stamp">EVIDENCE<br />ATTACHED</div>
+    </div>
+  </section>
+
+  <section class="section rule origin">
+    <div><p class="eyebrow">Why it exists</p><h2>The feeds were useful.<br />They were not complete.</h2></div>
+    <div class="prose">
+      <p>A connected card once missed transactions that were plainly printed on the closed statement. Pending purchases sometimes vanished. One model confidently called a card payment “spending.” Each problem taught me the same lesson: a finance agent needs a memory of evidence, not just a clever prompt.</p>
+      <p>Ledgerglass is the system I ended up building around that lesson. It uses deterministic math for financial answers and lets agents operate around the ledger—investigating, retrying, and explaining—without quietly rewriting the facts.</p>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <p class="eyebrow">Three promises I can actually test</p>
+    <div class="grid-3">
+      {core.map((item, index) => <article class="note-card"><span class="evidence-label">0{index + 1} · {item.maturity}</span><h3>{item.title}</h3><p>{item.summary}</p><a href={`/capabilities/#${item.id}`}>See the proof →</a></article>)}
+    </div>
+  </section>
+
+  <section class="section rule case-preview">
+    <div><p class="eyebrow">A fictional case, based on a real class of failure</p><h2>{stories.scenarios[0].title}</h2><p class="dek">{stories.scenarios[0].happened}</p><a class="button secondary" href="/demo/">Walk through all six cases</a></div>
+    <ol class="timeline">
+      <li><span>01</span><div><strong>What made it hard</strong><p>{stories.scenarios[0].difficulty}</p></div></li>
+      <li><span>02</span><div><strong>What changed</strong><p>{stories.scenarios[0].action}</p></div></li>
+      <li><span>03</span><div><strong>What stayed uncertain</strong><p>{stories.scenarios[0].uncertainty}</p></div></li>
+    </ol>
+  </section>
+
+  <section class="section rule closing">
+    <p class="eyebrow">This is not a service pitch</p>
+    <h2>It is a public notebook for a system I use myself.</h2>
+    <p class="dek">The private installation holds the real data and operational machinery. This repository holds the reusable core, synthetic demonstrations, design decisions, mistakes, and enough proof for someone else to inspect the ideas.</p>
+    <div class="actions"><a class="button" href="/build/">Build your own</a><a class="button secondary" href="/build-log/">Read the mistakes</a></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { width: min(1280px, calc(100% - 2rem)); margin: 0 auto; min-height: calc(100vh - 82px); display: grid; grid-template-columns: 1.35fr .65fr; gap: clamp(2rem, 7vw, 7rem); align-items: center; padding: clamp(4rem, 8vw, 8rem) 0; }
+  .hero h1 { font-size: clamp(3.1rem, 7vw, 7rem); max-width: 14ch; }
+  .actions { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 2.2rem; }
+  .ledger-sheet { position: relative; background: #f9f3e9; border: 1px solid var(--ink); box-shadow: 14px 16px 0 var(--rust); padding: 1.3rem; transform: rotate(1.5deg); min-height: 470px; }
+  .sheet-top { display: flex; justify-content: space-between; font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; padding-bottom: 1rem; border-bottom: 1px dashed var(--line); }
+  .scribble { font-family: var(--serif); font-style: italic; font-size: 1.55rem; color: var(--blue); transform: rotate(-3deg); margin: 3rem 1.4rem; }
+  .evidence-row { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem .2rem; border-top: 1px solid var(--line); font-family: var(--mono); font-size: .7rem; }
+  .stamp { position: absolute; right: 1.4rem; bottom: 1.5rem; color: var(--rust); border: 3px double var(--rust); border-radius: 50%; width: 92px; height: 92px; display: grid; place-content: center; text-align: center; font-family: var(--mono); font-weight: 800; transform: rotate(-11deg); }
+  .origin, .case-preview { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem, 8vw, 8rem); }
+  .timeline { list-style: none; padding: 0; margin: 0; }
+  .timeline li { display: grid; grid-template-columns: 55px 1fr; gap: 1rem; border-top: 1px solid var(--line); padding: 1.5rem 0; }
+  .timeline span { font-family: var(--mono); color: var(--rust); }
+  .timeline p { color: var(--muted); margin: .35rem 0; }
+  .closing { text-align: center; }
+  .closing h2, .closing .dek { margin-left: auto; margin-right: auto; }
+  .closing .actions { justify-content: center; }
+  @media (max-width: 900px) { .hero, .origin, .case-preview { grid-template-columns: 1fr; } .ledger-sheet { width: min(450px, 94%); margin: 1rem auto; min-height: 410px; } }
+</style>

@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="How evidence becomes an answer" eyebrow="Architecture" description="The design separates facts, operational choices, deterministic read models, and agent explanations so one failure does not quietly become financial truth.">
+  <section class="section">
+    <div class="architecture" role="img" aria-label="Evidence flows from connectors and statements through immutable observations, an operational ledger, deterministic finance views, and then agents">
+      <div class="sources"><span>Provider feed</span><span>Closed statements</span><span>Owner corrections</span></div><b>↓</b>
+      <div class="layer rust"><small>01 · evidence</small><strong>Immutable observations</strong><p>Keep what each source actually said.</p></div><b>↓</b>
+      <div class="layer blue"><small>02 · operations</small><strong>Effective ledger</strong><p>Resolve supersession, lifecycle, exclusions, and repairs reversibly.</p></div><b>↓</b>
+      <div class="layer"><small>03 · meaning</small><strong>Deterministic finance views</strong><p>Cashflow, debt, net worth, merchants, transfers, and recurring commitments.</p></div><b>↓</b>
+      <div class="agents"><span>Agent investigation</span><span>Qualified answers</span><span>Bounded repair work</span></div>
+    </div>
+  </section>
+  <section class="section rule grid-3"><article class="note-card"><h3>D1 holds the record</h3><p>The reusable contracts assume append-only observations and explicit effective views, not in-place correction of provider facts.</p></article><article class="note-card"><h3>MCP carries the evidence</h3><p>Tool results state freshness, coverage, status, provenance, and limitations beside the requested data.</p></article><article class="note-card"><h3>Agents stay outside the math</h3><p>A steward can retry derived work or investigate a case. It cannot make an unsupported row real.</p></article></section>
+</BaseLayout>
+<style>.architecture{max-width:860px;margin:auto;display:grid;justify-items:center;gap:1rem}.sources,.agents{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}.sources span,.agents span{background:var(--paper-deep);padding:1.2rem;text-align:center;font:700 .72rem var(--mono);text-transform:uppercase}.layer{width:min(680px,100%);border:2px solid var(--ink);padding:1.5rem 2rem;background:var(--paper);display:grid;grid-template-columns:130px 1fr;align-items:center;gap:.4rem 1rem;box-shadow:7px 7px 0 var(--ink)}.layer small{grid-row:span 2;font:700 .65rem var(--mono);text-transform:uppercase}.layer strong{font:700 1.5rem var(--serif)}.layer p{margin:0;color:var(--muted)}.layer.rust{box-shadow:7px 7px 0 var(--rust)}.layer.blue{box-shadow:7px 7px 0 var(--blue)}@media(max-width:650px){.sources,.agents{grid-template-columns:1fr}.layer{grid-template-columns:1fr}.layer small{grid-row:auto}}</style>

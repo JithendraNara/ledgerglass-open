@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "simplefin-protocol",
+      "kind": "primary",
+      "title": "SimpleFIN protocol",
+      "url": "https://www.simplefin.org/protocol.html",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "mcp-security",
+      "kind": "primary",
+      "title": "MCP security best practices",
+      "url": "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-static-assets",
+      "kind": "primary",
+      "title": "Cloudflare Workers Static Assets",
+      "url": "https://developers.cloudflare.com/workers/static-assets/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-builds",
+      "kind": "primary",
+      "title": "Cloudflare Workers Builds",
+      "url": "https://developers.cloudflare.com/workers/ci-cd/builds/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-agents",
+      "kind": "primary",
+      "title": "Cloudflare Agents SDK",
+      "url": "https://developers.cloudflare.com/agents/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-workflows",
+      "kind": "primary",
+      "title": "Cloudflare Workflows",
+      "url": "https://developers.cloudflare.com/workflows/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-ai-gateway",
+      "kind": "primary",
+      "title": "Cloudflare AI Gateway",
+      "url": "https://developers.cloudflare.com/ai-gateway/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "astro-content",
+      "kind": "primary",
+      "title": "Astro content collections",
+      "url": "https://docs.astro.build/en/guides/content-collections/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "github-app-actions",
+      "kind": "primary",
+      "title": "GitHub App authentication in Actions",
+      "url": "https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/making-authenticated-api-requests-with-a-github-app-in-a-github-actions-workflow",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "actual-architecture",
+      "kind": "reference",
+      "title": "Actual Budget architecture",
+      "url": "https://actualbudget.org/docs/contributing/project-details/architecture/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "plaid-pattern",
+      "kind": "reference",
+      "title": "Plaid Pattern sandbox application",
+      "url": "https://github.com/plaid/pattern",
+      "verified_at": "2026-08-12"
+    }
+  ]
+}

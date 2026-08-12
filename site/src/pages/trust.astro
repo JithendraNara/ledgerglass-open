@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const rows = [
+  ["A provider observation", "Recorded", "Useful source evidence; not proof that a closed cycle is complete."],
+  ["A complete closed statement", "Authoritative for its cycle", "Arithmetic must pass before any repair is written."],
+  ["An owner correction", "Narrowly authoritative", "Changes effective meaning without deleting the original source fact."],
+  ["A deterministic relationship", "Derived with proof", "Transfers and refunds require linked evidence, not similar prose."],
+  ["A model suggestion", "Advisory", "May explain or propose; never outranks supported ledger evidence."],
+  ["Missing evidence", "Left unresolved", "Ledgerglass would rather show a gap than invent a balancing row."],
+];
+---
+<BaseLayout title="What the system trusts" eyebrow="Trust model" description="Financial software becomes dangerous when it hides the difference between observed, inferred, repaired, and unknown.">
+  <section class="section"><div class="trust-list">{rows.map(([source, status, note]) => <article><h3>{source}</h3><strong>{status}</strong><p>{note}</p></article>)}</div></section>
+  <section class="section rule grid-2"><div><p class="eyebrow">A deliberate refusal</p><h2>No invented balancing rows.</h2></div><div class="prose"><p>When a statement balance and the ledger disagree, a neat adjustment would make the arithmetic green. It would also hide the exact problem I need the system to preserve.</p><p>Ledgerglass records the discrepancy, identifies the missing evidence, and waits. A truthful partial answer is more useful than a complete fiction.</p></div></section>
+</BaseLayout>
+<style>.trust-list{border-top:1px solid var(--line)}.trust-list article{display:grid;grid-template-columns:1fr .8fr 1.4fr;gap:2rem;align-items:baseline;border-bottom:1px solid var(--line);padding:1.5rem 0}.trust-list h3{margin:0}.trust-list strong{font:700 .72rem var(--mono);text-transform:uppercase;color:var(--rust-dark)}.trust-list p{color:var(--muted);margin:0}@media(max-width:750px){.trust-list article{grid-template-columns:1fr;gap:.4rem}}</style>

@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Why I built it" eyebrow="The backstory" description="I started with a small question—what did I spend?—and ended up confronting the difference between a feed and a ledger.">
+  <section class="section grid-2">
+    <div class="prose"><p>I did not set out to build financial infrastructure. I wanted my agents to answer ordinary questions about my own money. The first version fetched transactions, added categories, and looked convincing. Then the edge cases arrived.</p><p>A card feed omitted posted rows. Pending charges refused to die. An authentication warning meant something different for a monthly-updated card than it did for a daily bank connection. The answers were fluent, but the evidence underneath them was uneven.</p></div>
+    <aside class="margin-note"><span class="evidence-label">Notebook, revision 03</span><p>“Connected” is a transport fact. It is not proof that a closed financial cycle is complete.</p></aside>
+  </section>
+  <section class="section rule"><p class="eyebrow">The decisions that followed</p><div class="grid-3">
+    <article class="note-card"><h3>Keep the raw observation</h3><p>A later repair should not erase what the connector originally reported. Provider, statement, correction, and derived evidence stay distinct.</p></article>
+    <article class="note-card"><h3>Make uncertainty visible</h3><p>Partial data should still be useful, but it must carry its missing coverage into every answer it affects.</p></article>
+    <article class="note-card"><h3>Give agents a narrower job</h3><p>Agents can investigate and coordinate repairs. Deterministic code owns arithmetic and evidence precedence.</p></article>
+  </div></section>
+  <section class="section rule grid-2"><div><p class="eyebrow">What I changed my mind about</p><h2>I once treated AI as the pipeline.</h2></div><div class="prose"><p>That was backwards. Models are useful for merchant research, explanations, and suggestions. They are a poor place to hide account identities, transaction lifecycle, balance arithmetic, or statement matching.</p><p>The current design uses models at the edges. Every important financial claim can fall back to deterministic evidence, and every model result is allowed to be rejected.</p></div></section>
+</BaseLayout>
+<style>.margin-note{align-self:start;border-left:4px solid var(--rust);padding:1.2rem 1.5rem;background:#f9f3e9;transform:rotate(-1deg)}.margin-note p{font-family:var(--serif);font-size:1.45rem}</style>

@@ -1,135 +1,109 @@
-# Ledgerglass Starter
+# Ledgerglass
 
 [![CI](https://github.com/JithendraNara/ledgerglass-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/JithendraNara/ledgerglass-starter/actions/workflows/ci.yml)
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-orange)](https://developers.cloudflare.com/workers/)
-[![MCP](https://img.shields.io/badge/MCP-2026--07--28-2f6feb)](https://modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-An independent, deploy-your-own personal-finance MCP starter built on
-[SimpleFIN Bridge](https://beta-bridge.simplefin.org/). It is not an official
-SimpleFIN product and does not use SimpleFIN branding.
+I wanted my agents to understand my money without asking me to trust a black
+box. Ledgerglass is the evidence-backed ledger I built for that job.
 
-The public repository contains source code and synthetic examples only: no
-credentials, account inventory, financial rows, Cloudflare resource IDs,
-private endpoints, statement files, or production history.
+This public repository is the reusable core and the notebook around my private
+installation. It contains working financial contracts, synthetic demonstrations,
+architecture, a portable Agent Plugin template, and the static showcase site. It is
+not a copy of production and contains no real account data, statement contents,
+credentials, endpoints, resource IDs, or operational history.
 
-## Capabilities
+Ledgerglass uses [SimpleFIN Bridge](https://beta-bridge.simplefin.org/) as one
+upstream connector. It is an independent project and is not affiliated with or
+endorsed by SimpleFIN.
 
-- Stateless Streamable HTTP MCP endpoint at `/mcp`
-- Cloudflare MCP Portal for client OAuth, tool policy, and centralized discovery
-- Separate read and owner bearer credentials at the private Worker origin
-- Daily SimpleFIN synchronization with five-day overlap and bounded request windows
-- D1 account, transaction, coverage, correction, evaluation, and audit records
-- Currency-separated balance and cashflow summaries
-- Workers AI categorization with deterministic guardrails and explicit fallback telemetry
-- Vectorize semantic search with SQL correctness filters
-- MCP prompts for a finance checkup and transaction investigation
-- Safe `/health` and `/ready` endpoints without financial details
+## The problem that shaped it
 
-This is a compact starter, not a public mirror of any private deployment. It
-does not claim statement reconciliation, immutable ledger-v2 provenance,
-pending-transaction lifecycle automation, or an autonomous finance steward.
-Those features need their own migrations, tests, and privacy review before they
-belong in a reusable template.
+A transaction feed can be connected and still incomplete. Pending rows disappear.
+Closed statements reveal missing activity. Similar-looking payments are not always
+the same transaction. Models can sound certain while contradicting a proven transfer.
 
-## Architecture
+The design that emerged is deliberately layered:
 
-```mermaid
-flowchart LR
-  client["MCP clients"] --> portal["Cloudflare MCP Portal\nOAuth + tool policy"]
-  direct["Private direct client"] --> origin["Ledgerglass Worker\nBearer protected"]
-  portal --> origin
-  cron["Cloudflare Cron"] --> origin
-  origin --> bridge["SimpleFIN Bridge"]
-  origin --> d1["D1"]
-  origin --> ai["Workers AI"]
-  origin --> vector["Vectorize"]
-  origin -. optional .-> gateway["AI Gateway"]
+```text
+provider feeds / statements / owner corrections
+  -> immutable observations
+  -> reversible operational ledger
+  -> deterministic financial views
+  -> evidence-bearing MCP results
+  -> agents that investigate, explain, and retry bounded work
 ```
 
-The Worker intentionally does not implement its own OAuth server or dynamic
-client registration. Cloudflare MCP Portal is the public client boundary. The
-origin accepts bearer credentials and should be known only to the portal and
-explicitly configured private clients.
+The ledger owns amounts, dates, relationships, lifecycle, and provenance. Agents work
+around that record; they do not become the record.
 
-## Financial Semantics
+## What is here
 
-- Human `endDate` values are inclusive; the SimpleFIN API receives the next
-  midnight as its exclusive bound.
-- Syncs use five days of overlap and split longer reads into bounded windows.
-- SimpleFIN responses and error text are size-bounded and sanitized.
-- Multi-currency values are returned under `by_currency`; unlike currencies
-  are never added into one total.
-- AI output never becomes trustworthy merely because a model answered. Tools
-  expose model, fallback, parse, confidence, coverage, and freshness evidence.
-- Workers Logs remain disabled by default. The application stores bounded
-  operational metadata without prompts, arguments, financial payloads, or
-  authorization values.
+- `src/public-core.ts` — integer money, currency separation, date windows,
+  statement matching, pending lifecycle, and settled cashflow contracts.
+- `showcase/` — generated capability registry, dated research sources, six explicitly
+  fictional cases, and deterministic bundle hashes.
+- `site/` — the personal builder journal and browser-only fictional demo, built with
+  Astro and deployed as a separate Cloudflare static-assets Worker.
+- `plugins/ledgerglass/` — portable Agent Plugin and skills using a placeholder MCP
+  URL and no credentials.
+- `worker/` — a compact deploy-your-own Cloudflare Worker starter with D1, scheduled
+  SimpleFIN sync, MCP tools, optional derived enrichment, and safe health endpoints.
+- `docs/` — setup, evidence rules, architecture decisions, research, and limitations.
 
-## MCP Surface
+The generated [capability matrix](showcase/capabilities.json) is the durable list of
+what is working public core, what is a synthetic demonstration, and what remains a
+private architecture note. The site consumes the same file; claims are not copied by
+hand across surfaces.
 
-Start with `agent_guidance`, `worker_operational_status`,
-`simplefin_data_coverage`, and `finance_overview`.
-
-Read tools cover accounts, transactions, cashflow, merchants, recurring
-obligations, semantic search, anomaly evidence, briefings, corrections, and
-evaluation history. Owner tools cover sync, setup-token claiming,
-categorization, corrections, eval labels/runs, sanitized audit events, and
-insight refresh. The live server inventory is authoritative.
-
-Prompts:
-
-- `finance_checkup`
-- `investigate_transaction`
-
-## Quick Start
+## Try it locally
 
 ```bash
 npm ci
 npm run check
+npm run site:dev
 ```
 
-Then follow [docs/SETUP.md](docs/SETUP.md). It covers D1, KV, Vectorize,
-secrets, deployment, and Cloudflare MCP Portal registration.
+`npm run check` runs privacy scanning, bundle verification, TypeScript and Worker
+checks, synthetic core tests, site diagnostics/build, dependency audit, migration
+replay, and a Wrangler dry run.
 
-Useful files:
+To deploy your own finance Worker, follow [docs/SETUP.md](docs/SETUP.md). Use your own
+Cloudflare resources and authenticated MCP gateway. The sample configuration contains
+placeholders only.
 
-- [Cloudflare MCP Portal example](examples/cloudflare-mcp-portal.example.md)
-- [direct bearer client](configs/cloudflare-worker-mcp.example.json)
-- [finance-agent workflow](docs/FINANCE_AGENT_WORKFLOW.md)
-- [reusable design patterns](docs/PATTERNS.md)
-- [security policy](SECURITY.md)
+## A public projection, not a mirror
 
-## SimpleFIN Operating Limits
+The private repository owns the canonical capability registry. Its exporter starts
+from an explicit allowlist and creates the four files in `showcase/`; it never copies
+the private tree and attempts redaction afterward.
 
-The current SimpleFIN developer guide allows at most 24 requests per day and a
-maximum 90-day request range. The default cron makes ordinary refreshes once a
-day, adds a five-day overlap for late settlement, and uses shorter request
-windows for backfills. Check the upstream guide before changing sync behavior.
+Publication uses a narrowly installed GitHub App and one continuously updated review
+branch. The private workflow may open or update a pull request. It cannot merge it.
+Public CI repeats every privacy, contract, content, and site check without access to
+the private repository. An unchanged export creates no review noise.
 
-## Public-Repository Boundary
+See [docs/PUBLIC_BUNDLE.md](docs/PUBLIC_BUNDLE.md) for the contract and
+[docs/HUMAN_VOICE.md](docs/HUMAN_VOICE.md) for the editorial gate.
 
-`npm run privacy:audit` fails on tracked statement files, databases, private
-workspace paths, the known private production hostname, and common embedded
-credential forms. CI also runs dependency audit, both TypeScript builds, tests,
-and a Wrangler dry-run. CI never deploys this template and holds no Cloudflare
-or SimpleFIN secret.
+## Honest limits
 
-Before publishing a fork:
-
-```bash
-npm run privacy:audit
-git status --short
-```
-
-Keep real configuration and operational evidence in a private deployment
-repository or Cloudflare itself.
+- This is personal software, not a financial institution, adviser, or hosted service.
+- Synthetic cases prove contracts; they do not prove every institution behaves alike.
+- The public steward is a deterministic simulator and architecture story. Private
+  prompts, quotas, bindings, and model routes are not published.
+- Models can enrich or explain evidence. They do not guarantee correctness.
+- A complete closed statement may outrank an incomplete feed for that cycle, but only
+  after arithmetic and matching checks pass.
+- Partial or stale evidence stays visible instead of being filled with invented rows.
 
 ## Documentation
 
-- [Setup](docs/SETUP.md)
-- [Finance Agent Workflow](docs/FINANCE_AGENT_WORKFLOW.md)
-- [Reusable MCP Patterns](docs/PATTERNS.md)
-- [2026 public starter audit](docs/AUDIT-2026-08-12.md)
+- [Build your own](docs/SETUP.md)
+- [Finance-agent workflow](docs/FINANCE_AGENT_WORKFLOW.md)
+- [Reusable patterns](docs/PATTERNS.md)
+- [Public bundle contract](docs/PUBLIC_BUNDLE.md)
+- [Human voice and design review](docs/HUMAN_VOICE.md)
+- [Showcase deployment](docs/SITE_DEPLOYMENT.md)
+- [Research record](showcase/research.json)
 - [Contributing](CONTRIBUTING.md)
 - [Security](SECURITY.md)

@@ -1,0 +1,9 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import registry from "../../../showcase/capabilities.json";
+const steps = registry.capabilities.filter((item) => item.delivery === "core").slice(0, 6);
+---
+<BaseLayout title="A tour of the evidence" eyebrow="Product tour" description="The shortest path from a provider response to an answer an agent can defend.">
+  <section class="section"><ol class="tour-list">{steps.map((step, index) => <li id={step.id}><span class="index">{String(index + 1).padStart(2, "0")}</span><div><span class="tag core">{step.maturity}</span><h2>{step.title}</h2><p class="dek">{step.problem}</p><p>{step.summary}</p></div></li>)}</ol></section>
+</BaseLayout>
+<style>.tour-list{list-style:none;padding:0;margin:0}.tour-list li{display:grid;grid-template-columns:100px 1fr;gap:2rem;padding:4rem 0;border-top:1px solid var(--line)}.index{font-family:var(--mono);font-size:1.1rem;color:var(--rust)}.tour-list h2{margin-top:1rem}.tour-list li>div{max-width:760px}.tour-list li>div>p:last-child{font-size:1.05rem;color:var(--muted)}@media(max-width:650px){.tour-list li{grid-template-columns:1fr;gap:.6rem}}</style>

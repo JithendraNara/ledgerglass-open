@@ -1,7 +1,8 @@
 # AGENTS.md
 
-Public, independent Ledgerglass Starter. SimpleFIN-backed; not an official
-SimpleFIN product.
+Public Ledgerglass showcase and reusable core. The private Ledgerglass repository
+is the production source of truth. SimpleFIN is an upstream connector; Ledgerglass
+is independent and is not an official SimpleFIN product.
 
 Start:
 
@@ -14,6 +15,10 @@ Hard boundaries:
 - Never commit credentials, financial rows, statements, database/vector
   exports, real Cloudflare IDs, private endpoints, account inventories, or
   production evidence.
+- Never copy the private tree and redact afterward. Generated private-to-public
+  material is restricted to the verified files in `showcase/BUNDLE.json`.
+- Every capability claim resolves through `showcase/capabilities.json` to public
+  core, a fictional demo, or an explicit private note.
 - Public examples use `finance.example.com`, zero IDs, synthetic merchants, and
   environment-variable placeholders.
 - Cloudflare MCP Portal provides client OAuth. Do not add custom OAuth/DCR back
@@ -47,3 +52,7 @@ Change rules:
 - Preserve additive migration order.
 - Run privacy audit, both typechecks, build, tests, dependency audit, and Worker
   dry-run.
+- Site and README copy must pass the human-voice gate in `docs/HUMAN_VOICE.md`.
+  No generic model-marketing language, fabricated metrics, users, or testimonials.
+- Public CI never checks out or authenticates to the private repository. Publication
+  pull requests require owner review and never merge automatically.

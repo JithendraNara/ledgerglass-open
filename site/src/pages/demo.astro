@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import stories from "../../../showcase/scenarios.json";
+---
+<BaseLayout title="The Rowan household" eyebrow="Browser-only fictional demo" description="Six made-up cases that exercise the same contracts as the private system. No account, institution, or transaction here belongs to a real person.">
+  <section class="section demo-shell">
+    <div class="case-tabs" role="tablist" aria-label="Fictional cases">
+      {stories.scenarios.map((story, index) => <button type="button" role="tab" aria-selected={index === 0 ? "true" : "false"} data-case={story.id}><span>{String(index + 1).padStart(2, "0")}</span>{story.title}</button>)}
+    </div>
+    <div class="case-pages">
+      {stories.scenarios.map((story, index) => <article data-panel={story.id} hidden={index !== 0}>
+        <span class="tag demo">fictional evidence</span><h2>{story.title}</h2>
+        <dl><div><dt>What happened</dt><dd>{story.happened}</dd></div><div><dt>Why it was difficult</dt><dd>{story.difficulty}</dd></div><div><dt>Evidence on hand</dt><dd><ul>{story.evidence.map((item) => <li>{item}</li>)}</ul></dd></div><div><dt>What Ledgerglass changed</dt><dd>{story.action}</dd></div><div><dt>What stayed uncertain</dt><dd>{story.uncertainty}</dd></div><div><dt>How it reverses</dt><dd>{story.reversal}</dd></div></dl>
+      </article>)}
+    </div>
+  </section>
+  <script>
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>("[data-case]")];
+    const panels = [...document.querySelectorAll<HTMLElement>("[data-panel]")];
+    for (const tab of tabs) tab.addEventListener("click", () => {
+      for (const item of tabs) item.setAttribute("aria-selected", String(item === tab));
+      for (const panel of panels) panel.hidden = panel.dataset.panel !== tab.dataset.case;
+    });
+  </script>
+</BaseLayout>
+<style>.demo-shell{display:grid;grid-template-columns:minmax(240px,.6fr) 1.4fr;gap:1px;background:var(--line);border:1px solid var(--line);padding:0}.case-tabs{display:flex;flex-direction:column;background:var(--paper-deep)}.case-tabs button{border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;padding:1.2rem;font:650 .9rem var(--sans);display:grid;grid-template-columns:2rem 1fr;gap:.6rem;color:var(--ink);cursor:pointer}.case-tabs button span{font: .7rem var(--mono);color:var(--rust)}.case-tabs button[aria-selected=true]{background:var(--ink);color:var(--paper)}.case-pages{background:var(--paper);padding:clamp(1.5rem,5vw,5rem)}.case-pages article h2{margin:1.4rem 0 3rem}.case-pages dl{margin:0}.case-pages dl div{display:grid;grid-template-columns:180px 1fr;gap:2rem;border-top:1px solid var(--line);padding:1.2rem 0}.case-pages dt{font:700 .68rem var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--rust-dark)}.case-pages dd{margin:0;line-height:1.55}.case-pages ul{margin:0;padding-left:1.2rem}@media(max-width:800px){.demo-shell{grid-template-columns:1fr}.case-tabs{overflow:auto;flex-direction:row}.case-tabs button{min-width:210px}.case-pages dl div{grid-template-columns:1fr;gap:.5rem}}</style>
