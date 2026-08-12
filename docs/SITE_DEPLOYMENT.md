@@ -29,6 +29,8 @@ The repository connection and one-repository GitHub authorization were verified 
 2026-08-12; later matching commits are built and deployed by Workers Builds.
 The Cloudflare Workers and Pages GitHub App is explicitly authorized for this public
 repository; private Ledgerglass remains outside that installation.
+The former public Worker was removed after the Ledgerglass Open URL passed live route
+checks; it is not retained as a parallel product surface.
 
 Cloudflare documentation checked 2026-08-12:
 
