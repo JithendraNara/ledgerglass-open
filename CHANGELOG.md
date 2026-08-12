@@ -7,6 +7,7 @@
 - Add an Astro static showcase with personal build history, evidence tour, fictional browser demo, trust model, capability matrix, research journal, and Cloudflare static-assets configuration.
 - Add a portable placeholder-only Agent Plugin template and independent validation for bundle hashes, privacy boundaries, skill metadata, and generated-marketing language.
 - Publish the journal as a separate static-assets Worker with Git-based production and preview builds, canonical page URLs, and no runtime access to the private system.
+- Raise muted editorial text contrast to meet the showcase's WCAG AA accessibility gate.
 
 - Rename the public product surface to Ledgerglass Starter and clarify its independent relationship to SimpleFIN.
 - Replace the custom GitHub OAuth and dynamic-registration stack with bearer-protected origin access behind Cloudflare MCP Portal.
