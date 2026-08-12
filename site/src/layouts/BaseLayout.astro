@@ -6,6 +6,8 @@ interface Props {
 }
 const { title, description, eyebrow } = Astro.props;
 const path = Astro.url.pathname;
+const canonicalUrl = new URL(path, Astro.site ?? Astro.url);
+const socialImageUrl = new URL("/social-preview.svg", Astro.site ?? Astro.url);
 const links = [
   ["/why/", "Why"], ["/tour/", "Tour"], ["/demo/", "Demo"],
   ["/architecture/", "Architecture"], ["/trust/", "Trust"], ["/build-log/", "Build log"],
@@ -21,7 +23,9 @@ const links = [
     <meta property="og:type" content="website" />
     <meta property="og:title" content={`${title} · Ledgerglass`} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/social-preview.svg" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title} · Ledgerglass</title>
   </head>

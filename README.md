@@ -6,6 +6,8 @@
 I wanted my agents to understand my money without asking me to trust a black
 box. Ledgerglass is the evidence-backed ledger I built for that job.
 
+[Read the public build journal and try the fictional demo.](https://ledgerglass-showcase.jnara01.workers.dev/)
+
 This public repository is the reusable core and the notebook around my private
 installation. It contains working financial contracts, synthetic demonstrations,
 architecture, a portable Agent Plugin template, and the static showcase site. It is
