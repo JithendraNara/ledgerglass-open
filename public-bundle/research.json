@@ -77,6 +77,62 @@
       "title": "Plaid Pattern sandbox application",
       "url": "https://github.com/plaid/pattern",
       "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-access-self-hosted",
+      "kind": "primary",
+      "title": "Cloudflare Access self-hosted applications",
+      "url": "https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/self-hosted-public-app/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-access-paths",
+      "kind": "primary",
+      "title": "Cloudflare Access application paths",
+      "url": "https://developers.cloudflare.com/cloudflare-one/access-controls/policies/app-paths/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-access-jwt",
+      "kind": "primary",
+      "title": "Cloudflare Access JWT validation",
+      "url": "https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-worker-routes",
+      "kind": "primary",
+      "title": "Cloudflare Workers routes",
+      "url": "https://developers.cloudflare.com/workers/configuration/routing/routes/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "cloudflare-service-bindings",
+      "kind": "primary",
+      "title": "Cloudflare Workers service bindings and named RPC entrypoints",
+      "url": "https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/rpc/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "actual-reconciliation",
+      "kind": "reference",
+      "title": "Actual Budget account reconciliation",
+      "url": "https://actualbudget.org/docs/accounts/reconciliation/",
+      "verified_at": "2026-08-12"
+    },
+    {
+      "id": "actual-schedules",
+      "kind": "reference",
+      "title": "Actual Budget schedules",
+      "url": "https://actualbudget.org/docs/schedules/",
+      "verified_at": "2026-08-13"
+    },
+    {
+      "id": "cfpb-credit-card-interest",
+      "kind": "primary",
+      "title": "CFPB credit card interest calculation guidance",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-does-my-credit-card-company-calculate-the-amount-of-interest-i-owe-en-51/",
+      "verified_at": "2026-08-13"
     }
   ]
 }

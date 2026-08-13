@@ -1,14 +1,14 @@
 {
   "capabilities": [
     {
-      "delivery": "core",
+      "delivery": "case-study",
       "id": "evidence-ledger",
       "last_verified": "2026-08-12",
       "maturity": "stable",
       "problem": "A confident financial answer is useless when I cannot tell which source, statement, or correction produced it.",
       "public_artifacts": [
-        "worker ledger",
-        "MCP response envelope",
+        "ledger architecture",
+        "MCP response contract",
         "trust model"
       ],
       "research_refs": [
@@ -19,15 +19,15 @@
       "title": "Evidence before answers"
     },
     {
-      "delivery": "core",
+      "delivery": "case-study",
       "id": "money-and-currency",
       "last_verified": "2026-08-12",
       "maturity": "stable",
       "problem": "Floating-point totals and mixed currencies can make a tidy dashboard mathematically wrong.",
       "public_artifacts": [
-        "money domain",
-        "cashflow queries",
-        "contract tests"
+        "money contract",
+        "cashflow architecture",
+        "synthetic evidence"
       ],
       "research_refs": [
         "actual-architecture"
@@ -36,14 +36,14 @@
       "title": "Money that adds up"
     },
     {
-      "delivery": "core",
+      "delivery": "case-study",
       "id": "simplefin-sync",
       "last_verified": "2026-08-12",
       "maturity": "stable",
       "problem": "Late settlement, exclusive date boundaries, and provider limits make a naive daily fetch lose rows.",
       "public_artifacts": [
-        "SimpleFIN connector",
-        "sync tests"
+        "connector contract",
+        "sync-window architecture"
       ],
       "research_refs": [
         "simplefin-protocol"
@@ -52,13 +52,13 @@
       "title": "Boring, bounded synchronization"
     },
     {
-      "delivery": "core",
+      "delivery": "case-study",
       "id": "pending-lifecycle",
       "last_verified": "2026-08-12",
       "maturity": "stable",
       "problem": "Some providers stop reporting pending purchases without saying whether they settled or disappeared.",
       "public_artifacts": [
-        "pending lifecycle",
+        "pending lifecycle contract",
         "synthetic settlement story"
       ],
       "research_refs": [
@@ -68,14 +68,13 @@
       "title": "Pending is not forever"
     },
     {
-      "delivery": "core",
+      "delivery": "case-study",
       "id": "statement-reconciliation",
       "last_verified": "2026-08-12",
       "maturity": "stable",
       "problem": "A connected card can still omit posted transactions or report rows that the closed statement does not support.",
       "public_artifacts": [
-        "statement ingestion",
-        "synced reconciliation",
+        "statement workflow contract",
         "synthetic repair story"
       ],
       "research_refs": [
@@ -86,31 +85,33 @@
       "title": "Statements can correct the feed"
     },
     {
-      "delivery": "core",
+      "delivery": "case-study",
       "id": "deterministic-finance",
-      "last_verified": "2026-08-12",
+      "last_verified": "2026-08-13",
       "maturity": "stable",
       "problem": "Spending, debt, transfers, and recurring commitments should not change because a language model phrased them differently.",
       "public_artifacts": [
-        "finance query kernel",
-        "analysis modules",
+        "finance-query architecture",
+        "analysis contracts",
         "synthetic household"
       ],
       "research_refs": [
-        "actual-architecture"
+        "actual-architecture",
+        "actual-schedules",
+        "cfpb-credit-card-interest"
       ],
-      "summary": "Deterministic read models calculate cashflow, debt, net worth, merchants, transfers, and recurring obligations before narrative is added.",
+      "summary": "Deterministic read models calculate cashflow, debt, net worth, merchants, transfers, and recurring cadence before narrative is added. Commitment evidence stays separate from interest, fees, debt movement, and repeated discretionary spending; APR buckets are not applied to balances without allocation evidence.",
       "title": "The totals do not need a model"
     },
     {
-      "delivery": "core",
+      "delivery": "case-study",
       "id": "reversible-learning",
       "last_verified": "2026-08-12",
       "maturity": "stable",
       "problem": "A useful correction should teach the system without silently rewriting old evidence or poisoning evaluation data.",
       "public_artifacts": [
         "rule contracts",
-        "protected evaluation",
+        "evaluation boundary",
         "synthetic correction story"
       ],
       "research_refs": [
@@ -120,14 +121,14 @@
       "title": "Corrections that can be undone"
     },
     {
-      "delivery": "core",
+      "delivery": "case-study",
       "id": "agent-plugin",
       "last_verified": "2026-08-12",
       "maturity": "stable",
       "problem": "Connecting the tools is not enough if every agent guesses a different workflow or trust policy.",
       "public_artifacts": [
-        "Agent Plugin template",
-        "finance skills"
+        "Agent Plugin architecture",
+        "skill-routing contract"
       ],
       "research_refs": [
         "mcp-security"
@@ -182,8 +183,29 @@
       "research_refs": [
         "cloudflare-ai-gateway"
       ],
-      "summary": "The private deployment uses task-specific routing and fallbacks; the public core exposes a provider-neutral interface instead of personal quotas or credentials.",
+      "summary": "The private deployment uses task-specific routing and fallbacks; the public package explains a provider-neutral boundary instead of publishing personal quotas or credentials.",
       "title": "Model routing from a real deployment"
+    },
+    {
+      "delivery": "private-note",
+      "id": "owner-finance-console",
+      "last_verified": "2026-08-12",
+      "maturity": "experimental",
+      "problem": "The owner needs a visual way to inspect evidence and authorize existing ledger operations without creating a second financial backend.",
+      "public_artifacts": [
+        "privacy boundary",
+        "architecture note"
+      ],
+      "research_refs": [
+        "cloudflare-access-self-hosted",
+        "cloudflare-access-paths",
+        "cloudflare-access-jwt",
+        "cloudflare-worker-routes",
+        "cloudflare-service-bindings",
+        "actual-reconciliation"
+      ],
+      "summary": "The private deployment has an authenticated console over the same finance application services; only the architectural boundary is documented publicly.",
+      "title": "A private operator console"
     }
   ],
   "generated": true,
