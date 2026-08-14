@@ -29,6 +29,21 @@
       "uncertainty": "Expired-assumed is reversible bookkeeping, not a cancellation claim."
     },
     {
+      "action": "Ledgerglass created one continuity discrepancy with the required adjacent-statement evidence and a deterministic resolution condition.",
+      "difficulty": "Arithmetic inside each document could pass while the missing movement between cycles stayed unexplained.",
+      "evidence": [
+        "stable statement-cycle identity",
+        "prior closing balance",
+        "next opening balance",
+        "immutable source versions"
+      ],
+      "happened": "Two synthetic card statements each balanced internally, but the next opening balance was different from the prior closing balance.",
+      "id": "cycle-continuity",
+      "reversal": "A corrected statement version can supersede the effective evidence; the old version and discrepancy history remain auditable.",
+      "title": "Two correct statements still did not connect",
+      "uncertainty": "No balancing transaction is invented and the difference remains waiting or owner-review work."
+    },
+    {
       "action": "Ledgerglass promoted an account-scoped exact rule after checking affected rows.",
       "difficulty": "A broad text rule would also change unrelated merchants and contaminate evaluation rows.",
       "evidence": [

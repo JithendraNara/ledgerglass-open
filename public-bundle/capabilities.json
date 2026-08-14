@@ -3,7 +3,7 @@
     {
       "delivery": "case-study",
       "id": "evidence-ledger",
-      "last_verified": "2026-08-12",
+      "last_verified": "2026-08-13",
       "maturity": "stable",
       "problem": "A confident financial answer is useless when I cannot tell which source, statement, or correction produced it.",
       "public_artifacts": [
@@ -15,7 +15,7 @@
         "simplefin-protocol",
         "mcp-security"
       ],
-      "summary": "Ledgerglass keeps provider observations, statement facts, corrections, and derived explanations separate so an agent can show its work.",
+      "summary": "Ledgerglass keeps immutable account and transaction observations, statement facts, corrections, and derived explanations separate so an agent can show its work without trusting a mutable source cache.",
       "title": "Evidence before answers"
     },
     {
@@ -83,6 +83,26 @@
       ],
       "summary": "A complete closed statement is matched against the ledger, exact gaps are repaired, uncertain rows stay visible, and later provider evidence can replace overlays.",
       "title": "Statements can correct the feed"
+    },
+    {
+      "delivery": "case-study",
+      "id": "truth-closure",
+      "last_verified": "2026-08-13",
+      "maturity": "stable",
+      "problem": "Statement gaps, provider differences, conflicting card terms, and repair cases become dangerous when each subsystem keeps its own idea of what is unresolved.",
+      "public_artifacts": [
+        "truth-closure architecture",
+        "synthetic cycle-continuity case",
+        "correction receipt contract"
+      ],
+      "research_refs": [
+        "cfpb-periodic-statements",
+        "open-banking-statements",
+        "w3c-prov",
+        "cloudflare-d1-batch"
+      ],
+      "summary": "Ledgerglass gives closed statement cycles stable identity, preserves field-level fact lineage, proves adjacent-cycle continuity, and routes every unresolved difference through one append-only discrepancy history with deterministic repair postconditions.",
+      "title": "One place for every unresolved difference"
     },
     {
       "delivery": "case-study",
@@ -189,8 +209,8 @@
     {
       "delivery": "private-note",
       "id": "owner-finance-console",
-      "last_verified": "2026-08-12",
-      "maturity": "experimental",
+      "last_verified": "2026-08-14",
+      "maturity": "stable",
       "problem": "The owner needs a visual way to inspect evidence and authorize existing ledger operations without creating a second financial backend.",
       "public_artifacts": [
         "privacy boundary",
@@ -202,9 +222,12 @@
         "cloudflare-access-jwt",
         "cloudflare-worker-routes",
         "cloudflare-service-bindings",
+        "cloudflare-chat-agents",
+        "cloudflare-agents-client-sdk",
+        "cloudflare-agents-human-loop",
         "actual-reconciliation"
       ],
-      "summary": "The private deployment has an authenticated console over the same finance application services; only the architectural boundary is documented publicly.",
+      "summary": "The private deployment has an authenticated console over the same finance application services, with typed evidence workflows, read-only review queues, revision-bound previews, and a separate assistant that can cite evidence or prepare a draft but cannot apply it. Only the architectural and authority boundary is documented publicly.",
       "title": "A private operator console"
     }
   ],

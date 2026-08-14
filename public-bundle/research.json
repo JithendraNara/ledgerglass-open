@@ -133,6 +133,55 @@
       "title": "CFPB credit card interest calculation guidance",
       "url": "https://www.consumerfinance.gov/ask-cfpb/how-does-my-credit-card-company-calculate-the-amount-of-interest-i-owe-en-51/",
       "verified_at": "2026-08-13"
+    },
+    {
+      "id": "cfpb-periodic-statements",
+      "kind": "primary",
+      "title": "CFPB Regulation Z periodic statement requirements",
+      "url": "https://www.consumerfinance.gov/rules-policy/regulations/1026/7/",
+      "verified_at": "2026-08-13"
+    },
+    {
+      "id": "open-banking-statements",
+      "kind": "primary",
+      "title": "Open Banking Read/Write Data API statement model",
+      "url": "https://openbankinguk.github.io/read-write-api-site3/v4.0.1/profiles/read-write-data-api-profile.html",
+      "verified_at": "2026-08-13"
+    },
+    {
+      "id": "w3c-prov",
+      "kind": "primary",
+      "title": "W3C PROV-O provenance ontology",
+      "url": "https://www.w3.org/TR/prov-o/",
+      "verified_at": "2026-08-13"
+    },
+    {
+      "id": "cloudflare-d1-batch",
+      "kind": "primary",
+      "title": "Cloudflare D1 batch API",
+      "url": "https://developers.cloudflare.com/d1/worker-api/d1-database/#batch",
+      "verified_at": "2026-08-13"
+    },
+    {
+      "id": "cloudflare-chat-agents",
+      "kind": "primary",
+      "title": "Cloudflare Chat Agents",
+      "url": "https://developers.cloudflare.com/agents/communication-channels/chat/chat-agents/",
+      "verified_at": "2026-08-14"
+    },
+    {
+      "id": "cloudflare-agents-client-sdk",
+      "kind": "primary",
+      "title": "Cloudflare Agents client SDK",
+      "url": "https://developers.cloudflare.com/agents/communication-channels/chat/using-chat-agents/",
+      "verified_at": "2026-08-14"
+    },
+    {
+      "id": "cloudflare-agents-human-loop",
+      "kind": "primary",
+      "title": "Cloudflare Agents human-in-the-loop",
+      "url": "https://developers.cloudflare.com/agents/communication-channels/chat/human-in-the-loop/",
+      "verified_at": "2026-08-14"
     }
   ]
 }
