@@ -3,17 +3,19 @@
     {
       "delivery": "case-study",
       "id": "evidence-ledger",
-      "last_verified": "2026-08-13",
+      "last_verified": "2026-08-20",
       "maturity": "stable",
       "problem": "A confident financial answer is useless when I cannot tell which source, statement, or correction produced it.",
       "public_artifacts": [
         "ledger architecture",
         "MCP response contract",
-        "trust model"
+        "trust model",
+        "observability privacy boundary"
       ],
       "research_refs": [
         "simplefin-protocol",
-        "mcp-security"
+        "mcp-security",
+        "cloudflare-workers-logs"
       ],
       "summary": "Ledgerglass keeps immutable account and transaction observations, statement facts, corrections, and derived explanations separate so an agent can show its work without trusting a mutable source cache.",
       "title": "Evidence before answers"
@@ -70,18 +72,19 @@
     {
       "delivery": "case-study",
       "id": "statement-reconciliation",
-      "last_verified": "2026-08-12",
+      "last_verified": "2026-08-21",
       "maturity": "stable",
       "problem": "A connected card can still omit posted transactions or report rows that the closed statement does not support.",
       "public_artifacts": [
         "statement workflow contract",
-        "synthetic repair story"
+        "synthetic repair story",
+        "synthetic exact-collision story"
       ],
       "research_refs": [
         "actual-architecture",
         "plaid-pattern"
       ],
-      "summary": "A complete closed statement is matched against the ledger, exact gaps are repaired, uncertain rows stay visible, and later provider evidence can replace overlays.",
+      "summary": "A complete closed statement is matched one-to-one against the ledger, exact gaps are repaired, and excess connected candidates fail closed with explainable owner-review evidence instead of an arbitrary match. Later provider evidence can replace overlays or refresh a deficient no-overlay component.",
       "title": "Statements can correct the feed"
     },
     {
@@ -107,21 +110,60 @@
     {
       "delivery": "case-study",
       "id": "deterministic-finance",
-      "last_verified": "2026-08-13",
+      "last_verified": "2026-08-22",
       "maturity": "stable",
       "problem": "Spending, debt, transfers, and recurring commitments should not change because a language model phrased them differently.",
       "public_artifacts": [
         "finance-query architecture",
         "analysis contracts",
+        "APR evidence and abstention contract",
         "synthetic household"
       ],
       "research_refs": [
         "actual-architecture",
         "actual-schedules",
-        "cfpb-credit-card-interest"
+        "cfpb-credit-card-interest",
+        "cfpb-payment-allocation",
+        "cfpb-repayment-disclosures"
       ],
-      "summary": "Deterministic read models calculate cashflow, debt, net worth, merchants, transfers, and recurring cadence before narrative is added. Commitment evidence stays separate from interest, fees, debt movement, and repeated discretionary spending; APR buckets are not applied to balances without allocation evidence.",
+      "summary": "Deterministic read models calculate cashflow, debt, net worth, merchants, transfers, and recurring cadence before narrative is added. Statement-scoped APR allocations support read-only payment and payoff previews, while unknown issuer priority or deferred-interest behavior causes explicit abstention.",
       "title": "The totals do not need a model"
+    },
+    {
+      "delivery": "core",
+      "id": "schedules-forecasting",
+      "last_verified": "2026-08-22",
+      "maturity": "experimental",
+      "problem": "A calendar of recurring charges is not the same thing as a promise, and one future balance hides missing evidence and mixed currencies.",
+      "public_artifacts": [
+        "public forecast core source",
+        "synthetic forecast vectors",
+        "schedule and occurrence architecture",
+        "synthetic forecast-range case",
+        "backtest contract",
+        "graduated schedule-autonomy case study"
+      ],
+      "research_refs": [
+        "actual-schedules",
+        "cloudflare-workflows",
+        "actual-architecture",
+        "rfc5545-recurrence",
+        "plaid-pending-transactions",
+        "plaid-recurring-transactions",
+        "cfpb-recurring-debits",
+        "cfpb-available-balance",
+        "cfpb-cash-flow",
+        "cfpb-bill-calendar",
+        "forecast-prediction-intervals",
+        "forecast-distributional-accuracy",
+        "forecast-time-series-cv",
+        "cloudflare-workflow-rules",
+        "cloudflare-workflow-retries",
+        "cloudflare-d1-retry",
+        "cloudflare-d1-time-travel"
+      ],
+      "summary": "Wave 4 keeps owner and statement schedules separate from detected candidates, expands deterministic occurrences, and projects committed, expected, and possible paths per account and currency. A private post-sync scout may activate only mature derived patterns in the expected scenario behind deterministic evidence gates; it cannot create committed authority or ledger facts. The reusable public subset exports dependency-free recurrence, integer-minor-unit forecast, and backtest arithmetic with synthetic vectors and private/public parity proof; live adapters and orchestration remain private.",
+      "title": "A forecast that knows what it does not know"
     },
     {
       "delivery": "case-study",

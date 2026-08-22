@@ -15,6 +15,21 @@
       "uncertainty": "The uncertain row remains visible for later provider or owner evidence."
     },
     {
+      "action": "Ledgerglass kept the connected statement and provider rows together, left all provider rows posted, and created an explainable owner-review ambiguity without adding an overlay or exclusion.",
+      "difficulty": "Choosing the first identifier would make a deterministic result look authoritative while hiding a real one-to-many collision.",
+      "evidence": [
+        "immutable statement row",
+        "all candidate ledger identifiers",
+        "candidate count",
+        "exact amount, date, and text factors"
+      ],
+      "happened": "One row on a complete synthetic statement had the same amount, calendar date, and normalized text as two posted provider rows.",
+      "id": "statement-exact-collision",
+      "reversal": "An atomic evidence-bound owner decision can close the whole component only after excess activity is handled. A later provider arrival refreshes a deficient component; invalidated assignments reopen for safe reassignment while immutable review history remains intact.",
+      "title": "Two exact rows were not one answer",
+      "uncertainty": "The cycle remains partial until independent evidence supports one distinct active provider for every connected statement row and resolves every excess active candidate. The invariant applies to every connected ambiguity, not only exact-text collisions; equal-count interchangeable duplicates can still match one-to-one."
+    },
+    {
       "action": "After the policy window, Ledgerglass marked it expired-assumed and removed it from operational totals.",
       "difficulty": "Absence does not prove cancellation, and counting it forever overstates spending.",
       "evidence": [
@@ -84,6 +99,109 @@
       "reversal": "Derived artifacts can be rebuilt from the canonical ledger.",
       "title": "The ledger was right but search was behind",
       "uncertainty": "Semantic search stays marked incomplete until the retry succeeds."
+    },
+    {
+      "action": "Ledgerglass kept committed, expected, and possible paths separate, expanded occurrences deterministically, and kept each currency on its own account path.",
+      "difficulty": "Treating all three as equally certain would make the next balance look more precise than the evidence allows.",
+      "evidence": [
+        "owner-confirmed schedule",
+        "closed statement fact",
+        "mature repeated observations",
+        "dated starting balance"
+      ],
+      "happened": "A synthetic household had a confirmed card payment, a statement-supported bill, and a recurring purchase pattern with no fixed amount.",
+      "id": "forecast-range",
+      "reversal": "Schedules and occurrence states are append-only derived expectations; changing an assumption creates a new revision without changing ledger evidence.",
+      "synthetic_vectors": [
+        {
+          "currency": "USD",
+          "expected": {
+            "balance_on_date_cents": 231500
+          },
+          "id": "monthly-owner-bill",
+          "occurrence": {
+            "amount_cents": -8500,
+            "date": "2030-02-01",
+            "source": "owner_confirmed"
+          },
+          "starting_balance_cents": 240000
+        },
+        {
+          "currency": "USD",
+          "expected": {
+            "balance_on_date_cents": 97500,
+            "scenario": "committed"
+          },
+          "id": "statement-minimum",
+          "occurrence": {
+            "amount_cents": -2500,
+            "date": "2030-02-14",
+            "source": "statement_supported"
+          },
+          "starting_balance_cents": 100000
+        },
+        {
+          "currency": "USD",
+          "expected": {
+            "possible_high_cents": 48800,
+            "possible_low_cents": 47000
+          },
+          "id": "variable-discretionary-range",
+          "occurrence": {
+            "amount_range_cents": [
+              -3000,
+              -1200
+            ],
+            "date": "2030-02-10",
+            "source": "repeated_discretionary"
+          },
+          "starting_balance_cents": 50000
+        },
+        {
+          "currency": "USD",
+          "expected": {
+            "account_balance_on_date_cents": 60000,
+            "portfolio_net_change_cents": 0
+          },
+          "id": "transfer-neutral-portfolio",
+          "occurrence": {
+            "amount_cents": -40000,
+            "date": "2030-02-05",
+            "source": "internal_transfer"
+          },
+          "starting_balance_cents": 100000
+        },
+        {
+          "currency": "EUR",
+          "expected": {
+            "balance_on_date_cents": 80000,
+            "mixed_currency_total": false
+          },
+          "id": "separate-eur-path",
+          "occurrence": {
+            "amount_cents": -10000,
+            "date": "2030-02-03",
+            "source": "owner_confirmed"
+          },
+          "starting_balance_cents": 90000
+        },
+        {
+          "currency": "USD",
+          "expected": {
+            "ledger_rows_created": 0,
+            "state": "missed"
+          },
+          "id": "missed-occurrence",
+          "occurrence": {
+            "amount_cents": -5000,
+            "date": "2030-02-07",
+            "source": "detected_mature"
+          },
+          "starting_balance_cents": 75000
+        }
+      ],
+      "title": "The future was a range, not a number",
+      "uncertainty": "The possible path is a scenario range, not a probability or a promise; missing balances and stale terms remain visible as coverage warnings."
     },
     {
       "action": "Ledgerglass kept the transfer classification and exposed the model output only as rejected derived evidence.",
