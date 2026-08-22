@@ -1,0 +1,269 @@
+{
+  "backtests": [
+    {
+      "assertions": {
+        "balanceMaeCents": 1000,
+        "horizonDays": 2,
+        "rangeCoverage": true,
+        "sampleCount": 1
+      },
+      "horizons": [
+        2
+      ],
+      "id": "short-horizon",
+      "origins": [
+        {
+          "actualBalances": [
+            {
+              "balanceCents": 99000,
+              "date": "2030-01-03"
+            }
+          ],
+          "forecastInput": {
+            "accountId": "synthetic-checking",
+            "accountKind": "asset",
+            "currency": "USD",
+            "cutoffDate": "2030-01-01",
+            "occurrences": [],
+            "schedules": [],
+            "startingBalanceCents": 100000
+          },
+          "originDate": "2030-01-01",
+          "originId": "origin-a"
+        }
+      ]
+    }
+  ],
+  "contract": "ledgerglass-wave4-public-core-v1",
+  "forecasts": [
+    {
+      "assertions": {
+        "committedBalanceCents": 50000,
+        "day": "2030-01-05",
+        "expectedBalanceCents": 130000,
+        "possibleHighBalanceCents": 140000,
+        "possibleLowBalanceCents": 120000
+      },
+      "horizons": [
+        7
+      ],
+      "id": "asset-exact-and-range",
+      "input": {
+        "accountId": "synthetic-checking",
+        "accountKind": "asset",
+        "currency": "USD",
+        "cutoffDate": "2030-01-01",
+        "occurrences": [
+          {
+            "accountId": "synthetic-checking",
+            "amount": {
+              "expectedCents": 50000,
+              "highCents": 50000,
+              "lowCents": 50000
+            },
+            "currency": "USD",
+            "direction": "outflow",
+            "expectedDate": "2030-01-03",
+            "flowKind": "housing",
+            "occurrenceId": "rent-2030-01-03",
+            "scenarioEligible": {
+              "committed": true,
+              "expected": true,
+              "possible": true
+            },
+            "scheduleId": "rent",
+            "scheduleRevision": 1,
+            "sourceClass": "statement_supported",
+            "state": "expected"
+          },
+          {
+            "accountId": "synthetic-checking",
+            "amount": {
+              "expectedCents": 80000,
+              "highCents": 90000,
+              "lowCents": 70000
+            },
+            "currency": "USD",
+            "direction": "inflow",
+            "expectedDate": "2030-01-05",
+            "flowKind": "income",
+            "occurrenceId": "pay-2030-01-05",
+            "scenarioEligible": {
+              "committed": false,
+              "expected": true,
+              "possible": true
+            },
+            "scheduleId": "pay",
+            "scheduleRevision": 1,
+            "sourceClass": "expected_income",
+            "state": "expected"
+          }
+        ],
+        "pendingExposure": [
+          {
+            "accountId": "synthetic-checking",
+            "amountCents": 1000,
+            "currency": "USD",
+            "direction": "outflow",
+            "eligible": true,
+            "expectedDate": "2030-01-02",
+            "exposureId": "pending-coffee"
+          }
+        ],
+        "reserveCents": 25000,
+        "schedules": [
+          {
+            "accountId": "synthetic-checking",
+            "amountModel": {
+              "amountCents": 50000,
+              "kind": "exact"
+            },
+            "authority": "statement",
+            "currency": "USD",
+            "direction": "outflow",
+            "flowKind": "housing",
+            "revision": 1,
+            "scheduleId": "rent",
+            "sourceClass": "statement_supported",
+            "status": "active"
+          },
+          {
+            "accountId": "synthetic-checking",
+            "amountModel": {
+              "kind": "range",
+              "maximumCents": 90000,
+              "minimumCents": 70000
+            },
+            "authority": "model",
+            "currency": "USD",
+            "direction": "inflow",
+            "flowKind": "income",
+            "revision": 1,
+            "scheduleId": "pay",
+            "sourceClass": "expected_income",
+            "status": "active"
+          }
+        ],
+        "startingBalanceCents": 100000
+      }
+    },
+    {
+      "assertions": {
+        "committedBalanceCents": 75000,
+        "day": "2030-02-03",
+        "expectedBalanceCents": 75000,
+        "possibleHighBalanceCents": 75000,
+        "possibleLowBalanceCents": 75000
+      },
+      "horizons": [
+        3
+      ],
+      "id": "liability-payment",
+      "input": {
+        "accountId": "synthetic-card",
+        "accountKind": "liability",
+        "currency": "USD",
+        "cutoffDate": "2030-02-01",
+        "occurrences": [
+          {
+            "accountId": "synthetic-card",
+            "amount": {
+              "expectedCents": 25000,
+              "highCents": 25000,
+              "lowCents": 25000
+            },
+            "currency": "USD",
+            "direction": "inflow",
+            "expectedDate": "2030-02-03",
+            "flowKind": "debt_payment",
+            "occurrenceId": "payment",
+            "scenarioEligible": {
+              "committed": true,
+              "expected": true,
+              "possible": true
+            },
+            "scheduleId": "payment",
+            "scheduleRevision": 1,
+            "sourceClass": "debt_requirement",
+            "state": "expected"
+          }
+        ],
+        "schedules": [],
+        "startingBalanceCents": 100000
+      }
+    }
+  ],
+  "recurrence": [
+    {
+      "expected": [
+        "2030-01-01",
+        "2030-01-08",
+        "2030-01-15",
+        "2030-01-22",
+        "2030-01-29"
+      ],
+      "from": "2030-01-01",
+      "id": "weekly-weekday-adjustment",
+      "rule": {
+        "adjustment": "next_weekday",
+        "kind": "weekly",
+        "startDate": "2030-01-01",
+        "weekdays": [
+          2
+        ]
+      },
+      "to": "2030-01-31"
+    },
+    {
+      "expected": [
+        "2030-01-31",
+        "2030-02-28",
+        "2030-03-31"
+      ],
+      "from": "2030-01-01",
+      "id": "month-end",
+      "rule": {
+        "days": [
+          "last"
+        ],
+        "kind": "monthly_days",
+        "startDate": "2030-01-01"
+      },
+      "to": "2030-03-31"
+    },
+    {
+      "expected": [
+        "2030-01-07",
+        "2030-02-04",
+        "2030-03-04"
+      ],
+      "from": "2030-01-01",
+      "id": "first-monday",
+      "rule": {
+        "kind": "monthly_ordinal_weekday",
+        "ordinal": 1,
+        "startDate": "2030-01-01",
+        "weekday": 1
+      },
+      "to": "2030-03-31"
+    },
+    {
+      "expected": [
+        "2030-07-04",
+        "2031-07-04",
+        "2032-07-04"
+      ],
+      "from": "2030-01-01",
+      "id": "annual-date",
+      "rule": {
+        "day": 4,
+        "kind": "annual",
+        "month": 7,
+        "startDate": "2030-01-01"
+      },
+      "to": "2032-12-31"
+    }
+  ],
+  "schema_version": 1,
+  "synthetic": true
+}

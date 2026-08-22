@@ -1,20 +1,40 @@
 {
-  "export_digest": "a1000bf646ac56e15d71e6339dd4d3d82b128dfc490c411dcc79ca2531e67c9c",
+  "export_digest": "84c691584fc66b50549b82c7c84a31472208433bff00b6acfea6e19b7279aec5",
   "files": [
     {
-      "bytes": 9772,
+      "bytes": 12020,
       "path": "public-bundle/capabilities.json",
-      "sha256": "215b0bada6f870674bec0a59956c8bdb3939975b41f9a44d5e0e5057f71d5717"
+      "sha256": "230b1fc5e2c019c704c4dfd4d1d4af525241b959e5956f2631877ea0143e37e7"
     },
     {
-      "bytes": 6513,
+      "bytes": 10776,
       "path": "public-bundle/research.json",
-      "sha256": "4e13dc6f59328fef1276c1292599684d5fe6853aab785f4148152e515f75aef2"
+      "sha256": "3007ab5fc6fc54d1c58998d23478271ca646fbbfa707bcee6340f46f768bfe40"
     },
     {
-      "bytes": 5625,
+      "bytes": 10591,
       "path": "public-bundle/case-studies.json",
-      "sha256": "8d118c886abb269bf5240bdbab12858d1c506d182c4890654ce7533d62113090"
+      "sha256": "d65deec344c8bde423fe5717da7bbd00ae08963ecc89f61e9f37f0dae509dd3c"
+    },
+    {
+      "bytes": 6885,
+      "path": "public-bundle/forecast-vectors.json",
+      "sha256": "260348fa8f906f990c478f2d610fdad37b5fb40fe797750ad6d720751ae01b72"
+    },
+    {
+      "bytes": 30825,
+      "path": "public-bundle/core/forecast-core.ts",
+      "sha256": "3ea684d77e196dfd99c91587b1c56594ed49e97eeb38c39f7fccc98b06206757"
+    },
+    {
+      "bytes": 3834,
+      "path": "public-bundle/core/forecast-core.test.ts",
+      "sha256": "c00c3bf5d81990c668dfaf02a4ecf3e20157f24f6183cb0544a4999bdf260da1"
+    },
+    {
+      "bytes": 377,
+      "path": "public-bundle/core-parity-proof.json",
+      "sha256": "94cc0e03bf4092c54ce111cd29ed9d307e928a5fe0861462c6818ed236a1acaf"
     }
   ],
   "schema_version": 1

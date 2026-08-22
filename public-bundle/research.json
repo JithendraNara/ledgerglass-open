@@ -182,6 +182,125 @@
       "title": "Cloudflare Agents human-in-the-loop",
       "url": "https://developers.cloudflare.com/agents/communication-channels/chat/human-in-the-loop/",
       "verified_at": "2026-08-14"
+    },
+    {
+      "id": "rfc5545-recurrence",
+      "kind": "primary",
+      "title": "iCalendar recurrence rules (RFC 5545)",
+      "url": "https://datatracker.ietf.org/doc/html/rfc5545#section-3.8.5.3",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "plaid-pending-transactions",
+      "kind": "reference",
+      "title": "Plaid transaction states and pending behavior",
+      "url": "https://plaid.com/docs/transactions/transactions-data/",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "plaid-recurring-transactions",
+      "kind": "reference",
+      "title": "Plaid recurring transaction streams",
+      "url": "https://plaid.com/docs/api/products/transactions/",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cfpb-recurring-debits",
+      "kind": "primary",
+      "title": "CFPB recurring electronic fund transfers",
+      "url": "https://www.consumerfinance.gov/rules-policy/regulations/1005/10/",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cfpb-available-balance",
+      "kind": "primary",
+      "title": "CFPB ledger and available balance overdraft guidance",
+      "url": "https://www.consumerfinance.gov/compliance/circulars/consumer-financial-protection-circular-2022-06-unanticipated-overdraft-fee-assessment-practices/",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cfpb-cash-flow",
+      "kind": "primary",
+      "title": "CFPB cash-flow budget method",
+      "url": "https://files.consumerfinance.gov/f/201504_cfpb_ymyg_toolkit-workers.pdf",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cfpb-bill-calendar",
+      "kind": "primary",
+      "title": "CFPB bill calendar tool",
+      "url": "https://files.consumerfinance.gov/f/documents/cfpb_your-money-your-goals_bill_calendar_tool_2018-11_ADA.pdf",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "forecast-prediction-intervals",
+      "kind": "reference",
+      "title": "Forecast prediction intervals",
+      "url": "https://otexts.com/fpp3/prediction-intervals.html",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "forecast-distributional-accuracy",
+      "kind": "reference",
+      "title": "Forecast distributional accuracy and Winkler score",
+      "url": "https://otexts.com/fpp3/distaccuracy.html",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "forecast-time-series-cv",
+      "kind": "reference",
+      "title": "Time-series cross-validation",
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cloudflare-workflow-rules",
+      "kind": "primary",
+      "title": "Cloudflare Workflows rules of work",
+      "url": "https://developers.cloudflare.com/workflows/build/rules-of-workflows/",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cloudflare-workflow-retries",
+      "kind": "primary",
+      "title": "Cloudflare Workflows sleeping and retrying",
+      "url": "https://developers.cloudflare.com/workflows/build/sleeping-and-retrying/",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cloudflare-d1-retry",
+      "kind": "primary",
+      "title": "Cloudflare D1 retry guidance",
+      "url": "https://developers.cloudflare.com/d1/best-practices/retry-queries/",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cloudflare-d1-time-travel",
+      "kind": "primary",
+      "title": "Cloudflare D1 Time Travel",
+      "url": "https://developers.cloudflare.com/d1/reference/time-travel/",
+      "verified_at": "2026-08-16"
+    },
+    {
+      "id": "cloudflare-workers-logs",
+      "kind": "primary",
+      "title": "Cloudflare Workers Logs",
+      "url": "https://developers.cloudflare.com/workers/observability/logs/workers-logs/",
+      "verified_at": "2026-08-20"
+    },
+    {
+      "id": "cfpb-payment-allocation",
+      "kind": "primary",
+      "title": "Regulation Z payment allocation",
+      "url": "https://www.consumerfinance.gov/rules-policy/regulations/1026/53/",
+      "verified_at": "2026-08-22"
+    },
+    {
+      "id": "cfpb-repayment-disclosures",
+      "kind": "primary",
+      "title": "Regulation Z Appendix M1 repayment disclosures",
+      "url": "https://www.consumerfinance.gov/rules-policy/regulations/1026/m1/",
+      "verified_at": "2026-08-22"
     }
   ]
 }

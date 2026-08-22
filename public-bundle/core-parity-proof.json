@@ -1,0 +1,11 @@
+{
+  "backtest_cases": 1,
+  "contract": "ledgerglass-wave4-public-core-v1",
+  "forecast_cases": 2,
+  "private_contents": false,
+  "public_source_sha256": "3ea684d77e196dfd99c91587b1c56594ed49e97eeb38c39f7fccc98b06206757",
+  "recurrence_cases": 4,
+  "schema_version": 1,
+  "status": "pass",
+  "vector_sha256": "260348fa8f906f990c478f2d610fdad37b5fb40fe797750ad6d720751ae01b72"
+}
