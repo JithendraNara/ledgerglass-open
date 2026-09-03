@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Update the transitive `fast-uri` and `qs` packages to patched releases for their host-confusion, SSRF, and denial-of-service advisories.
 - Recast the repository as the public Ledgerglass reference implementation and reusable core, with a generated capability registry, dated research record, six privacy-safe contract cases, and a human-written builder-journal README.
 - Add reusable integer-money, currency, statement-reconciliation, pending-lifecycle, and cashflow contracts with synthetic regression tests.
 - Add an Astro static site with personal build history, evidence tour, interactive synthetic case studies, trust model, capability matrix, research journal, and Cloudflare static-assets configuration.
