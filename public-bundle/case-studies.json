@@ -44,6 +44,53 @@
       "uncertainty": "Expired-assumed is reversible bookkeeping, not a cancellation claim."
     },
     {
+      "action": "Ledgerglass gave derived records source-backed identity references, preserved existing evidence, and used the counted projection for reconciliation and operational totals. Enrichment and confirmed relationships now affect the second provider's effective rows and search revisions.",
+      "difficulty": "Copying those transactions into a manual source would hide the broken reference contract and risk counting them twice.",
+      "evidence": [
+        "authentic provider account and transaction identities",
+        "dated balance observations",
+        "counted signed transaction amounts",
+        "populated database upgrade tests"
+      ],
+      "happened": "A fictional household activated an account supplied only by its second provider. Reads included the account, but reconciliation could not persist because derived records still required first-provider ledger identities.",
+      "id": "provider-backed-derived-evidence",
+      "reversal": "Pausing contribution hides current counted evidence without deleting historical identities. Changed source or relationship evidence invalidates dependent search revisions.",
+      "title": "A counted account also needs working reconciliation",
+      "uncertainty": "Working persistence does not prove financial completeness. Missing statement evidence and ambiguous relationships remain unresolved."
+    },
+    {
+      "action": "Ledgerglass confirmed only a unique exact assignment and attached the Plaid observation to the existing canonical event without adding another counted transaction.",
+      "difficulty": "Blindly importing both rows would double spending, while matching by amount and date alone could collapse two legitimate same-day purchases.",
+      "evidence": [
+        "reviewed canonical account link",
+        "exact signed cents and currency",
+        "pending or posted lifecycle",
+        "bounded date gap",
+        "normalized merchant identity",
+        "bidirectional candidate multiplicity"
+      ],
+      "happened": "A fictional SimpleFIN account and a Plaid Sandbox account both reported the same posted coffee purchase.",
+      "id": "multi-provider-duplicate-purchase",
+      "reversal": "An append-only unmerge decision restores singleton consensus while retaining every candidate observation and prior decision.",
+      "title": "Two providers saw one coffee purchase",
+      "uncertainty": "Repeated equal purchases, merchant drift, and date drift remain explicit review candidates; account or currency conflicts are prohibited."
+    },
+    {
+      "action": "Ledgerglass paired the incremental transaction stream with the provider's complete cached account snapshot and recorded the account's balance evidence under the same successful attempt.",
+      "difficulty": "Treating a transaction cursor as the account inventory would silently omit the account and leave its activated balance out of the canonical projection.",
+      "evidence": [
+        "successful cursor attempt",
+        "complete active-account snapshot",
+        "immutable account payload hash",
+        "immutable balance observation"
+      ],
+      "happened": "A fictional provider shared a newly opened checking account whose incremental transaction response was empty.",
+      "id": "balance-only-account-inventory",
+      "reversal": "Contribution can be paused without deleting the provider observation; a later authentic snapshot appends newer evidence.",
+      "title": "A new account had a balance but no new transactions",
+      "uncertainty": "The cached balance is dated provider evidence, not a real-time claim. No historical observation is synthesized from mutable state."
+    },
+    {
       "action": "Ledgerglass created one continuity discrepancy with the required adjacent-statement evidence and a deterministic resolution condition.",
       "difficulty": "Arithmetic inside each document could pass while the missing movement between cycles stayed unexplained.",
       "evidence": [
@@ -87,7 +134,7 @@
       "uncertainty": "Any total containing the stale account is explicitly partial."
     },
     {
-      "action": "The steward queued only the missing derived work and retried it independently.",
+      "action": "The steward queued derived work independently of sync. Owner-requested recovery returns an acceptance receipt and runs a bounded durable pass with stage checkpoints, rather than waiting for model work inside the request. A resumed run preserves terminal failure receipts.",
       "difficulty": "Retrying the whole sync could duplicate work while leaving the actual failed stage unclear.",
       "evidence": [
         "successful ingestion batch",
@@ -98,7 +145,7 @@
       "id": "derived-recovery",
       "reversal": "Derived artifacts can be rebuilt from the canonical ledger.",
       "title": "The ledger was right but search was behind",
-      "uncertainty": "Semantic search stays marked incomplete until the retry succeeds."
+      "uncertainty": "Acceptance does not prove completion. Semantic search stays incomplete until recovery succeeds, and omitted source-lifecycle work remains outstanding for scheduled recovery. A latest-run status must match the accepted run before it can establish that request's outcome."
     },
     {
       "action": "Ledgerglass kept committed, expected, and possible paths separate, expanded occurrences deterministically, and kept each currency on its own account path.",

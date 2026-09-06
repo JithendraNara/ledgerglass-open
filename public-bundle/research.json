@@ -173,8 +173,8 @@
       "id": "cloudflare-agents-client-sdk",
       "kind": "primary",
       "title": "Cloudflare Agents client SDK",
-      "url": "https://developers.cloudflare.com/agents/communication-channels/chat/using-chat-agents/",
-      "verified_at": "2026-08-14"
+      "url": "https://developers.cloudflare.com/agents/communication-channels/chat/client-sdk/",
+      "verified_at": "2026-08-23"
     },
     {
       "id": "cloudflare-agents-human-loop",
@@ -203,6 +203,20 @@
       "title": "Plaid recurring transaction streams",
       "url": "https://plaid.com/docs/api/products/transactions/",
       "verified_at": "2026-08-16"
+    },
+    {
+      "id": "plaid-transactions-api",
+      "kind": "primary",
+      "title": "Plaid Transactions API and incremental sync behavior",
+      "url": "https://plaid.com/docs/api/products/transactions/",
+      "verified_at": "2026-08-27"
+    },
+    {
+      "id": "plaid-accounts-api",
+      "kind": "primary",
+      "title": "Plaid Accounts API and cached balance behavior",
+      "url": "https://plaid.com/docs/api/accounts/",
+      "verified_at": "2026-08-27"
     },
     {
       "id": "cfpb-recurring-debits",
@@ -301,6 +315,34 @@
       "title": "Regulation Z Appendix M1 repayment disclosures",
       "url": "https://www.consumerfinance.gov/rules-policy/regulations/1026/m1/",
       "verified_at": "2026-08-22"
+    },
+    {
+      "id": "diataxis",
+      "kind": "primary",
+      "title": "Diátaxis documentation framework",
+      "url": "https://diataxis.fr/",
+      "verified_at": "2026-08-29"
+    },
+    {
+      "id": "starlight",
+      "kind": "primary",
+      "title": "Astro Starlight",
+      "url": "https://starlight.astro.build/getting-started/",
+      "verified_at": "2026-08-29"
+    },
+    {
+      "id": "astro-cloudflare",
+      "kind": "primary",
+      "title": "Deploy Astro to Cloudflare Workers static assets",
+      "url": "https://docs.astro.build/en/guides/deploy/cloudflare/",
+      "verified_at": "2026-08-29"
+    },
+    {
+      "id": "cloudflare-pages-to-workers",
+      "kind": "primary",
+      "title": "Migrate from Cloudflare Pages to Workers",
+      "url": "https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/",
+      "verified_at": "2026-08-29"
     }
   ]
 }

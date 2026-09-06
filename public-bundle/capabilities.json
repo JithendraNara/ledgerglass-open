@@ -40,18 +40,43 @@
     {
       "delivery": "case-study",
       "id": "simplefin-sync",
-      "last_verified": "2026-08-12",
+      "last_verified": "2026-08-27",
       "maturity": "stable",
       "problem": "Late settlement, exclusive date boundaries, and provider limits make a naive daily fetch lose rows.",
       "public_artifacts": [
         "connector contract",
-        "sync-window architecture"
+        "sync-window architecture",
+        "provider-evidence boundary",
+        "complete account-inventory observation story",
+        "canonical counted-read parity and rollback contract"
       ],
       "research_refs": [
-        "simplefin-protocol"
+        "simplefin-protocol",
+        "plaid-accounts-api",
+        "plaid-transactions-api"
       ],
-      "summary": "The connector uses bounded windows, inclusive human dates, an exclusive API boundary, and overlapping incremental reads.",
+      "summary": "Connectors use bounded windows and overlapping incremental reads. Source-specific parsing crosses a normalized provider-evidence contract; independently committed windows and backfills feed one union post-processing pass. A cursor stream is not assumed to be a complete account inventory: each successful multi-source sync also records an immutable provider-derived snapshot for every active account, including balance-only accounts. A canonical identity layer routes owner-facing consumers through one counted projection, invalidates derived state by canonical revision, and retains database-level rollback and contribution controls.",
       "title": "Boring, bounded synchronization"
+    },
+    {
+      "delivery": "case-study",
+      "id": "multi-source-consensus",
+      "last_verified": "2026-08-26",
+      "maturity": "experimental",
+      "problem": "Two bank-data providers can report the same account and purchase, so adding both feeds directly would duplicate balances and spending.",
+      "public_artifacts": [
+        "multi-source consensus architecture",
+        "transaction-equivalence policy",
+        "append-only decision contract",
+        "synthetic duplicate-purchase story"
+      ],
+      "research_refs": [
+        "plaid-pending-transactions",
+        "simplefin-protocol",
+        "cloudflare-d1-batch"
+      ],
+      "summary": "Ledgerglass links only reviewed account identities, compares rather than sums balances, and treats provider transactions as evidence for one existing canonical event. Deterministic confirmation requires exact signed cents, currency, lifecycle, date, normalized merchant identity, and unique assignment in both directions; multiplicity abstains. Append-only revision-safe decisions can merge, reject, or undo evidence without creating a second counted row.",
+      "title": "Two providers, one counted event"
     },
     {
       "delivery": "case-study",
@@ -110,7 +135,7 @@
     {
       "delivery": "case-study",
       "id": "deterministic-finance",
-      "last_verified": "2026-08-22",
+      "last_verified": "2026-09-03",
       "maturity": "stable",
       "problem": "Spending, debt, transfers, and recurring commitments should not change because a language model phrased them differently.",
       "public_artifacts": [
@@ -126,7 +151,7 @@
         "cfpb-payment-allocation",
         "cfpb-repayment-disclosures"
       ],
-      "summary": "Deterministic read models calculate cashflow, debt, net worth, merchants, transfers, and recurring cadence before narrative is added. Statement-scoped APR allocations support read-only payment and payoff previews, while unknown issuer priority or deferred-interest behavior causes explicit abstention.",
+      "summary": "Deterministic read models calculate cashflow, debt, net worth, merchants, transfers, and recurring cadence before narrative is added. Statement-scoped APR allocations support read-only payment and payoff previews, while unknown issuer priority or deferred-interest behavior causes explicit abstention. Confirmed transfer and refund relationships lock a row's effective flow kind against divergent deterministic rules, so derived-state replay converges to zero writes.",
       "title": "The totals do not need a model"
     },
     {
@@ -201,7 +226,7 @@
     {
       "delivery": "case-study",
       "id": "finance-steward",
-      "last_verified": "2026-08-12",
+      "last_verified": "2026-09-01",
       "maturity": "experimental",
       "problem": "Indexes, enrichment, briefings, and derived views fail independently and should not wait for me to notice.",
       "public_artifacts": [
@@ -213,7 +238,7 @@
         "cloudflare-agents",
         "cloudflare-workflows"
       ],
-      "summary": "A durable agent coordinates bounded retries and cases while the ledger remains the source of financial truth.",
+      "summary": "A durable agent keeps committed provider evidence independent from derived recovery, checkpoints each queue target from revision-bound local evidence, prioritizes new targets ahead of backed-off failures, and reports unrelated global derived failures separately while the ledger remains the source of financial truth.",
       "title": "A steward for the boring repair work"
     },
     {
@@ -251,12 +276,13 @@
     {
       "delivery": "private-note",
       "id": "owner-finance-console",
-      "last_verified": "2026-08-14",
+      "last_verified": "2026-08-23",
       "maturity": "stable",
       "problem": "The owner needs a visual way to inspect evidence and authorize existing ledger operations without creating a second financial backend.",
       "public_artifacts": [
         "privacy boundary",
-        "architecture note"
+        "architecture note",
+        "owner interaction contract"
       ],
       "research_refs": [
         "cloudflare-access-self-hosted",
@@ -269,8 +295,28 @@
         "cloudflare-agents-human-loop",
         "actual-reconciliation"
       ],
-      "summary": "The private deployment has an authenticated console over the same finance application services, with typed evidence workflows, read-only review queues, revision-bound previews, and a separate assistant that can cite evidence or prepare a draft but cannot apply it. Only the architectural and authority boundary is documented publicly.",
+      "summary": "The private deployment has an authenticated owner-first console over the same finance application services: a plain-language check-in, validated briefing, at most three prioritized actions, and one owner-scoped AI chief of staff for bounded investigation and typed drafts. Technical operations and audit evidence are separated from the everyday experience. Revision-bound previews, explicit confirmation, idempotency, immutable receipts, and D1 authority remain unchanged; the agent cannot apply commands or claim real-time banking. Only the interaction, architectural, and authority boundaries are documented publicly.",
       "title": "A private operator console"
+    },
+    {
+      "delivery": "case-study",
+      "id": "public-docs-site",
+      "last_verified": "2026-08-29",
+      "maturity": "experimental",
+      "problem": "Architecture and MCP contracts lived only in a private markdown tree, so they drifted from code and could not be searched as a public site.",
+      "public_artifacts": [
+        "Starlight documentation architecture",
+        "type-derived MCP contracts",
+        "docs drift policy"
+      ],
+      "research_refs": [
+        "astro-content",
+        "cloudflare-static-assets",
+        "diataxis",
+        "starlight"
+      ],
+      "summary": "A Starlight site is generated from catalogued canonical markdown and type-derived Zod contracts and served at /docs on the existing authenticated finance host. Private operator docs, hosts, and account data stay out of the public projection. Semantic fingerprints gate schema, route, operation, and public-interface drift.",
+      "title": "Public contract documentation"
     }
   ],
   "generated": true,
