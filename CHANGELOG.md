@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Update Astro, Wrangler, Vitest, and their transitive dependencies to patched releases for image-processing, file-read, path-traversal, resource-consumption, and SVG-sanitization advisories.
 - Update the transitive `fast-uri` and `qs` packages to patched releases for their host-confusion, SSRF, and denial-of-service advisories.
 - Recast the repository as the public Ledgerglass reference implementation and reusable core, with a generated capability registry, dated research record, six privacy-safe contract cases, and a human-written builder-journal README.
 - Add reusable integer-money, currency, statement-reconciliation, pending-lifecycle, and cashflow contracts with synthetic regression tests.
