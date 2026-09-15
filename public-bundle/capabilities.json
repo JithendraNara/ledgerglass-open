@@ -61,7 +61,7 @@
     {
       "delivery": "case-study",
       "id": "multi-source-consensus",
-      "last_verified": "2026-08-26",
+      "last_verified": "2026-09-15",
       "maturity": "experimental",
       "problem": "Two bank-data providers can report the same account and purchase, so adding both feeds directly would duplicate balances and spending.",
       "public_artifacts": [
@@ -72,10 +72,11 @@
       ],
       "research_refs": [
         "plaid-pending-transactions",
+        "plaid-accounts-api",
         "simplefin-protocol",
         "cloudflare-d1-batch"
       ],
-      "summary": "Ledgerglass links only reviewed account identities, compares rather than sums balances, and treats provider transactions as evidence for one existing canonical event. Deterministic confirmation requires exact signed cents, currency, lifecycle, date, normalized merchant identity, and unique assignment in both directions; multiplicity abstains. Append-only revision-safe decisions can merge, reject, or undo evidence without creating a second counted row.",
+      "summary": "Ledgerglass links only reviewed account identities, compares rather than sums balances, and treats provider transactions as evidence for one existing canonical event. Newer eligible linked-provider balance evidence can serve the existing counted account with currency, sign, provenance, and contribution controls preserved; cached observations are not real-time bank balances. Deterministic confirmation requires exact signed cents, currency, lifecycle, date, normalized merchant identity, and unique assignment in both directions; multiplicity abstains. Append-only revision-safe decisions can merge, reject, or undo evidence without creating a second counted row.",
       "title": "Two providers, one counted event"
     },
     {
@@ -97,7 +98,7 @@
     {
       "delivery": "case-study",
       "id": "statement-reconciliation",
-      "last_verified": "2026-08-21",
+      "last_verified": "2026-09-15",
       "maturity": "stable",
       "problem": "A connected card can still omit posted transactions or report rows that the closed statement does not support.",
       "public_artifacts": [
@@ -109,7 +110,7 @@
         "actual-architecture",
         "plaid-pattern"
       ],
-      "summary": "A complete closed statement is matched one-to-one against the ledger, exact gaps are repaired, and excess connected candidates fail closed with explainable owner-review evidence instead of an arbitrary match. Later provider evidence can replace overlays or refresh a deficient no-overlay component.",
+      "summary": "A complete closed statement is matched one-to-one against the ledger, exact gaps are repaired, and excess connected candidates fail closed with explainable owner-review evidence instead of an arbitrary match. Later provider evidence can replace overlays or refresh a deficient no-overlay component. Balance reconciliation retains a valid statement checkpoint even before the rolling provider baseline and does not count its evidenced member transactions again because of later provider timestamps. Unmatched same-day movement and genuine post-statement differences remain visible without changing source records.",
       "title": "Statements can correct the feed"
     },
     {
