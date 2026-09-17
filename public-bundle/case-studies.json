@@ -263,6 +263,58 @@
       "reversal": "A confirmed owner correction can replace the relationship through the normal audited path.",
       "title": "The model sounded sure and was still wrong",
       "uncertainty": "Narrative confidence never outranks transaction relationships."
+    },
+    {
+      "action": "Ledgerglass recorded the linked Plaid observation under the existing counted account, preserved currency, sign, provenance metadata, and contribution controls, and tagged the receipt timestamp as cached receipt time rather than bank-update time. The original SimpleFIN connector identity stayed on the account record and was never reused as provenance for the newer observation.",
+      "difficulty": "The linked provider is not the account's original connector, so the newer eligible evidence has to win without confusing receipt time for bank-update time, dropping currency or sign conventions, or silently bypassing owner contribution controls.",
+      "evidence": [
+        "reviewed canonical account link",
+        "linked Plaid balance observation with cached receipt time",
+        "original SimpleFIN connector identity",
+        "matching currency and conversion to the counted account's sign convention",
+        "active owner contribution control",
+        "no second counted account"
+      ],
+      "happened": "A fictional Rowan-household credit card originally connected through SimpleFIN also received a Plaid Sandbox balance observation through a reviewed account link. The linked observation was newer than the selected SimpleFIN source timestamp.",
+      "id": "selected-linked-observation-provenance",
+      "reversal": "A newer eligible observation can replace the selected evidence without rewriting history. Pausing linked-provider contribution removes that provider's evidence from selection, not the existing counted account or its eligible primary-source evidence.",
+      "title": "One account, a different balance source",
+      "uncertainty": "This synthetic contract example is not an exported implementation. Cached receipt time does not establish bank-update time or certify that the bank still shows the selected balance."
+    },
+    {
+      "action": "The positive limit was usable only while every guard held. The next observation returned zero, not available credit or the earlier limit. The missing field then suppressed the fallback. A latest null, invalid, cross-currency, or incomplete observation likewise did not revive an older value; a receipt older than 36 hours was ineligible.",
+      "difficulty": "A provider limit is provisional and requires current contribution eligibility, a healthy enabled connection, a completed observation, matching currency, credit-card subtype, and receipt age of at most 36 hours. Existing statement or card-term credit limits outrank it; preset-spending-limit and no-preset-spending-limit evidence block the fallback.",
+      "evidence": [
+        "dated provisional credit-limit field",
+        "current contribution and connection eligibility",
+        "currency, subtype, completed-attempt and 36-hour receipt-age guards",
+        "explicit zero distinct from null or missing",
+        "latest observation selected before validating its limit",
+        "authoritative limit precedence",
+        "no additional provider request"
+      ],
+      "happened": "A fictional Rowan-household credit card had no authoritative credit limit. Successive cached provider observations carried a positive limit, an explicit zero, and then no limit field.",
+      "id": "provisional-credit-limit-fallback",
+      "reversal": "New authoritative credit-limit evidence, including zero, supersedes the fallback. A later valid eligible provider observation can restore a provisional value after withdrawal; pausing contribution removes that fallback without deleting observations.",
+      "title": "A dated fallback for an account without a statement",
+      "uncertainty": "This synthetic contract example is not an exported implementation. Receipt age is not bank freshness, and a provisional limit is never promoted into authoritative statement facts or used to request a paid product."
+    },
+    {
+      "action": "Ledgerglass advanced reconciliation from the authoritative statement checkpoint, excluded statement members already evidenced there from the movement sum even when their provider timestamp was later, kept unmatched same-day provider entries inside the movement check, and reported the genuine post-statement difference as an explicit discrepancy rather than suppressing it or substituting a balancing row.",
+      "difficulty": "Movement must begin from the authoritative statement checkpoint even though it predates the rolling baseline, the re-stamped members cannot be counted a second time just because the provider now reports them later, unrelated same-day movement still has to be visible, and genuine post-statement differences still have to surface without inventing rows or changing source records.",
+      "evidence": [
+        "complete authoritative statement checkpoint with verified closing balance",
+        "later provider timestamps on evidenced statement members",
+        "unmatched same-day activity on the provider feed",
+        "genuine post-statement movement",
+        "movement semantics on (checkpoint, end_snapshot]",
+        "no balancing transaction invented"
+      ],
+      "happened": "A fictional Rowan-household card had a valid complete statement checkpoint two days before the rolling provider baseline. Several transactions already evidenced by that statement carried later provider transaction timestamps.",
+      "id": "statement-checkpoint-before-baseline",
+      "reversal": "A newer complete authoritative statement can supersede the checkpoint for the next run; the older statement version and its discrepancy history remain auditable, and changing source records does not delete prior checkpoint evidence.",
+      "title": "An older statement still anchored the run",
+      "uncertainty": "This synthetic contract example is not an exported implementation. Choosing the statement checkpoint extends the evaluated window, so differences previously masked by the rolling baseline can become visible; the checkpoint does not prove later activity is complete."
     }
   ],
   "household": "The Rowan household",
