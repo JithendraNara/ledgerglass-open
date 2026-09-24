@@ -61,7 +61,7 @@
     {
       "delivery": "case-study",
       "id": "multi-source-consensus",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-09-21",
       "maturity": "experimental",
       "problem": "Two bank-data providers can report the same account and purchase, so adding both feeds directly would duplicate balances and spending.",
       "public_artifacts": [
@@ -78,7 +78,7 @@
         "simplefin-protocol",
         "cloudflare-d1-batch"
       ],
-      "summary": "Ledgerglass links only reviewed account identities, compares rather than sums balances, and treats provider transactions as evidence for one existing canonical event. Newer eligible linked-provider balance evidence can serve the existing counted account with currency, sign, provenance, and contribution controls preserved. Selected observation provenance is independent of the original connector; receipt time is not bank-update time. Retained provider credit limits remain dated provisional fallbacks below authoritative terms, subject to current eligibility and receipt-age guards, without reviving withdrawn values or requesting another product. Deterministic confirmation requires exact signed cents, currency, lifecycle, date, normalized merchant identity, and unique assignment in both directions; multiplicity abstains. Append-only revision-safe decisions can merge, reject, or undo evidence without creating a second counted row.",
+      "summary": "Ledgerglass links only reviewed account identities, compares rather than sums balances, and treats provider transactions as evidence for one existing canonical event. Newer eligible linked-provider balance evidence can serve the existing counted account with currency, sign, provenance, and contribution controls preserved. Selected observation provenance is independent of the original connector; receipt time is not bank-update time. Net-worth and debt reads report unknown source freshness for receipt-only balances without changing selection, historical cutoffs, or counted amounts. History counts unknown source freshness separately from stale known source time and missing balances; complete account coverage does not certify bank freshness. Forecast starting evidence and retained backtest origins preserve that distinction; forecasts disclose unknown source time, and cached runs must match the starting observation even when amounts are unchanged. Retained provider credit limits remain dated provisional fallbacks below authoritative terms, subject to current eligibility and receipt-age guards, without reviving withdrawn values or requesting another product. Deterministic confirmation requires exact signed cents, currency, lifecycle, date, normalized merchant identity, and unique assignment in both directions; multiplicity abstains. Append-only revision-safe decisions can merge, reject, or undo evidence without creating a second counted row.",
       "title": "Two providers, one counted event"
     },
     {
