@@ -265,7 +265,7 @@
       "uncertainty": "Narrative confidence never outranks transaction relationships."
     },
     {
-      "action": "Ledgerglass recorded the linked Plaid observation under the existing counted account, preserved currency, sign, provenance metadata, and contribution controls, and tagged the receipt timestamp as cached receipt time rather than bank-update time. The original SimpleFIN connector identity stayed on the account record and was never reused as provenance for the newer observation.",
+      "action": "Ledgerglass recorded the linked Plaid observation under the existing counted account, preserved currency, sign, provenance metadata, and contribution controls, and tagged the receipt timestamp as cached receipt time rather than bank-update time. Net-worth and debt reads both report unknown source freshness and null source age for this selected balance while retaining the receipt time and amount. Historical cutoffs still select by the existing evidence timestamp. When the receipt ages beyond the source-freshness threshold, history still counts unknown source freshness, not a stale bank balance or a missing amount. Account coverage remains separate from source freshness. Forecast starting evidence and retained backtest origin snapshots likewise preserve unknown source age. The forecast remains usable with a partial-coverage warning, and a same-amount replacement invalidates cached starting provenance without changing projection arithmetic or origin dates. The original SimpleFIN connector identity stayed on the account record and was never reused as provenance for the newer observation.",
       "difficulty": "The linked provider is not the account's original connector, so the newer eligible evidence has to win without confusing receipt time for bank-update time, dropping currency or sign conventions, or silently bypassing owner contribution controls.",
       "evidence": [
         "reviewed canonical account link",
@@ -279,7 +279,7 @@
       "id": "selected-linked-observation-provenance",
       "reversal": "A newer eligible observation can replace the selected evidence without rewriting history. Pausing linked-provider contribution removes that provider's evidence from selection, not the existing counted account or its eligible primary-source evidence.",
       "title": "One account, a different balance source",
-      "uncertainty": "This synthetic contract example is not an exported implementation. Cached receipt time does not establish bank-update time or certify that the bank still shows the selected balance."
+      "uncertainty": "This synthetic contract example is not an exported implementation. Cached receipt time does not establish bank-update time or certify that the bank still shows the selected balance. A missing source timestamp is a coverage limitation, not evidence of a failed sync."
     },
     {
       "action": "The positive limit was usable only while every guard held. The next observation returned zero, not available credit or the earlier limit. The missing field then suppressed the fallback. A latest null, invalid, cross-currency, or incomplete observation likewise did not revive an older value; a receipt older than 36 hours was ineligible.",
