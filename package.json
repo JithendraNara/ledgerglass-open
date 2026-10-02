@@ -56,7 +56,9 @@
   "overrides": {
     "@hono/node-server": "^2.0.12",
     "body-parser": "^2.3.0",
-    "fast-uri": "3.1.6",
-    "hono": "^4.12.30"
+    "fast-uri": "3.1.8",
+    "hono": "^4.12.30",
+    "devalue": "5.9.3",
+    "undici@>=7.0.0 <7.29.1": "7.29.1"
   }
 }
