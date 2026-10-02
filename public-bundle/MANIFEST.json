@@ -1,10 +1,10 @@
 {
-  "export_digest": "be59598974674b7db3fc69118866305506cee8e670c920d23280197d4a137759",
+  "export_digest": "4799a6b30a51e617695e0d2a436ed89b73118baa089b436f17057963a3f5e909",
   "files": [
     {
-      "bytes": 16852,
+      "bytes": 18638,
       "path": "public-bundle/capabilities.json",
-      "sha256": "da8b7f5c69755ce78c4168fa70b62f511c99f7f7758f9121f0759cb9bc341d75"
+      "sha256": "6c86db8b3ffb6823e54d36101fc4e64ae94fdc1c3d0e2a06f54d9af9383799af"
     },
     {
       "bytes": 12143,
@@ -12,9 +12,9 @@
       "sha256": "b7138c60dbbba253c9bb29b1073272c15231952b251eb5d7e2c792d080a463bd"
     },
     {
-      "bytes": 20678,
+      "bytes": 23977,
       "path": "public-bundle/case-studies.json",
-      "sha256": "fc2604f93ef86d267174e586b54f3c2ba2be23bd5abfc0bb3daed6667c1a5e6d"
+      "sha256": "377c90d3e6344ab1c8603617e3076150661efeaca282d62c79628f46f16ffca6"
     },
     {
       "bytes": 6885,
