@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Pin transitive `fast-uri`, `devalue`, and `undici` to patched releases so the high-severity audit gate passes: authority-injection and host-confusion fixes in `fast-uri`, memory-serialization and quadratic-expansion fixes in `devalue`, and WebSocket subprotocol and TLS certificate-validation fixes in `undici`. The `undici` override is scoped to the vulnerable 7.x line so Astro's undici 8 is untouched.
+- Update transitive `ip-address` to 10.7.3 within its existing `^10.2.0` range for corrected IPv6 link-local and subnet classification. The package is not reachable from this repository's import graph, so this is a lockfile-only hygiene bump rather than a reachable-exposure fix.
 - Update Astro, Wrangler, Vitest, and their transitive dependencies to patched releases for image-processing, file-read, path-traversal, resource-consumption, and SVG-sanitization advisories.
 - Update the transitive `fast-uri` and `qs` packages to patched releases for their host-confusion, SSRF, and denial-of-service advisories.
 - Recast the repository as the public Ledgerglass reference implementation and reusable core, with a generated capability registry, dated research record, six privacy-safe contract cases, and a human-written builder-journal README.
