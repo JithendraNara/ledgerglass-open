@@ -61,7 +61,7 @@
     {
       "delivery": "case-study",
       "id": "multi-source-consensus",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-09-21",
       "maturity": "experimental",
       "problem": "Two bank-data providers can report the same account and purchase, so adding both feeds directly would duplicate balances and spending.",
       "public_artifacts": [
@@ -78,7 +78,7 @@
         "simplefin-protocol",
         "cloudflare-d1-batch"
       ],
-      "summary": "Ledgerglass links only reviewed account identities, compares rather than sums balances, and treats provider transactions as evidence for one existing canonical event. Newer eligible linked-provider balance evidence can serve the existing counted account with currency, sign, provenance, and contribution controls preserved. Selected observation provenance is independent of the original connector; receipt time is not bank-update time. Retained provider credit limits remain dated provisional fallbacks below authoritative terms, subject to current eligibility and receipt-age guards, without reviving withdrawn values or requesting another product. Deterministic confirmation requires exact signed cents, currency, lifecycle, date, normalized merchant identity, and unique assignment in both directions; multiplicity abstains. Append-only revision-safe decisions can merge, reject, or undo evidence without creating a second counted row.",
+      "summary": "Ledgerglass links only reviewed account identities, compares rather than sums balances, and treats provider transactions as evidence for one existing canonical event. Newer eligible linked-provider balance evidence can serve the existing counted account with currency, sign, provenance, and contribution controls preserved. Selected observation provenance is independent of the original connector; receipt time is not bank-update time. Net-worth and debt reads report unknown source freshness for receipt-only balances without changing selection, historical cutoffs, or counted amounts. History counts unknown source freshness separately from stale known source time and missing balances; complete account coverage does not certify bank freshness. Forecast starting evidence and retained backtest origins preserve that distinction; forecasts disclose unknown source time, and cached runs must match the starting observation even when amounts are unchanged. Retained provider credit limits remain dated provisional fallbacks below authoritative terms, subject to current eligibility and receipt-age guards, without reviving withdrawn values or requesting another product. Deterministic confirmation requires exact signed cents, currency, lifecycle, date, normalized merchant identity, and unique assignment in both directions; multiplicity abstains. Append-only revision-safe decisions can merge, reject, or undo evidence without creating a second counted row.",
       "title": "Two providers, one counted event"
     },
     {
@@ -100,20 +100,22 @@
     {
       "delivery": "case-study",
       "id": "statement-reconciliation",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-09-29",
       "maturity": "stable",
       "problem": "A connected card can still omit posted transactions or report rows that the closed statement does not support.",
       "public_artifacts": [
         "statement workflow contract",
         "synthetic repair story",
         "synthetic exact-collision story",
-        "public-bundle/case-studies.json: statement-checkpoint-before-baseline"
+        "public-bundle/case-studies.json: statement-checkpoint-before-baseline",
+        "public-bundle/case-studies.json: statement-replacement-transfer",
+        "public-bundle/case-studies.json: statement-replacement-classification"
       ],
       "research_refs": [
         "actual-architecture",
         "plaid-pattern"
       ],
-      "summary": "A complete closed statement is matched one-to-one against the ledger, exact gaps are repaired, and excess connected candidates fail closed with explainable owner-review evidence instead of an arbitrary match. Later provider evidence can replace overlays or refresh a deficient no-overlay component. Balance reconciliation retains a valid statement checkpoint even before the rolling provider baseline and does not count its evidenced member transactions again because of later provider timestamps. Unmatched same-day movement and genuine post-statement differences remain visible without changing source records.",
+      "summary": "A complete closed statement is matched one-to-one against the ledger, exact gaps are repaired, and excess connected candidates fail closed with explainable owner-review evidence instead of an arbitrary match. Later provider evidence can replace overlays or refresh a deficient no-overlay component. Replacing a statement appends superseded revisions for relationships tied to retired overlays so matching can safely classify their replacement rows, and carries uniquely matched overlay enrichment, reviews, corrections, and valid allocations forward as new evidence. Ambiguous statement lines remain untouched. Balance reconciliation retains a valid statement checkpoint even before the rolling provider baseline and does not count its evidenced member transactions again because of later provider timestamps. Unmatched same-day movement and genuine post-statement differences remain visible without changing source records.",
       "title": "Statements can correct the feed"
     },
     {
@@ -301,6 +303,23 @@
       ],
       "summary": "The private deployment has an authenticated owner-first console over the same finance application services: a plain-language check-in, validated briefing, at most three prioritized actions, and one owner-scoped AI chief of staff for bounded investigation and typed drafts. Technical operations and audit evidence are separated from the everyday experience. Opaque clock-window signals bound conservative background catch-up without carrying financial facts or claiming change detection. Revision-bound previews, explicit confirmation, idempotency, immutable receipts, and D1 authority remain unchanged; the agent cannot apply commands or claim real-time banking. Only the interaction, architectural, and authority boundaries are documented publicly.",
       "title": "A private operator console"
+    },
+    {
+      "delivery": "private-note",
+      "id": "finance-ai-read-freshness",
+      "last_verified": "2026-09-27",
+      "maturity": "experimental",
+      "problem": "Model-backed finance reads can become slow or show narrative from an older evidence snapshot.",
+      "public_artifacts": [
+        "generic stale MCP envelope contract",
+        "deterministic-first read availability boundary",
+        "admin refresh boundary"
+      ],
+      "research_refs": [
+        "actual-architecture"
+      ],
+      "summary": "Private read paths keep deterministic evidence available without implicit model waits and serve prior validated narrative only with its original evidence, explicit age, and an admin refresh boundary.",
+      "title": "Finance AI reads stay bounded by their evidence"
     },
     {
       "delivery": "case-study",
