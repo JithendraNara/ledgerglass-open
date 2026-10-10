@@ -343,6 +343,13 @@
       "title": "Migrate from Cloudflare Pages to Workers",
       "url": "https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/",
       "verified_at": "2026-08-29"
+    },
+    {
+      "id": "mcp-tool-input-validation",
+      "kind": "primary",
+      "title": "MCP tools require servers to validate tool inputs",
+      "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+      "verified_at": "2026-10-10"
     }
   ]
 }
