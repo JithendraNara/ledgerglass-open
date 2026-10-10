@@ -1,15 +1,15 @@
 {
-  "export_digest": "4799a6b30a51e617695e0d2a436ed89b73118baa089b436f17057963a3f5e909",
+  "export_digest": "5e94b6de4ee4f5c8387297f5c8c9835b26d2d8cceb837f1ed77cf402acdd68d4",
   "files": [
     {
-      "bytes": 18638,
+      "bytes": 19567,
       "path": "public-bundle/capabilities.json",
-      "sha256": "6c86db8b3ffb6823e54d36101fc4e64ae94fdc1c3d0e2a06f54d9af9383799af"
+      "sha256": "e72fb4e77a033213f0adfa46bdbeb4e45385f3a82c728aaf7435ac30c8f8209f"
     },
     {
-      "bytes": 12143,
+      "bytes": 12410,
       "path": "public-bundle/research.json",
-      "sha256": "b7138c60dbbba253c9bb29b1073272c15231952b251eb5d7e2c792d080a463bd"
+      "sha256": "cf74965d4f94c4c88b8921f03ff6b48f4f5e7dbc15032d165dd187a3f0406df5"
     },
     {
       "bytes": 23977,

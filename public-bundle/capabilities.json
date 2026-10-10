@@ -340,6 +340,21 @@
       ],
       "summary": "A Starlight site is generated from catalogued canonical markdown and type-derived Zod contracts and served at /docs on the existing authenticated finance host. Private operator docs, hosts, and account data stay out of the public projection. Semantic fingerprints gate schema, route, operation, and public-interface drift.",
       "title": "Public contract documentation"
+    },
+    {
+      "delivery": "private-note",
+      "id": "strict-tool-inputs",
+      "last_verified": "2026-10-10",
+      "maturity": "experimental",
+      "problem": "A tool schema can advertise that unknown arguments are forbidden while the runtime silently drops them, so a misspelled account filter reads every account.",
+      "public_artifacts": [
+        "generic MCP input-validation note"
+      ],
+      "research_refs": [
+        "mcp-tool-input-validation"
+      ],
+      "summary": "Published finance tool inputs reject unknown arguments and name the rejected key. Owner relationship decisions record a reason, and reads expose that reason with actor provenance. Machine matches are attributed to the matcher. Default transfer reads return one effective head per endpoint pair while historical identities remain. Deliberately open evidence records stay open.",
+      "title": "Tool inputs reject unknown arguments"
     }
   ],
   "generated": true,
