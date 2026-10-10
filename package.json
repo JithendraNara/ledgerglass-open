@@ -32,7 +32,7 @@
     "check": "npm run privacy:audit && npm run public:validate && npm run typecheck && npm run worker:typecheck && npm run build && npm test && npm run site:check && npm run site:dry-run && npm audit --audit-level=high && npm run worker:migrate:local && npm run worker:dry-run"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "1.30.0",
+    "@modelcontextprotocol/sdk": "1.31.0",
     "@modelcontextprotocol/server": "2.0.0",
     "agents": "0.20.1",
     "dotenv": "^17.4.2",
@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@cloudflare/workers-types": "5.20260911.1",
+    "@cloudflare/workers-types": "5.20261006.1",
     "@types/express": "^5.0.6",
     "@types/node": "^22.10.5",
     "astro": "^7.2.1",
@@ -48,7 +48,7 @@
     "tsx": "^4.23.12",
     "typescript": "^5.7.2",
     "vitest": "4.1.11",
-    "wrangler": "^4.122.0"
+    "wrangler": "^4.149.0"
   },
   "engines": {
     "node": ">=22.18.0"
@@ -59,6 +59,8 @@
     "fast-uri": "3.1.8",
     "hono": "^4.12.30",
     "devalue": "5.9.3",
-    "undici@>=7.0.0 <7.29.1": "7.29.1"
+    "undici@>=7.0.0 <7.29.1": "7.29.1",
+    "@modelcontextprotocol/sdk": "$@modelcontextprotocol/sdk",
+    "@modelcontextprotocol/client": "2.2.0"
   }
 }

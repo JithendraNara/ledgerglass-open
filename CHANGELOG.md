@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Move `@modelcontextprotocol/sdk` to 1.31.0 and override `@modelcontextprotocol/client` to 2.2.0 for GHSA-6qxp-vccf-f47h, an OAuth-client credential-forwarding advisory. `agents` pins the vulnerable versions exactly, so the override is what reaches its copy. This repository serves MCP and does not use the SDK OAuth client.
+- Update the transitive `proxy-addr` (critical IP-spoofing advisory), `source-map-js`, `smol-toml`, and `http-cache-semantics` packages, and move Wrangler to 4.149 with matching Workers types so Miniflare picks up `sharp` 0.35.5. These restore the high-severity audit gate that blocked the generated bundle sync.
 - Pin transitive `fast-uri`, `devalue`, and `undici` to patched releases so the high-severity audit gate passes: authority-injection and host-confusion fixes in `fast-uri`, memory-serialization and quadratic-expansion fixes in `devalue`, and WebSocket subprotocol and TLS certificate-validation fixes in `undici`. The `undici` override is scoped to the vulnerable 7.x line so Astro's undici 8 is untouched.
 - Update transitive `ip-address` to 10.7.3 within its existing `^10.2.0` range for corrected IPv6 link-local and subnet classification. The package is not reachable from this repository's import graph, so this is a lockfile-only hygiene bump rather than a reachable-exposure fix.
 - Update Astro, Wrangler, Vitest, and their transitive dependencies to patched releases for image-processing, file-read, path-traversal, resource-consumption, and SVG-sanitization advisories.
