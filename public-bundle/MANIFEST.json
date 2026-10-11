@@ -1,10 +1,10 @@
 {
-  "export_digest": "5e94b6de4ee4f5c8387297f5c8c9835b26d2d8cceb837f1ed77cf402acdd68d4",
+  "export_digest": "189055a8bde68dceedb537067d4903643fb90a20d9ce64c9a118be009e3de3e6",
   "files": [
     {
-      "bytes": 19567,
+      "bytes": 19690,
       "path": "public-bundle/capabilities.json",
-      "sha256": "e72fb4e77a033213f0adfa46bdbeb4e45385f3a82c728aaf7435ac30c8f8209f"
+      "sha256": "871f1a44267db4ca9f1069941a8b9f8acf1b4c83be627930be92a5bfc5b46f9a"
     },
     {
       "bytes": 12410,

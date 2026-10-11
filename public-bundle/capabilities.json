@@ -353,7 +353,7 @@
       "research_refs": [
         "mcp-tool-input-validation"
       ],
-      "summary": "Published finance tool inputs reject unknown arguments and name the rejected key. Owner relationship decisions record a reason, and reads expose that reason with actor provenance. Machine matches are attributed to the matcher. Default transfer reads return one effective head per endpoint pair while historical identities remain. Deliberately open evidence records stay open.",
+      "summary": "Published finance tool inputs reject unknown arguments and name the rejected key, and tool execution errors carry explicit typed codes and retryability instead of relying on raw English substring guesses. Owner relationship decisions record a reason, and reads expose that reason with actor provenance. Machine matches are attributed to the matcher. Default transfer reads return one effective head per endpoint pair while historical identities remain. Deliberately open evidence records stay open.",
       "title": "Tool inputs reject unknown arguments"
     }
   ],
