@@ -355,6 +355,23 @@
       ],
       "summary": "Published finance tool inputs reject unknown arguments and name the rejected key, and tool execution errors carry explicit typed codes and retryability instead of relying on raw English substring guesses. Owner relationship decisions record a reason, and reads expose that reason with actor provenance. Machine matches are attributed to the matcher. Default transfer reads return one effective head per endpoint pair while historical identities remain. Deliberately open evidence records stay open.",
       "title": "Tool inputs reject unknown arguments"
+    },
+    {
+      "delivery": "case-study",
+      "id": "transaction-tags",
+      "last_verified": "2026-10-15",
+      "maturity": "experimental",
+      "problem": "Labeling transactions with multiple projects, purposes, or contexts without corrupting single-axis category totals or splitting transaction amounts.",
+      "public_artifacts": [
+        "transaction tags contract",
+        "tag summary query shape",
+        "non-additive grouping policy"
+      ],
+      "research_refs": [
+        "actual-architecture"
+      ],
+      "summary": "Transaction tags sit orthogonally alongside effective category and flow kind. Each row carries zero to many tags. Tags provide grouping and filtering without altering spend totals, cashflow math, or budgets. Slugs are normalized and limited to 200 active definitions; writes use the established preview-hash-apply pattern with append-only revisioned events.",
+      "title": "Non-additive transaction tags"
     }
   ],
   "generated": true,
