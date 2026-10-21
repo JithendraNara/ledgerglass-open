@@ -32,8 +32,8 @@
     "check": "npm run privacy:audit && npm run public:validate && npm run typecheck && npm run worker:typecheck && npm run build && npm test && npm run site:check && npm run site:dry-run && npm audit --audit-level=high && npm run worker:migrate:local && npm run worker:dry-run"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "1.31.0",
-    "@modelcontextprotocol/server": "2.2.0",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@modelcontextprotocol/server": "2.3.1",
     "agents": "0.20.1",
     "dotenv": "^17.4.2",
     "zod": "^4.4.3"
@@ -61,7 +61,8 @@
     "devalue": "5.9.3",
     "undici@>=7.0.0 <7.29.1": "7.29.1",
     "@modelcontextprotocol/sdk": "$@modelcontextprotocol/sdk",
-    "@modelcontextprotocol/client": "2.2.0",
-    "@modelcontextprotocol/server": "$@modelcontextprotocol/server"
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/server": "$@modelcontextprotocol/server",
+    "vite": "8.2.4"
   }
 }
