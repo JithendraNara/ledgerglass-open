@@ -1,6 +1,21 @@
 {
   "capabilities": [
     {
+      "delivery": "private-note",
+      "id": "calendar-arrears-and-timing",
+      "last_verified": "2026-10-22",
+      "maturity": "experimental",
+      "problem": "Overlapping minima and account-side credits can overstate funding needs or incoming cash.",
+      "public_artifacts": [
+        "generic evidence-boundary note"
+      ],
+      "research_refs": [
+        "plaid-accounts-api"
+      ],
+      "summary": "A private read model separates intrinsic inflows from debt payments, counts included arrears once, and retains bounded unproven timing candidates without hiding balance disputes.",
+      "title": "Bounded evidence for calendar funding"
+    },
+    {
       "delivery": "case-study",
       "id": "evidence-ledger",
       "last_verified": "2026-08-20",
@@ -355,6 +370,23 @@
       ],
       "summary": "Published finance tool inputs reject unknown arguments and name the rejected key, and tool execution errors carry explicit typed codes and retryability instead of relying on raw English substring guesses. Owner relationship decisions record a reason, and reads expose that reason with actor provenance. Machine matches are attributed to the matcher. Default transfer reads return one effective head per endpoint pair while historical identities remain. Deliberately open evidence records stay open.",
       "title": "Tool inputs reject unknown arguments"
+    },
+    {
+      "delivery": "case-study",
+      "id": "transaction-tags",
+      "last_verified": "2026-10-15",
+      "maturity": "experimental",
+      "problem": "Labeling transactions with multiple projects, purposes, or contexts without corrupting single-axis category totals or splitting transaction amounts.",
+      "public_artifacts": [
+        "transaction tags contract",
+        "tag summary query shape",
+        "non-additive grouping policy"
+      ],
+      "research_refs": [
+        "actual-architecture"
+      ],
+      "summary": "Transaction tags sit orthogonally alongside effective category and flow kind. Each row carries zero to many tags. Tags provide grouping and filtering without altering spend totals, cashflow math, or budgets. Slugs are normalized and limited to 200 active definitions; writes use the established preview-hash-apply pattern with append-only revisioned events.",
+      "title": "Non-additive transaction tags"
     }
   ],
   "generated": true,
