@@ -1,8 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import stories from "../../../public-bundle/case-studies.json";
+
+const caseCount = stories.case_studies.length;
 ---
-<BaseLayout title="The Rowan household" eyebrow="Synthetic contract evidence" description="Six privacy-safe cases that exercise the same contracts as the private system. No account, institution, or transaction here belongs to a real person.">
+<BaseLayout title="The Rowan household" eyebrow="Synthetic contract evidence" description={`${caseCount} privacy-safe cases that exercise the same contracts as the private system. No account, institution, or transaction here belongs to a real person.`}>
   <section class="section case-study-shell">
     <div class="case-tabs" role="tablist" aria-label="Case studies">
       {stories.case_studies.map((story, index) => <button type="button" role="tab" aria-selected={index === 0 ? "true" : "false"} data-case={story.id}><span>{String(index + 1).padStart(2, "0")}</span>{story.title}</button>)}
