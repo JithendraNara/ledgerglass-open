@@ -38,7 +38,7 @@ const core = registry.capabilities.filter((item) => item.delivery === "core").sl
   </section>
 
   <section class="section rule case-preview">
-    <div><p class="eyebrow">A documented failure class, reproduced with synthetic data</p><h2>{stories.case_studies[0].title}</h2><p class="dek">{stories.case_studies[0].happened}</p><a class="button secondary" href="/case-studies/">Inspect all six cases</a></div>
+    <div><p class="eyebrow">A documented failure class, reproduced with synthetic data</p><h2>{stories.case_studies[0].title}</h2><p class="dek">{stories.case_studies[0].happened}</p><a class="button secondary" href="/case-studies/">Inspect all {stories.case_studies.length} cases</a></div>
     <ol class="timeline">
       <li><span>01</span><div><strong>What made it hard</strong><p>{stories.case_studies[0].difficulty}</p></div></li>
       <li><span>02</span><div><strong>What changed</strong><p>{stories.case_studies[0].action}</p></div></li>

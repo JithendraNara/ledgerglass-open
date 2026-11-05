@@ -42,7 +42,7 @@ around that record; they do not become the record.
 
 - `src/public-core.ts` — integer money, currency separation, date windows,
   statement matching, pending lifecycle, and settled cashflow contracts.
-- `public-bundle/` — generated capability registry, dated research sources, six
+- `public-bundle/` — generated capability registry, dated research sources,
   privacy-safe contract cases, and deterministic bundle hashes.
 - `site/` — the engineering journal and interactive case studies, built with
   Astro and deployed as a separate Cloudflare static-assets Worker.
