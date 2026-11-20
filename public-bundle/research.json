@@ -44,6 +44,30 @@
       "verified_at": "2026-08-12"
     },
     {
+      "affected_capabilities": [
+        "durable-provider-ingestion"
+      ],
+      "decision": "Reuse Workflows with bounded continuation instances and persistent source checkpoints; never refetch an ambiguous provider request.",
+      "id": "cloudflare-workflow-limits-2026-11",
+      "kind": "primary",
+      "question": "How can provider ingestion survive client disconnects without exceeding instance budgets?",
+      "rejected_alternatives": [
+        "request-bound ingestion",
+        "waitUntil alone",
+        "raising resource limits"
+      ],
+      "title": "Cloudflare Workflow execution limits",
+      "url": "https://developers.cloudflare.com/workflows/reference/limits/",
+      "verified_at": "2026-11-16"
+    },
+    {
+      "id": "cloudflare-workflow-pricing-2026-11",
+      "kind": "primary",
+      "title": "Cloudflare Workflow pricing",
+      "url": "https://developers.cloudflare.com/workflows/reference/pricing/",
+      "verified_at": "2026-11-16"
+    },
+    {
       "id": "cloudflare-ai-gateway",
       "kind": "primary",
       "title": "Cloudflare AI Gateway",

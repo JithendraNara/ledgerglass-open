@@ -345,6 +345,22 @@
       "reversal": "A newer complete authoritative statement can supersede the checkpoint for the next run; the older statement version and its discrepancy history remain auditable, and changing source records does not delete prior checkpoint evidence.",
       "title": "An older statement still anchored the run",
       "uncertainty": "This synthetic contract example is not an exported implementation. Choosing the statement checkpoint extends the evaluated window, so differences previously masked by the rolling baseline can become visible; the checkpoint does not prove later activity is complete."
+    },
+    {
+      "action": "Ledgerglass introduced many-per-row tags with strict invariants: adding or removing tags leaves cashflow, category totals, debt overview, and forecast byte-identical; tag_summary computes per-tag net, inflow, and outflow with explicit flow-kind and category breakdowns and guarantees totals_are_not_additive; and excludeTags acts as a read view filter rather than a ledger mutation.",
+      "difficulty": "Categories require exactly one group per row so sums equal actual net spend. If a transaction carries multiple labels, summing by label double-counts transactions that have two or more tags. Tags must also remain orthogonal to cashflow and never alter effective category or flow kind.",
+      "evidence": [
+        "append-only tag definition and assignment events",
+        "effective view resolving direct and inherited assignments across pending supersession",
+        "deterministic tag summary per tag with no cross-tag grand total",
+        "contract guarantee totals_are_not_additive: true",
+        "view filter excludeTags leaving underlying ledger unchanged"
+      ],
+      "happened": "A fictional household needed to track infrastructure and tooling spending that spanned both business and subscription categories, as well as cross-cutting trip expenses without corrupting monthly category totals.",
+      "id": "transaction-tags",
+      "reversal": "Tag assignments are append-only revisions; tags can be removed or definitions archived at any time without mutating underlying transaction rows or breaking historical audit trails.",
+      "title": "Multi-project tagging without double-counting money",
+      "uncertainty": "This synthetic contract example is not an exported implementation. Tags provide reporting and filtering groupings; they do not replace category budgeting or transaction splits when amounts are divided."
     }
   ],
   "household": "The Rowan household",
